@@ -1,0 +1,179 @@
+RH: Linux Administartor
+    -> SE/SE(x), 시스템 구조
+    -> Linux 이해, 패키지, 디스크 + 컨테이너
+
+대세는 현재 컨테이너로..
+
+scl: software Collection Library
+-> RH, Semantific Linux(CERN)
+-> scl: yum->dnf[module]
+        dnf as scl
+        container as scl
+-> systen container
+    : 보안과 무결성
+    : 소프트웨어 설치(lib+app)
+        -> 업데이트 못함
+        -> c/c++(libc, glibc)
+    시스템 엔지니어 vs 소프트웨어 개발자
+        \__________________/
+              container
+                  |
+                  |
+                  |
+                  v
+              devops(애자일)
+
+        BSD(Unix, OS X)
+        ---------
+            \
+             `---> Linux가 많이 가져감
+        mac: process A ---> [0]~6
+        linux: process B ---> [0] -> [2] -> [4], AI/ML
+
+        Linux Kernel --> 바닐라 버전(RH+P/T)
+                     --> 바닐라 버전(UB-NONE-PT, ML)
+
+        k8s Seccomp/SELinux     |       AppArmor
+        RedHat(MLS)             |   Ubuntu / SUSE
+        NSA-> RH --> NASDAQ
+
+RHEL 7/8 큰 차이점
+1. xfs(locking, multi threading)
+-> xfs, SGI(xfs)
+-> btrfs(==ZFS), 파일이 중간중간에 inode가 사라짐
+
+2. dnf
+
+7->8: mount, RO(ReadOnly)
+8->7: mount, RW(ReadWrite)
+
+yum -> dnf      **module
+
+RHEL 7/8/9
+
+7: MBR(CMOS), 0~4096(4k)
+8: UEFI(OS X EFI)
+
+RHEL + EPEL + SCL + RPMFUSION + DAG + remi
+
+System V/BSD Type: RHEL 6, Ubuntu14/Debian(BSD)
+                           PPA + 유니버셜 저장소
+freedesktop.org: 리눅스 시스템 현대화(com/dcom = dbus) IPC(dbus 통합)
+
+systemd: 윈도우(serivce)의 서비스와 같은 기능
+LSB: 리눅스 스탠다드 베이스(yum, rpm, apt, deb, pkg) 
+     lsb-core(*), lsb-application. lsb-library(*)
+
+RHEL 7: iptables + firewalld
+RHEL 8: nftables + firewalld
+RHEL 9: iptables(x), nftables + firewalld
+
+nftables: 새로운 방화벽 프로그램(container, vm)
+
+
+firewalld [USER]
+--------------------
+iptables  [SYS-ADMIN]
+    \
+     `-> nftables [AUTOMATION]
+--------------------
+[Kernel + netfilter]
+
+root/RedHat
+student/student(*)
+
+user space
+- GUI, CLI
+
+   .---> bash(sh) ---> App(syscall)
+  /
+shell (userspace <---> APP)
+  |                IPC
+  |
+  | channel
+[Moduel]
+---------------         x86(386 보호모드)
+[Module]
+  | channel
+  |             Kernel space
+  |             channel
+  v
+ DEV
+
+ #
+ $ <COMMAND> <ARGS1> <ARGS2> <ARGS3>
+
+google-> linux tty 검색
+ tty -> open() close() read() write()
+
+ kernel --> bzimage/vmlinuz(*) --> Module(DRV) --> systemd --> target + service
+ --> tty --> login(login 파일을 지울때 안뜬다...) --> bash 
+
+ login: _
+
+
+X-WINDOW FORWARDING
+--------------------
+
+# ssh -XY [username]@[server]
+SRV # dnf install xorg-x11-xauth
+SRV # dnf isntall gedit
+SRV # exit
+# ssh -XY
+SRV # gedit
+
+ssh -XY 
+
+
+# adduser, passwd: 사용자 생성 및 암호를 설정
+# for TEMP in user1 user2 user3 user4 user5; do adduser $TEMP && echo redhat| passwd --stdin $TEMP; done;
+
+// 옵션없이 처리
+# ssh-keygen -t rsa -N '' -f ~/.ssh/<KEYNAME>; ~/.ssh/id_rsa(기본파일이름)
+                ---    --           ---------         /
+                \      \                \____________/
+                 \      `-> passphase 비밀번호
+                  `-> 키파일 암호화 알고리즘 방식
+
+#/$ ssh-copy-id -i ~/.ssh/<PUB_KEYNAME.pub> <USERNAME>@<HOST>
+
+                                                                핑거프린트 키 검사 무시
+                                                                -------------------------
+#/$ for temp in node1 node2 node3 node4 node5; do ssh-copy-id -o StrictHostKeyChecking=no root@host; done;
+
+
+19(*), 29
+
+mkdir -p : 상위디렉터리가 없으면 생성
+
+cp -a: archive. 1:1로 퍼미션 포함해서 filetime 및 date 복사
+   -r,-R: 디렉터리까지 포함(하위 복사)
+   -p: 소유권 및 접근 권한 그대로 유지하면서 복사(chmod, chown)
+   -v: 복사시 표준 입력출력 및 오류 출력
+
+rm -r: 하위 디렉터리까지 제거
+   -f: 강제삭제
+     -> rm -rf / (x) 
+        dd if=/dev/zero of=/dev/sda count=10 offset=10 bs=200
+        dd if=/dev/sda of=/mnt/backup/sda_raw_backup.img bs=1G
+
+
+        Bootloader: ELF Type
+        MBR: 0~2048,4096, 8192(IBM)
+
+cd 여백: 여백인 경우 홈디렉터리로 이동
+   ..
+   ~
+   -
+   .<NAME> : 숨겨진 디렉터리
+
+touch: 비어있는 파일 생성
+
+ln -s: 심볼릭 링크(inode 소모)
+   옵션이 없는 경우: 하드링크(inode 비소모, 같은 디스크에서만 사용이 가능)
+
+file: 파일정보 확인
+
+mv: 파일 및 디렉터리 이동 혹은 이름변경
+
+

@@ -1,0 +1,225 @@
+FileSystem
+-----------
+#mkdir testdir
+       --------
+            \   
+             \ 
+       [M]    `--->[D]데이터 저장
+|      S/B      |   block   |   inode        |      journal       |
+                      \__________/              바이너리 데이터베이스
+  -superblock         파일의 위치 정보 및 메타정보 
+  -systemblock         넘겨줌(#stat, #ls -ali)
+  -중요한 정보들이 
+   저장되는 위치(3~5%)
+  -거의 모든 시스템에 있음
+  -깨지면 디렉터리 정보들을 접근 못함
+  -dir, permission...
+
+journal이 깨지면 접근이 불가능
+
+파일 조회(#ls -al /usr/share/docs...) -> journal을 검색
+
+x86은 4k 단위(block)로 저장
+stat <FILENAME> : S/B에서 가져옴
+
+ln -s: 심볼릭 혹은 소프트링크
+        - inode가 하나 더 소모됨
+        - 복제가 되지 않음
+        - 원본이 사라지면 복제본도 올바르게 수행이 되지 않음
+
+링크를 만들고 
+# ls -laid linkdir/  // 디렉터리로 나옴(슈퍼블록에서 디렉터리를 만듬)
+# ls -laid linkdir   // 링크로 나옴
+-> 같은 이름으로 두개의 자원이 있다.(stat을 찍어보면 정확히 나온다.)
+Block이 0이다. -> 소비를 하지 않음.
+IO Block -> 기본 블럭 사이즈
+이름을 가지고 찾는다.
+
+ln   : 하드링크
+        - inode가 소모 되지 않음
+        - 복제가 됨
+        - 원본이 사라져도 복제본으로 수행이 가능
+디렉터리는 안되고 파일만 됨
+복제본의 inode가 같음.
+
+S/B[
+    Meta1---.
+    (Orgin)  >   inode  ---> DATA
+    Meta2---'   번호가 같음
+    (Softlink)
+    ] 
+
+undelete ---> [F/S]
+단점: 같은 디스크영역에서만 사용이 가능함(파티션)
+사용: config 파일을 백업할 용도로 만든다.
+
+UID = <NAME> 동일시하면 안된다
+
+             숫자
+           -------
+<OBJECT> = UID/GID <---> /etc/passwd
+                         /etc/group
+                              /
+                          mapping되어 있다.
+# ls -laid                  /  
+           UID   GID   <SuperBlock>
+           ---   ---   
+-rwxrwxrwx sihun sihun <FILE>
+
+
+
+super user: uid, gid 0번이거나 혹은 이와 동등한 권한을 가지고 있는 사용
+            - root 로그인하는 경우, super, user
+            - heheh(uid, gid 0) as super user (x): 요즘은 쓰지않음
+
+normal user: rhel7 기준으로 uid, gid가 100번 이상인 사용자. 이사용자는 시스템 제어 권한은 가지고 있지 않다.
+            - 일반 사용자
+            - 배포판 별로 일반 사용자(uid, gid) 범위가 각자 다름
+              * 65534(UID): nobody
+
+service user: 201~999 uid, gid 기준
+            - postfix, httpd, vsftpd 이와 같은 서비스가 실행 시 서비스 계정이 요구함
+            - 위의 범위 안에서 서비스 계정을 만듦
+              * SELinux에서 차단
+              * 잘못하면 UID, GID가 손실
+
+kernel user: uid, gid 0번 사용자
+            - uid, gid 0,0
+            - 커널이 메모리에 올라가서 구동시 0:0으로 모든 프로세스 및 초기화 실행
+            - 0:0 초기화가 완료 되면 "super user"에게 다시 권한 이양
+
+grep -Ev '^#|^$' /etc/login.defs
+-> uid확인
+
+su: su(switch user, super user): <A> --> <XY USER> 전환
+  # su                  ;; "-"없는 경우에는 현재 사용자의 쉘 변수를 그대로 사용함
+   [root]
+  # su <USER> 
+   [USER]               ;; 해당 [USER]에 대한 비밀번호 물어봄
+  # su -                ;; "-"가 있는 경우 전환대상의 사용자의 쉘 변수를 그대로 상속
+  # su - <USER> 
+
+
+Debian계열에서 많이 사용하다가, 레드햇도 RHEL6 이후로 적극적으로 사용
+----------------------------------------------------------
+sudo: "su"명령어는 전환하는 사용자의 비밀번호를 요구함. 
+       sudo명령어는 전환 대상의 사용자 비밀번호를 알 필요가 없다.
+       대신, 정책 파일에 따러서 접근 영역이 달라진다,
+  $ sudo -u <USER> <COMMAND>
+     -> sudo -u student ls  ;; student 사용자로 ls 명령어 실행
+        passwd: 본인의 패스워드
+
+  $ sudo -i: 대화형 모드(interactive mode)
+  $ sudo -i -u student
+
+sudo == su -c : 기능상 동일하나, 전환 대상의 비밀번호를 알아야함. 보안상 sudo가 좋음
+
+sudoers 설정 구분
+---------------
+
+1. /etc/sudoers
+# visudo
+-> vi기반으로 에디터 실행
+# EDITOR=nana visudo
+# usermod -aG wheel <추가 사용자 이름>
+
+
+2. /etc/sudoers.d/
+별도의 설정을 별도의 파일로 저장해서 분리 및 운영이 가능
+
+$PATH: 환경변수들의 경로인 path를 출력하는 명령어
+
+
+연습문제 82 Page
+
+useradd: System v 스타일(SCO Unix)
+adduser: BSD 스타일(Debian, Slackware, SuSE)
+
+useradd: 사용자 추가(home생성, 그룹아이디 생성, 기본 파일 복사)
+
+home 생성: /home/<USERNAME>
+그룹 아이디 생성: /etc/group에 사용자 이름과 같은 그룹 생성(uid, gid)
+기본 파일 복사: /etc/skel, 기본 파일 제공해주는 재료 디렉터리
+
+useradd: usermod 수정
+groupadd: groupmod 수정 0> ㅎ
+
+그냥 vi로 /etc/passwd, group 파일 직접 수정하면 됨.
+
+# useradd test1 ;; uid:gid = 1000:1000
+# groupadd shared ;; gid 1001
+# useradd test2 ;; uid:gid = 1001:1002
+
+RedHat제안 --> # groupadd -g 10000 shared : 10000번부터 사용하는 것을 권장한다.
+
+         /etc/login.defs
+                ^
+                |
+            groupadd ---> /etc/group
+            별도의 그룹
+               생성
+
+
+                                       .->  echo "passwd" | passwd --stdin <USERNAME>
+                                      /
+                                     / 
+                        .---> /etc/passwd (2) -- failed --> all stop
+                        |---> /etc/group (3)
+                        |      uid, gid + uname으로 정보 생성
+                        | 
+                        +---> mkdir /home/<USERNAME> (4) <--- skel --- /etc/skel (5)
+                        |                       
+/etc/login,defs <--- useradd ---> passswd ---> /etc/shadow
+      SRV ACC           |           (6)         [SHA512]
+      NOR ACC(d)        |         /               
+       |\_______________|________/
+       |                |
+노말/서비스 계정인지        |
+                        |
+                        v
+                /etc/default/useradd (1)
+                첫번째로 참조하게 된다.
+                (기본적으로 가져가는 값들)
+
+
+
+
+                     .--->student:x:1000:10000
+                     |            -
+                     |             \_________
+                    (2)                      \
+passwd ---> /etc/password --mapping--> /etc/shadow  (4) pub + salt + rsa pass = 진짜 패스워드
+             /   (legacy)                      |
+            /                                  |
+login-----'                                 mapping
+  (1)                                          |
+                                               V
+                                            gshadow (3)
+
+
+chmod
+
+https://gist.github.com/juanarbol/c44e736be70279c1fd5d68aa24f9d8be
+
+
+describe_change (char const *file, struct change_status const *ch)
+{
+  char perms[12];   /* "-rwxrwxrwx" ls-style modes. */
+  char old_perms[12];
+ 
+ 
+(10)  123 (11) 456 (12) 789  
+ B     u   G    g    T   o
+
+rwx rwx rwx: 심볼릭(현재 이 방법으로 권장)
+-> $ chmod u+rwx,g-w,o=rw
+        +: 퍼미션 추가
+        -: 퍼미션 제거
+        =: 퍼미션 강제 대입
+
+   $ chmod 724 --> chmod u=rwx,g=w,o=r
+                    chmod a=rwx (a는 u,g,o 모두 일괄 적용)
+                    chmod u+s: Set UID
+                          g+s: Set GID
+                          o+t: Sticky
+                    

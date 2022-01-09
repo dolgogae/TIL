@@ -1,0 +1,271 @@
+컨테이너는 휘발성 볼륨을 가지고 있다.
+
+페르소나
+- Storage administrators
+- Application engineers
+
+추상화
+- PodSpec에 컨테이너 외부의 파일 경로 참조가 없다.
+- 스토리지 출처는 인프라와 Container Storage Interface에 따라 달라진다.
+
+CSI
+쿠버네티스와 스토리지 제공자 간에 API 제공
+- 스토리지 시스템 노출을 위한 곧통 표준 제공
+- 서트파티 제공자는 플러그인을 사용해 새로운 스토리지 시스템 지원 가능
+
+Persistent Storage(영구 스토리지)
+- 컨테이너가 다시 스케줄링되면 하나의 호스트에 더 이상 존재 하지 않을 수 있고 다른 호스트에 스케줄링될수 있다.
+- 특정 애플리케이션(kafka, ELk)는 특정 id를 가진 곳에서 사용되어야 한다.
+- 볼륨에 따라 RW many(NFS), RW once를 지원한다.
+
+
+Storage -> PersistentVolume -> PersistentVolumeClaim -> Pod
+
+vSAN 옵션
+If using vSAN, the following parameters can be defined:
+• cacheReservation • Flash capacity reserved as read cache for the container object. Specified as a percentage of the logical size of the virtual machine disk (vmdk) object. Reserved flash capacity cannot be used by other objects. Use this option only to address specific performance issues.
+• diskStripes • The minimum number of capacity devices across which each replica of a object is striped. Default value is 1. Maximum value is 12.
+• forceProvisioning • If the option is set to Yes, the object is provisioned even if the Number of failures to tolerate, Number of disk stripes per object, and Flash read cache reservation policies specified in the storage policy cannot be satisfied by the datastore
+• hostFailuresToTolerate • Defines the number of host and device failures that a virtual machine object can tolerate. For n failures tolerated, each piece of data written is stored in n+1 places, including parity copies if using RAID 5 or RAID 6
+• iopsLimit • Defines the IOPS limit for an object, such as a VMDK. IOPS is calculated as the number of I/O operations, using a weighted size. If the system uses the default base size of 32 KB, a 64-KB I/O represents two I/O operations
+• objectSpaceReservation • Percentage of the logical size of the virtual machine disk (vmdk) object that must be
+reserved, or thick provisioned when deploying virtual machines. Default value is 0%. Maximum value is 100%
+
+
+StatefulSet
+- 안정적이고, 고유의 포드 식별자와 DNS이름:
+  ${Statefulset_name}-${ordinal}.&{service_name}.&{namespace}
+
+- 영구 스토리지
+  VolumeClaimTemplate 당 하나의 영구 볼륨
+  API에 포드가 선언된 형태
+
+================================================
+lab 8
+
+[pv.yaml]
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv01
+spec:
+  storageClassName: local
+  capacity:
+    storage; 5Gi
+  accessModes:
+  - ReadWriteOnce
+  hostPath:
+    path: /var/pv/pv01
+
+# kubectl apply -f pv.yaml
+# kubectl get persistentvolumes
+# kubectl describe pv pv01
+
+[pvc.yaml]
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc01
+  annotations:
+    volume.beta.kubernetes.io/storage-class: local
+spec:
+  resources:
+    requests:
+      storage: 5Gi
+  accessModes:
+  - ReadWriteOnce
+
+# kubectl apply -f pvc.yaml
+
+[gowebapp-mysql-deployment-pv.yaml]
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gowebapp-mysql
+  labels;
+    app: gowebapp-mysql
+    tier: backend
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: gowebapp-mysql
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: gowebapp-mysql
+        tier: backend
+    spec:
+      containers:
+      - name: gowebapp-mysql
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: mypassword
+        image: sa-master-01.vclass.local:443/gowebapp-mysql:v1
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - name: mysql-pvc
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-pvc
+        PersistentVolumeClaim:
+          claimName: pvc01
+
+
+# kubectl apply -f gowebapp-mysql-deployment-pv.yaml
+
+
+
+=====================================================
+
+이미지 구성
+- 모든 런타임 구성을 주입하고, 재정의할 수 있어야 합니다.
+
+** ConfigMaps
+YAML에서 생성되거나, kubectl create를 실행해서 생성된다.
+- 애플리케이션 빌드는 각 환경에 대한 ConfigMaps을 생성할 수 있다.
+- ConfigMaps은 네임스페이스에 따라 다르다.
+
+환경변수
+- 파일시스템 뉘앙스에 의존하지 않느다.
+- 쿠버네티스 외부에서 컨테이너르 운영할때 편리
+- 변경 내용을 적용하려면 다시 시작
+마운트된 볼륨
+- ConfigMaps의 업데이트는 마운트된 볼륨에 반영
+
+** secret
+암호, 토큰, 키와 같은 중요한 데이터를 저장하는 리소스입니다.
+-> 서드파티 제품 사용자는 고급 기능 제공
+
+=========================================================
+
+lab9
+
+# kubectl create configmap gowebapp --from-file=webapp-config-json=$HOME/gowebapp/gowebapp/config/config.json
+
+# kubectl describe configmaps gowebapp
+
+# kubectl create secret generic mysql --from-literal=password=mypassword
+
+      volumes:
+      - name: config-volume
+        configMap:
+          name: gowebapp
+          items:
+          - key: webapp-config-json
+            path: config.json
+
+# kubectl apply -f gowebapp-deployment-dynamic.yaml
+
+===============================================================
+
+job
+
+cron job: 정해놓은 스케줄에 따라서 실행하는 job, 일정시간마다 반복 실행
+
+DaemonSets
+모든 노드가 포드의 복사본을 실행하도록 보장
+- 클러스터에 노드가 초가되면, 노드에 포드가 추가
+- 클러스터에 노드가 제거되면, 포드 삭제
+- DaemonSet은 일반적으로 클러스터 관리 기능에 사용
+
+Network policy
+네트워크 정책은 포드 그룹이 서로 및 다른 네트워크 endpoint와 통신할 수 있는 방법을 지정한다.
+레이블을 사용하여 포드를 선택하고 선택한 포드에 허용되는 트래피을 지정하는 규칙을 정의.
+
+Non-isolate Pods
+포드는 격리되지 않는다.: 모든 소스의 트래픽을 수락한다.
+격리되는 경우
+• When you define a NetworkPolicy that selects them in a namespace. 
+• When a pod rejects connections that are not explicitly allowed by a NetworkPolicy
+• When other pods in the namespace that are not selected by a NetworkPolicy continue to accept all traffic
+
+포드 및 컨테이너에 대한 상승된 권한 요청
+securityContext는 포드 또는 컨테이너에 대한 권한 및 액세스 제어 설정을 정의합니다.
+PodSpec 섹션은 컨테이너 권한을 정의합니다.
+- 포드 레벨에서 정의된 경우 모든 컨테이너의 기본값이 정의됩니다.
+- 포드 수준 권한은 재정의할 수 있으며 컨테이너별로 권한을 정의할 수 있습니다.
+- 클러스터 관리자는 정책에 제한을 적용할 수 있습니다.
+
+API 액세스 제어
+
+Role 기반 액세스 제어
+kind: Role 
+apiVersion: rbac.authorization.k8s.io/v1 
+metadata: 
+  namespace: default   
+  name: my-app-secret-reader
+rules:                  # 각각의 namespace 별로 할당하게 해줌
+- apiGroups: [""] 
+  resources: ["secret"] 
+  verbs: ["get"]
+
+
+[클러스터 Role]: cluster 수준에서 Role이 지정
+kind: ClusterRole 
+apiVersion: rbac.authorization.k8s.io/v1 
+metadata: 
+  name: pod-reader
+rules: 
+- apiGroups: [""] 
+  resources: ["pods"] 
+  verbs: ["get", "watch", "list"]
+
+
+[RoleBinding] : 롤에 매핑해줌
+kind: RoleBinding 
+apiVersion: rbac.authorization.k8s.io/v1 
+metadata: 
+  name: my-app-read-secret 
+  namespace: default
+subjects: 
+- kind: ServiceAccount
+  name: my-app 
+  apiGroup: rbac.authorization.k8s.io
+roleRef: 
+  kind: Role 
+  name: my-app-secret-reader 
+  apiGroup: rbac.authorization.k8s.io
+
+[Cluster Role Binding] : 클러스터 Role에 매핑
+kind: ClusterRoleBinding 
+apiVersion: rbac.authorization.k8s.io/v1 
+metadata: 
+  name: read-pods
+subjects: 
+- kind: User 
+  name: jane 
+  apiGroup: rbac.authorization.k8s.io
+roleRef: 
+  kind: ClusterRole 
+  name: pod-reader 
+  apiGroup: rbac.authorization.k8s.io
+
+
+로깅과 모니터링
+로깅 요구사항
+• Container logs 
+• Host OS logs 
+• Control plane logs 
+• Event messages
+
+컨테이너의 로그항목에 포함된 정보
+• Timestamp
+• Log messange
+• Namespace name 
+• Pod name 
+• Container name 
+• Labels 
+• Image 
+• Node name
+
+애플리케이션 로깅: Back End
+애플리케이션에서 백엔드에 로깅하는 로직이 내장되어 있습니다.
+
+사이드카 컨테이너: 백엔드에 로깅
+로깅 에이전트는 응용 프로그램 배포에 기본 내장된다. 어플리케이션과 같은 포드의 두번째 컨테이너에 있습니다.
+

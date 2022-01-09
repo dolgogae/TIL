@@ -1,0 +1,23 @@
+[2022-01-03 13:32:37.415] [exthost] [info] extension host started
+[2022-01-03 13:32:37.416] [exthost] [error] Error: EEXIST: file already exists, open '/root/.vscode-server/data/User/workspaceStorage/db00a02d3226b23aa48b0279f492935c/vscode.lock'
+[2022-01-03 13:32:37.419] [exthost] [info] Lock '/root/.vscode-server/data/User/workspaceStorage/db00a02d3226b23aa48b0279f492935c/vscode.lock': Could not acquire lock, checking if the file is stale.
+[2022-01-03 13:32:37.420] [exthost] [info] Lock '/root/.vscode-server/data/User/workspaceStorage/db00a02d3226b23aa48b0279f492935c/vscode.lock': The lock looks stale, waiting for 2s.
+[2022-01-03 13:32:37.456] [exthost] [info] ExtensionService#_doActivateExtension vscode.debug-auto-launch, startup: true, activationEvent: '*'
+[2022-01-03 13:32:37.456] [exthost] [info] ExtensionService#loadCommonJSModule file:///root/.vscode-server/bin/6cba118ac49a1b88332f312a8f67186f7f3c1643/extensions/debug-auto-launch/dist/extension
+[2022-01-03 13:32:37.460] [exthost] [info] ExtensionService#_doActivateExtension vscode.git, startup: true, activationEvent: '*', root cause: vscode.github
+[2022-01-03 13:32:37.460] [exthost] [info] ExtensionService#loadCommonJSModule file:///root/.vscode-server/bin/6cba118ac49a1b88332f312a8f67186f7f3c1643/extensions/git/dist/main
+[2022-01-03 13:32:39.420] [exthost] [info] Lock '/root/.vscode-server/data/User/workspaceStorage/db00a02d3226b23aa48b0279f492935c/vscode.lock': The lock looks stale even after waiting for 2s.
+[2022-01-03 13:32:39.420] [exthost] [info] Lock '/root/.vscode-server/data/User/workspaceStorage/db00a02d3226b23aa48b0279f492935c/vscode.lock': Deleting a stale lock.
+[2022-01-03 13:32:39.421] [exthost] [info] Lock '/root/.vscode-server/data/User/workspaceStorage/db00a02d3226b23aa48b0279f492935c/vscode.lock': Lock acquired.
+[2022-01-03 13:32:39.457] [exthost] [info] ExtensionService#_doActivateExtension vscode.github, startup: true, activationEvent: '*'
+[2022-01-03 13:32:39.457] [exthost] [info] ExtensionService#loadCommonJSModule file:///root/.vscode-server/bin/6cba118ac49a1b88332f312a8f67186f7f3c1643/extensions/github/dist/extension.js
+[2022-01-03 13:32:39.468] [exthost] [info] ExtensionService#_doActivateExtension vscode.emmet, startup: false, activationEvent: 'onStartupFinished'
+[2022-01-03 13:32:39.468] [exthost] [info] ExtensionService#loadCommonJSModule file:///root/.vscode-server/bin/6cba118ac49a1b88332f312a8f67186f7f3c1643/extensions/emmet/dist/node/emmetNodeMain
+[2022-01-03 13:32:39.480] [exthost] [info] ExtensionService#_doActivateExtension vscode.merge-conflict, startup: false, activationEvent: 'onStartupFinished'
+[2022-01-03 13:32:39.480] [exthost] [info] ExtensionService#loadCommonJSModule file:///root/.vscode-server/bin/6cba118ac49a1b88332f312a8f67186f7f3c1643/extensions/merge-conflict/dist/mergeConflictMain
+[2022-01-03 13:32:39.482] [exthost] [info] eager extensions activated
+[2022-01-03 13:32:39.513] [exthost] [info] ExtensionService#_doActivateExtension ms-vscode.js-debug, startup: false, activationEvent: 'onCommand:extension.js-debug.clearAutoAttachVariables'
+[2022-01-03 13:32:39.513] [exthost] [info] ExtensionService#loadCommonJSModule file:///root/.vscode-server/bin/6cba118ac49a1b88332f312a8f67186f7f3c1643/extensions/ms-vscode.js-debug/src/extension.js
+[2022-01-03 14:29:45.262] [exthost] [info] extension host terminating: received terminate message from renderer
+[2022-01-03 14:29:45.262] [exthost] [info] Lock '/root/.vscode-server/data/User/workspaceStorage/db00a02d3226b23aa48b0279f492935c/vscode.lock': Marking the lockfile as scheduled to be released in 6000 ms.
+[2022-01-03 14:29:46.268] [exthost] [info] exiting with code 0

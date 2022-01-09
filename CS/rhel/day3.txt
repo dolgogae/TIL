@@ -1,0 +1,190 @@
+chmod 744 ---> GNU > chmod 0+744 ---> 0744
+
+               BSD > chmod 00+744 ---> 7(bit/sticky)44 - google: chmod sticky bit 검색
+
+ls: GNU ls(Linux), BSD ls(Unix)
+
+RING Moduel
+-------------
+
+8진수 조합: 0,1,2,3,4,5,6,7 (0|0|0|0)
+          | x w   r     a  B U G O  + SPARE (2(system permission))
+          |                --------
+          |                s r r r
+          v                s w w w 
+        offbit             t x x x
+
+                        [S/B, PERM]     [KERNEL]
+[USER] ---> access ---> FILESYSTEM ---> DAC(Defined Access Control(?)) ---> OBJECT 
+                                        - rule set                         [FILE/DIR]
+                                        - 8bit, rwx
+                                                                            TRUE
+student ---> ls, cp ... ---> syscall ---> userspace => kernel space => DAC  =>  discriptor
+                                            [APP]       [call]        SB[8bit]  I/O
+                                              \__DRIVE___/            ux=rw
+                                                                      g=rw
+                                                                      o=
+                                                                       |
+                                                                       |
+                                                                       V
+                                                                    NO ACCESS
+
+root는 rwx 권한이 없어도 kernel권한이 있어 모두 가능
+
+[protection ring]
+커널이 메모리에 올라가면 하드웨어와 os의 채널을 열어준다.-> BIOS <부팅>
+이후, 커널 모듈로 올라옴
+ring0, ring1 kernel쪽, ring2, ring3이 user쪽 
+ring1 -> ring2 채널을 열어준다
+
+DAC는 ring1 -> ring2
+
+
+[KERNEL USER]: root:root = UID 0: GID: 0 == mapping == /etc/passwd
+                           -------------
+                           rwx rwx rwx(user/root, umask 미선언시 기본값)
+                           TYPE: FILE, DIR(masking) == # umask == RHEL. BASH(d)
+                                                                  /etc/profile(UMASK, 변수)
+                                                                        |
+                                                                        |
+                                                                        V
+                                                                표준 퍼미션 범위 재정의
+                                            # /etc/proflie ---> root: rwx,rx,rx--> 반대로 선언
+                                                                user: rwx,r,r
+                                                                        |
+                                                                        |
+                                                                      verify
+                                                                        |
+                                                                        V
+                                                                  # umask 8진수
+
+umask: 쉽게 생각해서 파일 생성시 default 퍼미션(rwx) 설정
+
+
+  chmod(change mode, S/B)
+ .------.               .---> # chgrp
+/        \             /
+-rwx rwx rwx 1 user group
+               \______/
+                 chown(change owner, SB)
+                 -> chgrp: 그룹만 변경
+                 -> chown: 사용자 및 그룹 변경
+                    # chown user:group
+                    # chown user
+                    # chown :group
+                    ---------------------
+                    shift키가 불편해서 생긴 문법... + shift 오른손 권장
+
+                    # chown user.       ;; BSD에서는 사용이 불가능
+                    # chown .group      ;; BSD에서는 사용이 불가능
+                     -> 이렇게 하면 user, group 모두 바뀜( : 도 마찬가지)
+                     
+/etc/bashrc  --> alias 나 적용하고 싶은 명령어
+/etc/proflie --> system wide enviroment
+
+그룹 빼기: groupdel 명령어
+세컨드 그룹 제거 
+gpasswd -d USER GROUP
+
+========================================================
+SELinux
+
+NSA(US), 2000년대 초반 미국에서 MS 및 IBM같은 업체 제품보다 오픈소스 기반으로 정부에서 도입을 시도
+DAC/MLS같은 기능을 요구. 이 당시 리눅스는 이와 같은 기능이 없었음. NSA에서 리눅스 커뮤니티에 줌
+SELinux 기반으로 시스템 콜 제어가 목적
+
+SELinux Keywords
+-------------------
+MLS/DAC 커널 수준에 제어, 레이블, 오브젝트, 사용자 개념, Superblock(확장영역), port, file/directory, funtions(syscall)
+
+SELinux == AppArmor
+(default)   (option, unofficial)
+
+apparmor.comfile
+selinuxproject.org                            
+
+
+                                                    Aduit --->
+                                          SELinux Tools
+                                     .------------------------.
+              [Superblock]          /                          \
+FILE/DIR ---+ ExtAttr(SELinux) ---> SELinux[user] --- SELinux[kernel] <--DAC--> ALLOW --> Load the APP in Memory
+                  |                       \_________________/          [Use MEM]
+                  |                              Module
+                  V                             [Use MEM]
+              SELinux DB <---> context DB
+
+- SELinux 장점: syscall을 실제로 수행하기 전에 만약 위법적인 접근인 경우 메모리에 상주하기 전에 차단이 가능하다
+- SELinux사용시 단점: context label(_t)이 올바르게 설정 및 구성이 되지 않으면, 프로그램이 바로 종료.
+                    cpu, mem에 오버헤드가 발생(== disk 이벤트)
+                    (FILE ---> LABEL --> DB Query --> SYSCALL == PROC)
+                    SELinux사용 안할때,
+                    (FILE --> SYSCALL == PROC)
+
+$ ls ---> MEM_LOAD ---> SYSCALL
+
+                                                              (1)       (2)
+$ ls ---> Query "precess: ls, context: bin_t"[SELinux DB] --- DAC ----> MAC ---process == context
+  ---                                                         ANSI    SELinux         match
+   |
+syscall (3)
+   |
+   '---> MEM LOAD UP
+
+
+[seccomp linux]
+
+# strace <COMMAND> ;; SELinux 동작 방법 확인(module 통신은 확인이 어려움)
+selinux ~~
+    (OK)
+
+seccomp (secure computing mode의 약자)는 리눅스 커널에서 애플리케이션 샌드박싱 메커니즘을
+제공하는 컴퓨터 보안 기능이다; 이것은 리눅스 커널 2.6.12부터 통합되었다(2005년 5월 8일에 배포되었다).
+seccomp은 프로세스가 exit(), sigreturn(), 그리고 이미 열린 파일 디스크립터에 대한 
+read(),  write() 를 제외한 어떠한 시스템 호출도 일으킬 수 없는 안전한 상태로 일방향 변환을 할 수 있게 한다.
+
+
+semanage
+/var/log/audit/audit.log
+
+
+journalctl -t setroubleshoot --since= [TIME]
+sealert -l [message_ID]
+
+selinux.conf
+
+부팅할대 올라오는 것 보고 싶으면
+# semanage boolean -IC
+
+# setsebool <NAME>=on  // SELinux 켜기
+
+/proc/self -> 
+
+
+a.proc 
+  - routin: b.proc --> kill -HUP --> b.proc restart
+
+    
+kill -3 -9 -15 -10
+        ---
+         \_절대 쓰면 안됨                               
+                                                         .- # pstree 
+        # kill -9 oracled                               /
+           |                                          -----
+           |  ==> -15 == kill oracled --> kill -9 --> Zombie -> ps -ef RSS(page memory)
+           |                                                    계속 사용량 늘어나면?(늘어나지 않으면 ㄱㅊ)
+          [proc] .---- MEMORY -*- MEM[CACHE]    (data)          재부팅!
+           |     \           /   [internal]
+           |      \         /
+           |       '-- CPU *--- <USER REQUEST> (data) ;;  그냥 다 날려버림  
+           V       |    |
+           |       |    | writeback()
+           |       //   //
+           |       |    |
+           |       V    |
+         exit()    '---DISK[SAVE]
+           |
+           |
+      DISK WRITEBACK
+
+

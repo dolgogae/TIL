@@ -1,0 +1,26 @@
+[2021-12-22 10:40:42.945] [exthost] [info] extension host started
+[2021-12-22 10:40:42.949] [exthost] [info] Lock '/root/.vscode-server/data/User/workspaceStorage/db00a02d3226b23aa48b0279f492935c/vscode.lock': Lock acquired.
+[2021-12-22 10:40:42.990] [exthost] [info] ExtensionService#_doActivateExtension vscode.debug-auto-launch, startup: true, activationEvent: '*'
+[2021-12-22 10:40:42.990] [exthost] [info] ExtensionService#loadCommonJSModule file:///root/.vscode-server/bin/6cba118ac49a1b88332f312a8f67186f7f3c1643/extensions/debug-auto-launch/dist/extension
+[2021-12-22 10:40:42.995] [exthost] [info] ExtensionService#_doActivateExtension vscode.git, startup: true, activationEvent: '*', root cause: vscode.github
+[2021-12-22 10:40:42.995] [exthost] [info] ExtensionService#loadCommonJSModule file:///root/.vscode-server/bin/6cba118ac49a1b88332f312a8f67186f7f3c1643/extensions/git/dist/main
+[2021-12-22 10:40:43.143] [exthost] [info] ExtensionService#_doActivateExtension vscode.github, startup: true, activationEvent: '*'
+[2021-12-22 10:40:43.143] [exthost] [info] ExtensionService#loadCommonJSModule file:///root/.vscode-server/bin/6cba118ac49a1b88332f312a8f67186f7f3c1643/extensions/github/dist/extension.js
+[2021-12-22 10:40:43.165] [exthost] [info] ExtensionService#_doActivateExtension vscode.emmet, startup: false, activationEvent: 'onStartupFinished'
+[2021-12-22 10:40:43.165] [exthost] [info] ExtensionService#loadCommonJSModule file:///root/.vscode-server/bin/6cba118ac49a1b88332f312a8f67186f7f3c1643/extensions/emmet/dist/node/emmetNodeMain
+[2021-12-22 10:40:43.177] [exthost] [info] ExtensionService#_doActivateExtension vscode.merge-conflict, startup: false, activationEvent: 'onStartupFinished'
+[2021-12-22 10:40:43.177] [exthost] [info] ExtensionService#loadCommonJSModule file:///root/.vscode-server/bin/6cba118ac49a1b88332f312a8f67186f7f3c1643/extensions/merge-conflict/dist/mergeConflictMain
+[2021-12-22 10:40:43.180] [exthost] [info] eager extensions activated
+[2021-12-22 10:40:43.477] [exthost] [info] ExtensionService#_doActivateExtension ms-vscode.js-debug, startup: false, activationEvent: 'onCommand:extension.js-debug.clearAutoAttachVariables'
+[2021-12-22 10:40:43.477] [exthost] [info] ExtensionService#loadCommonJSModule file:///root/.vscode-server/bin/6cba118ac49a1b88332f312a8f67186f7f3c1643/extensions/ms-vscode.js-debug/src/extension.js
+[2021-12-22 11:05:09.793] [exthost] [info] ExtensionService#_doActivateExtension vscode.configuration-editing, startup: false, activationEvent: 'onLanguage:json'
+[2021-12-22 11:05:09.793] [exthost] [info] ExtensionService#loadCommonJSModule file:///root/.vscode-server/bin/6cba118ac49a1b88332f312a8f67186f7f3c1643/extensions/configuration-editing/dist/configurationEditingMain
+[2021-12-22 11:05:09.806] [exthost] [info] ExtensionService#_doActivateExtension vscode.extension-editing, startup: false, activationEvent: 'onLanguage:json'
+[2021-12-22 11:05:09.806] [exthost] [info] ExtensionService#loadCommonJSModule file:///root/.vscode-server/bin/6cba118ac49a1b88332f312a8f67186f7f3c1643/extensions/extension-editing/dist/extensionEditingMain
+[2021-12-22 11:05:09.818] [exthost] [info] ExtensionService#_doActivateExtension vscode.json-language-features, startup: false, activationEvent: 'onLanguage:json'
+[2021-12-22 11:05:09.818] [exthost] [info] ExtensionService#loadCommonJSModule file:///root/.vscode-server/bin/6cba118ac49a1b88332f312a8f67186f7f3c1643/extensions/json-language-features/client/dist/node/jsonClientMain
+[2021-12-22 11:05:09.866] [exthost] [info] ExtensionService#_doActivateExtension vscode.npm, startup: false, activationEvent: 'onLanguage:json'
+[2021-12-22 11:05:09.866] [exthost] [info] ExtensionService#loadCommonJSModule file:///root/.vscode-server/bin/6cba118ac49a1b88332f312a8f67186f7f3c1643/extensions/npm/dist/npmMain
+[2021-12-22 14:06:49.021] [exthost] [info] extension host terminating: received terminate message from renderer
+[2021-12-22 14:06:49.022] [exthost] [info] Lock '/root/.vscode-server/data/User/workspaceStorage/db00a02d3226b23aa48b0279f492935c/vscode.lock': Marking the lockfile as scheduled to be released in 6000 ms.
+[2021-12-22 14:06:50.029] [exthost] [info] exiting with code 0

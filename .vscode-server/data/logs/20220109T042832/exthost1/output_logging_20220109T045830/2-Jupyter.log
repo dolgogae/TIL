@@ -1,0 +1,130 @@
+Info 2022-01-09 04:58:30: Experimentation service retrieved: [object Object]
+User belongs to experiment group 'jupyterTest'
+User belongs to experiment group 'jupyterEnhancedDataViewer'
+Info 2022-01-09 04:58:30: ZMQ install verified.
+Info 2022-01-09 04:59:48: No controller, hence notebook communications cannot be initialized for editor file:///root/AI/1_math/ch02/1_Gradient_Based_Learning.ipynb
+Info 2022-01-09 04:59:48: Find preferred kernel for file:///root/AI/1_math/ch02/1_Gradient_Based_Learning.ipynb with metadata {"orig_nbformat":4,"language_info":{"name":"plaintext"}} & preferred interpreter {}
+Info 2022-01-09 04:59:48: Find kernel spec, Class name = x, completed in 154ms, has a falsy return value, Arg 1: <Uri:/root/AI/1_math/ch02/1_Gradient_Based_Learning.ipynb>, Arg 2: {"orig_nbformat":4,"language_info":{"name":"plaintext"}}, Arg 3: {"_isCancelled":false,"_emitter":{"_disposed":false,"_listeners":{"_first":{"next":{},"prev":{}},"_last":{"next":{},"prev":{}},"_size":1}}}, Return Value: undefined
+Info 2022-01-09 04:59:52: No controller, hence notebook communications cannot be initialized for editor file:///root/AI/1_math/ch02/1_Gradient_Based_Learning.ipynb
+Info 2022-01-09 05:01:03: No controller, hence notebook communications cannot be initialized for editor file:///root/AI/1_math/ch02/1_Gradient_Based_Learning.ipynb
+Info 2022-01-09 05:01:13: Experiment status for python is {"enabled":true,"optInto":[],"optOutFrom":[]}
+Info 2022-01-09 05:01:13: Process Execution: > /usr/bin/python3 -m pip list
+> /usr/bin/python3 -m pip list
+Info 2022-01-09 05:01:13: Process Execution: > /usr/bin/python3 -m pip list
+> /usr/bin/python3 -m pip list
+Info 2022-01-09 05:01:13: Process Execution: > /usr/bin/python3 -c "import jupyter"
+> /usr/bin/python3 -c "import jupyter"
+Info 2022-01-09 05:01:13: Process Execution: > /usr/bin/python3 -c "import jupyter"
+> /usr/bin/python3 -c "import jupyter"
+Info 2022-01-09 05:01:13: Process Execution: > /usr/bin/python3 -c "import notebook"
+> /usr/bin/python3 -c "import notebook"
+Info 2022-01-09 05:01:13: Process Execution: > /usr/bin/python3 -c "import notebook"
+> /usr/bin/python3 -c "import notebook"
+Info 2022-01-09 05:01:15: No controller, hence notebook communications cannot be initialized for editor file:///root/AI/1_math/ch02/1_Gradient_Based_Learning.ipynb
+Info 2022-01-09 05:01:17: Setting setActiveController for file:///root/AI/1_math/ch02/1_Gradient_Based_Learning.ipynb
+Info 2022-01-09 05:01:17: Intiailize notebook communications for editor file:///root/AI/1_math/ch02/1_Gradient_Based_Learning.ipynb
+Info 2022-01-09 05:01:17: Resolving notebook UI Comms (resolve) for file:///root/AI/1_math/ch02/1_Gradient_Based_Learning.ipynb
+Info 2022-01-09 05:01:17: initialize CommonMessageCoordinator
+Info 2022-01-09 05:01:17: Execute Cells request 1 0
+Info 2022-01-09 05:01:17: Execute Cell 0 file:///root/AI/1_math/ch02/1_Gradient_Based_Learning.ipynb
+Info 2022-01-09 05:01:17: Starting Notebook in kernel.ts id = .jvsc74a57bd031f2aee4e71d21fbe5cf8b01ff0e069b9275f58929596ceb00d14d90e3e16cd6./usr/bin/python3./usr/bin/python3.-m#ipykernel_launcher
+Info 2022-01-09 05:01:17: Creating raw notebook for file:///root/AI/1_math/ch02/1_Gradient_Based_Learning.ipynb
+Info 2022-01-09 05:01:17: Getting preferred kernel for file:///root/AI/1_math/ch02/1_Gradient_Based_Learning.ipynb
+Info 2022-01-09 05:01:17: Computing working directory file:///root/AI/1_math/ch02/1_Gradient_Based_Learning.ipynb
+Info 2022-01-09 05:01:17: Connecting to raw session for file:///root/AI/1_math/ch02/1_Gradient_Based_Learning.ipynb with connection {"kind":"startUsingPythonInterpreter","kernelSpec":{"specFile":"/root/.local/share/jupyter/kernels/python369jvsc74a57bd031f2aee4e71d21fbe5cf8b01ff0e069b9275f58929596ceb00d14d90e3e16cd6/kernel.json","interpreterPath":"/usr/bin/python3","name":"python369jvsc74a57bd031f2aee4e71d21fbe5cf8b01ff0e069b9275f58929596ceb00d14d90e3e16cd6","argv":["python","-m","ipykernel_launcher","-f","{connection_file}"],"language":"python","path":"python","display_name":"Python 3.6.9 64-bit","metadata":{"interpreter":{"sysPrefix":"/usr","envType":"Global","envName":"","envPath":"","path":"/usr/bin/python3","architecture":3,"sysVersion":"3.6.9 (default, Jan 26 2021, 15:33:00) \n[GCC 8.4.0]","version":{"raw":"3.6.9","major":3,"minor":6,"patch":9,"build":[],"prerelease":["final","0"]},"displayName":"Python 3.6.9 64-bit"}},"env":{}},"interpreter":{"sysPrefix":"/usr","envType":"Global","envName":"","envPath":"","path":"/usr/bin/python3","architecture":3,"sysVersion":"3.6.9 (default, Jan 26 2021, 15:33:00) \n[GCC 8.4.0]","version":{"raw":"3.6.9","major":3,"minor":6,"patch":9,"build":[],"prerelease":["final","0"]},"displayName":"Python 3.6.9 64-bit"},"id":".jvsc74a57bd031f2aee4e71d21fbe5cf8b01ff0e069b9275f58929596ceb00d14d90e3e16cd6./usr/bin/python3./usr/bin/python3.-m#ipykernel_launcher"}
+Info 2022-01-09 05:01:17: Starting raw kernel Python 3.6.9 64-bit
+Info 2022-01-09 05:01:17: installMissingDependencies /usr/bin/python3
+Info 2022-01-09 05:01:17: KernelProvider switched kernel to id = .jvsc74a57bd031f2aee4e71d21fbe5cf8b01ff0e069b9275f58929596ceb00d14d90e3e16cd6./usr/bin/python3./usr/bin/python3.-m#ipykernel_launcher
+Info 2022-01-09 05:01:17: Process Execution: > /usr/bin/python3 -m pip list
+> /usr/bin/python3 -m pip list
+Info 2022-01-09 05:01:17: Process Execution: > /usr/bin/python3 -m pip list
+> /usr/bin/python3 -m pip list
+Info 2022-01-09 05:01:17: Process Execution: > /usr/bin/python3 -c "import ipykernel"
+> /usr/bin/python3 -c "import ipykernel"
+Info 2022-01-09 05:01:17: Process Execution: > /usr/bin/python3 -c "import ipykernel"
+> /usr/bin/python3 -c "import ipykernel"
+Info 2022-01-09 05:01:20: Process Execution: > /usr/bin/python3 -m pip list
+> /usr/bin/python3 -m pip list
+Info 2022-01-09 05:01:20: Process Execution: > /usr/bin/python3 -m pip list
+> /usr/bin/python3 -m pip list
+Info 2022-01-09 05:01:25: Process Execution: > /usr/bin/python3 -m pip list
+> /usr/bin/python3 -m pip list
+Info 2022-01-09 05:01:25: Process Execution: > /usr/bin/python3 -m pip list
+> /usr/bin/python3 -m pip list
+Info 2022-01-09 05:01:25: Process Execution: > /usr/bin/python3 -c "import ipykernel"
+> /usr/bin/python3 -c "import ipykernel"
+Info 2022-01-09 05:01:25: Process Execution: > /usr/bin/python3 -c "import ipykernel"
+> /usr/bin/python3 -c "import ipykernel"
+Info 2022-01-09 05:01:26: Install Missing Dependencies, Class name = S, completed in 9140ms, has a falsy return value, Return Value: undefined
+Info 2022-01-09 05:01:26: Kernel launching with ports 9000,9001,9002,9003,9004. Start port is 9000
+Info 2022-01-09 05:01:26: Launching kernel daemon for Python 3.6.9 64-bit # /usr/bin/python3
+Info 2022-01-09 05:01:26: No custom variables for Kernel as interpreter is not conda, but is Global
+Info 2022-01-09 05:01:26: Creating daemon process for /usr/bin/python3 with env variables count 0
+Info 2022-01-09 05:01:26: Process Execution: > /usr/bin/python3 -m vscode_datascience_helpers.daemon --daemon-module=vscode_datascience_helpers.kernel_launcher_daemon -v
+> /usr/bin/python3 -m vscode_datascience_helpers.daemon --daemon-module=vscode_datascience_helpers.kernel_launcher_daemon -v
+Info 2022-01-09 05:01:26: Process Execution: > /usr/bin/python3 -m vscode_datascience_helpers.daemon --daemon-module=vscode_datascience_helpers.kernel_launcher_daemon -v
+> /usr/bin/python3 -m vscode_datascience_helpers.daemon --daemon-module=vscode_datascience_helpers.kernel_launcher_daemon -v
+Info 2022-01-09 05:01:26: Starting kernel from scratch with options {"cwd":"/root/AI/1_math/ch02"}
+Info 2022-01-09 05:01:26: Python Daemon (pid: 17888): Execute rpc method exec_module in DS Daemon
+Info 2022-01-09 05:01:26: Python Daemon (pid: 17888): Execute rpc method exec_module from /usr/bin/python3
+Info 2022-01-09 05:01:26: Python Daemon (pid: 17888): Exec module in DS Kernel Launcher Daemon ipykernel_launcher with args ['--ip=127.0.0.1', '--stdin=9003', '--control=9001', '--hb=9000', '--Session.signature_scheme="hmac-sha256"', '--Session.key=b"7045a160-4bae-445f-b24a-bb2af8cc282d"', '--shell=9002', '--transport="tcp"', '--iopub=9004', '--f=/tmp/tmp-2181KfkBk1URmFr.json']
+Info 2022-01-09 05:01:26: Python Daemon (pid: 17888): Exec in DS Kernel Launcher Daemon (observable) ipykernel_launcher with args ['--ip=127.0.0.1', '--stdin=9003', '--control=9001', '--hb=9000', '--Session.signature_scheme="hmac-sha256"', '--Session.key=b"7045a160-4bae-445f-b24a-bb2af8cc282d"', '--shell=9002', '--transport="tcp"', '--iopub=9004', '--f=/tmp/tmp-2181KfkBk1URmFr.json']
+Info 2022-01-09 05:01:26: Python Daemon (pid: 17888): Exec in DS Kernel Launcher Daemon (observable) ['/usr/bin/python3', '-m', 'ipykernel_launcher', '--ip=127.0.0.1', '--stdin=9003', '--control=9001', '--hb=9000', '--Session.signature_scheme="hmac-sha256"', '--Session.key=b"7045a160-4bae-445f-b24a-bb2af8cc282d"', '--shell=9002', '--transport="tcp"', '--iopub=9004', '--f=/tmp/tmp-2181KfkBk1URmFr.json']
+Info 2022-01-09 05:01:26: Python Daemon (pid: 17888): Exec in DS Kernel Launcher Daemon (observable)
+Info 2022-01-09 05:01:26: Python Daemon (pid: 17888): Kernel launched, with PID 17890
+Warn 2022-01-09 05:01:26: Python Daemon (pid: 17888): Waiting for Kernel to die 17890
+Info 2022-01-09 05:01:26: Launching kernel daemon, Class name = f, completed in 126ms, has a truthy return value, Arg 1: <Uri:/root/AI/1_math/ch02/1_Gradient_Based_Learning.ipynb>, Arg 2: "/root/AI/1_math/ch02", Arg 3: {"specFile":"/root/.local/share/jupyter/kernels/python369jvsc74a57bd031f2aee4e71d21fbe5cf8b01ff0e069b9275f58929596ceb00d14d90e3e16cd6/kernel.json","interpreterPath":"/usr/bin/python3","name":"python369jvsc74a57bd031f2aee4e71d21fbe5cf8b01ff0e069b9275f58929596ceb00d14d90e3e16cd6","argv":["python","-m","ipykernel_launcher","--ip=127.0.0.1","--stdin=9003","--control=9001","--hb=9000","--Session.signature_scheme=\"hmac-sha256\"","--Session.key=b\"7045a160-4bae-445f-b24a-bb2af8cc282d\"","--shell=9002","--transport=\"tcp\"","--iopub=9004","--f=/tmp/tmp-2181KfkBk1URmFr.json"],"language":"python","path":"python","display_name":"Python 3.6.9 64-bit","metadata":{"interpreter":{"sysPrefix":"/usr","envType":"Global","envName":"","envPath":"","path":"/usr/bin/python3","architecture":3,"sysVersion":"3.6.9 (default, Jan 26 2021, 15:33:00) \n[GCC 8.4.0]","version":{"raw":"3.6.9","major":3,"minor":6,"patch":9,"build":[],"prerelease":["final","0"]},"displayName":"Python 3.6.9 64-bit"}},"env":{}}, Arg 4: {"sysPrefix":"/usr","envType":"Global","envName":"","envPath":"","path":"/usr/bin/python3","architecture":3,"sysVersion":"3.6.9 (default, Jan 26 2021, 15:33:00) \n[GCC 8.4.0]","version":{"raw":"3.6.9","major":3,"minor":6,"patch":9,"build":[],"prerelease":["final","0"]},"displayName":"Python 3.6.9 64-bit"}, Return Value: <Return value cannot be serialized for logging>
+Info 2022-01-09 05:01:26: Launching kernel in kernelProcess.ts, Class name = y, completed in 128ms, has a truthy return value, Arg 1: "/root/AI/1_math/ch02", Return Value: {"proc":{"_events":{},"_eventsCount":2,"_closesNeeded":3,"_closesGot":0,"connected":false,"signalCode":null,"exitCode":null,"killed":false,"spawnfile":"/usr/bin/python3","_handle":{"pid":17888},"spawnargs":["/usr/bin/python3","-m","vscode_datascience_helpers.daemon","--daemon-module=vscode_datascience_helpers.kernel_launcher_daemon","-v"],"pid":17888,"stdin":{"connecting":false,"_hadError":false,"_parent":null,"_host":null,"_readableState":{"objectMode":false,"highWaterMark":16384,"buffer":{"head":null,"tail":null,"length":0},"length":0,"pipes":[],"flowing":null,"ended":false,"endEmitted":false,"reading":false,"sync":true,"needReadable":false,"emittedReadable":false,"readableListening":false,"resumeScheduled":false,"errorEmitted":false,"emitClose":false,"autoDestroy":false,"destroyed":false,"errored":null,"closed":false,"closeEmitted":false,"defaultEncoding":"utf8","awaitDrainWriters":null,"multiAwaitDrain":false,"readingMore":false,"decoder":null,"encoding":null,"readable":false},"_events":{},"_eventsCount":3,"_writableState":{"objectMode":false,"highWaterMark":16384,"finalCalled":false,"needDrain":false,"ending":false,"ended":false,"finished":false,"destroyed":false,"decodeStrings":false,"defaultEncoding":"utf8","length":0,"writing":false,"corked":0,"sync":false,"bufferProcessing":false,"writecb":null,"writelen":0,"afterWriteTickInfo":null,"buffered":[],"bufferedIndex":0,"allBuffers":true,"allNoop":true,"pendingcb":0,"prefinished":false,"errorEmitted":false,"emitClose":false,"autoDestroy":false,"errored":null,"closed":false,"closeEmitted":false},"allowHalfOpen":false,"_sockname":null,"_pendingData":null,"_pendingEncoding":"","server":null,"_server":null},"stdout":{"connecting":false,"_hadError":false,"_parent":null,"_host":null,"_readableState":{"objectMode":false,"highWaterMark":16384,"buffer":{"head":null,"tail":null,"length":0},"length":0,"pipes":[],"flowing":true,"ended":false,"endEmitted":false,"reading":true,"sync":false,"needReadable":true,"emittedReadable":false,"readableListening":false,"resumeScheduled":false,"errorEmitted":false,"emitClose":false,"autoDestroy":false,"destroyed":false,"errored":null,"closed":false,"closeEmitted":false,"defaultEncoding":"utf8","awaitDrainWriters":null,"multiAwaitDrain":false,"readingMore":false,"decoder":null,"encoding":null},"_events":{"close":[null,null]},"_eventsCount":4,"_writableState":{"objectMode":false,"highWaterMark":16384,"finalCalled":false,"needDrain":false,"ending":false,"ended":false,"finished":false,"destroyed":false,"decodeStrings":false,"defaultEncoding":"utf8","length":0,"writing":false,"corked":0,"sync":true,"bufferProcessing":false,"writecb":null,"writelen":0,"afterWriteTickInfo":null,"buffered":[],"bufferedIndex":0,"allBuffers":true,"allNoop":true,"pendingcb":0,"prefinished":false,"errorEmitted":false,"emitClose":false,"autoDestroy":false,"errored":null,"closed":false,"writable":false,"closeEmitted":false},"allowHalfOpen":false,"_sockname":null,"_pendingData":null,"_pendingEncoding":"","server":null,"_server":null},"stderr":{"connecting":false,"_hadError":false,"_parent":null,"_host":null,"_readableState":{"objectMode":false,"highWaterMark":16384,"buffer":{"head":null,"tail":null,"length":0},"length":0,"pipes":[],"flowing":true,"ended":false,"endEmitted":false,"reading":true,"sync":false,"needReadable":true,"emittedReadable":false,"readableListening":false,"resumeScheduled":false,"errorEmitted":false,"emitClose":false,"autoDestroy":false,"destroyed":false,"errored":null,"closed":false,"closeEmitted":false,"defaultEncoding":"utf8","awaitDrainWriters":null,"multiAwaitDrain":false,"readingMore":false,"decoder":null,"encoding":null},"_events":{},"_eventsCount":3,"_writableState":{"objectMode":false,"highWaterMark":16384,"finalCalled":false,"needDrain":false,"ending":false,"ended":false,"finished":false,"destroyed":false,"decodeStrings":false,"defaultEncoding":"utf8","length":0,"writing":false,"corked":0,"sync":true,"bufferProcessing":false,"writecb":null,"writelen":0,"afterWriteTickInfo":null,"buffered":[],"bufferedIndex":0,"allBuffers":true,"allNoop":true,"pendingcb":0,"prefinished":false,"errorEmitted":false,"emitClose":false,"autoDestroy":false,"errored":null,"closed":false,"writable":false,"closeEmitted":false},"allowHalfOpen":false,"_sockname":null,"_pendingData":null,"_pendingEncoding":"","server":null,"_server":null},"stdio":[{"connecting":false,"_hadError":false,"_parent":null,"_host":null,"_readableState":{"objectMode":false,"highWaterMark":16384,"buffer":{"head":null,"tail":null,"length":0},"length":0,"pipes":[],"flowing":null,"ended":false,"endEmitted":false,"reading":false,"sync":true,"needReadable":false,"emittedReadable":false,"readableListening":false,"resumeScheduled":false,"errorEmitted":false,"emitClose":false,"autoDestroy":false,"destroyed":false,"errored":null,"closed":false,"closeEmitted":false,"defaultEncoding":"utf8","awaitDrainWriters":null,"multiAwaitDrain":false,"readingMore":false,"decoder":null,"encoding":null,"readable":false},"_events":{},"_eventsCount":3,"_writableState":{"objectMode":false,"highWaterMark":16384,"finalCalled":false,"needDrain":false,"ending":false,"ended":false,"finished":false,"destroyed":false,"decodeStrings":false,"defaultEncoding":"utf8","length":0,"writing":false,"corked":0,"sync":false,"bufferProcessing":false,"writecb":null,"writelen":0,"afterWriteTickInfo":null,"buffered":[],"bufferedIndex":0,"allBuffers":true,"allNoop":true,"pendingcb":0,"prefinished":false,"errorEmitted":false,"emitClose":false,"autoDestroy":false,"errored":null,"closed":false,"closeEmitted":false},"allowHalfOpen":false,"_sockname":null,"_pendingData":null,"_pendingEncoding":"","server":null,"_server":null},{"connecting":false,"_hadError":false,"_parent":null,"_host":null,"_readableState":{"objectMode":false,"highWaterMark":16384,"buffer":{"head":null,"tail":null,"length":0},"length":0,"pipes":[],"flowing":true,"ended":false,"endEmitted":false,"reading":true,"sync":false,"needReadable":true,"emittedReadable":false,"readableListening":false,"resumeScheduled":false,"errorEmitted":false,"emitClose":false,"autoDestroy":false,"destroyed":false,"errored":null,"closed":false,"closeEmitted":false,"defaultEncoding":"utf8","awaitDrainWriters":null,"multiAwaitDrain":false,"readingMore":false,"decoder":null,"encoding":null},"_events":{"close":[null,null]},"_eventsCount":4,"_writableState":{"objectMode":false,"highWaterMark":16384,"finalCalled":false,"needDrain":false,"ending":false,"ended":false,"finished":false,"destroyed":false,"decodeStrings":false,"defaultEncoding":"utf8","length":0,"writing":false,"corked":0,"sync":true,"bufferProcessing":false,"writecb":null,"writelen":0,"afterWriteTickInfo":null,"buffered":[],"bufferedIndex":0,"allBuffers":true,"allNoop":true,"pendingcb":0,"prefinished":false,"errorEmitted":false,"emitClose":false,"autoDestroy":false,"errored":null,"closed":false,"writable":false,"closeEmitted":false},"allowHalfOpen":false,"_sockname":null,"_pendingData":null,"_pendingEncoding":"","server":null,"_server":null},{"connecting":false,"_hadError":false,"_parent":null,"_host":null,"_readableState":{"objectMode":false,"highWaterMark":16384,"buffer":{"head":null,"tail":null,"length":0},"length":0,"pipes":[],"flowing":true,"ended":false,"endEmitted":false,"reading":true,"sync":false,"needReadable":true,"emittedReadable":false,"readableListening":false,"resumeScheduled":false,"errorEmitted":false,"emitClose":false,"autoDestroy":false,"destroyed":false,"errored":null,"closed":false,"closeEmitted":false,"defaultEncoding":"utf8","awaitDrainWriters":null,"multiAwaitDrain":false,"readingMore":false,"decoder":null,"encoding":null},"_events":{},"_eventsCount":3,"_writableState":{"objectMode":false,"highWaterMark":16384,"finalCalled":false,"needDrain":false,"ending":false,"ended":false,"finished":false,"destroyed":false,"decodeStrings":false,"defaultEncoding":"utf8","length":0,"writing":false,"corked":0,"sync":true,"bufferProcessing":false,"writecb":null,"writelen":0,"afterWriteTickInfo":null,"buffered":[],"bufferedIndex":0,"allBuffers":true,"allNoop":true,"pendingcb":0,"prefinished":false,"errorEmitted":false,"emitClose":false,"autoDestroy":false,"errored":null,"closed":false,"writable":false,"closeEmitted":false},"allowHalfOpen":false,"_sockname":null,"_pendingData":null,"_pendingEncoding":"","server":null,"_server":null}]},"out":{"_isScalar":false,"observers":[],"closed":false,"isStopped":false,"hasError":false,"thrownError":null}}
+Info 2022-01-09 05:01:26: Raw session started and connected
+Started kernel Python 3.6.9 64-bit
+Info 2022-01-09 05:01:26: Finished connecting 509610e5-dfc2-431d-a68a-5ac1912b3881
+Info 2022-01-09 05:01:26: Updating preferred kernel for remote notebook fa57b6ca-dd0f-4438-8e75-440718228fe9
+Info 2022-01-09 05:01:26: Preferred kernel for file:///root/AI/1_math/ch02/1_Gradient_Based_Learning.ipynb is fa57b6ca-dd0f-4438-8e75-440718228fe9
+Info 2022-01-09 05:01:26: UpdateWorkingDirectoryAndPath in Kernel
+Info 2022-01-09 05:01:26: Registering commtarget jupyter.widget
+Info 2022-01-09 05:01:26: IPyWidgetMessageDispatcher.initialize
+Info 2022-01-09 05:01:26: IPyWidgetScriptSource.initialize
+Info 2022-01-09 05:01:26: IPyWidgetMessageDispatcher.initialize
+Info 2022-01-09 05:01:26: Created and initailized CommonMessageCoordinator
+Info 2022-01-09 05:01:26: Attach Coordinator for file:///root/AI/1_math/ch02/1_Gradient_Based_Learning.ipynb
+Info 2022-01-09 05:01:26: IPyWidgetMessageDispatcher.initialize
+Info 2022-01-09 05:01:26: IPyWidgetMessageDispatcher.initialize
+Info 2022-01-09 05:01:26: IPyWidgetMessageDispatcher.initialize
+Info 2022-01-09 05:01:26: IPyWidgetMessageDispatcher.initialize
+Info 2022-01-09 05:01:26: IPyWidgetMessageDispatcher.initialize
+Info 2022-01-09 05:01:26: IPyWidgetMessageDispatcher.initialize
+Info 2022-01-09 05:01:26: IPyWidgetMessageDispatcher.initialize
+Info 2022-01-09 05:01:26: IPyWidgetMessageDispatcher.initialize
+Info 2022-01-09 05:01:26: changeDirectoryIfPossible
+Info 2022-01-09 05:01:26: Waiting for idle on (kernel): fa57b6ca-dd0f-4438-8e75-440718228fe9 -> idle
+Info 2022-01-09 05:01:26: Finished waiting for idle on (kernel): fa57b6ca-dd0f-4438-8e75-440718228fe9 -> idle
+Info 2022-01-09 05:01:27: Process Execution: > /usr/bin/python3 -m pip list
+> /usr/bin/python3 -m pip list
+Info 2022-01-09 05:01:27: Process Execution: > /usr/bin/python3 -m pip list
+> /usr/bin/python3 -m pip list
+Info 2022-01-09 05:02:43: Execute Cells request 1 0
+Info 2022-01-09 05:02:43: Execute Cell 0 file:///root/AI/1_math/ch02/1_Gradient_Based_Learning.ipynb
+Info 2022-01-09 05:02:57: Execute Cells request 1 0
+Info 2022-01-09 05:02:57: Execute Cell 0 file:///root/AI/1_math/ch02/1_Gradient_Based_Learning.ipynb
+Info 2022-01-09 05:03:40: Execute Cells request 1 0
+Info 2022-01-09 05:03:40: Execute Cell 0 file:///root/AI/1_math/ch02/1_Gradient_Based_Learning.ipynb
+Info 2022-01-09 05:03:47: Execute Cells request 1 0
+Info 2022-01-09 05:03:47: Execute Cell 0 file:///root/AI/1_math/ch02/1_Gradient_Based_Learning.ipynb
+Info 2022-01-09 05:04:58: Execute Cells request 1 0
+Info 2022-01-09 05:04:58: Execute Cell 0 file:///root/AI/1_math/ch02/1_Gradient_Based_Learning.ipynb
+Info 2022-01-09 05:05:34: Execute Cells request 1 0
+Info 2022-01-09 05:05:34: Execute Cell 0 file:///root/AI/1_math/ch02/1_Gradient_Based_Learning.ipynb
+Info 2022-01-09 05:05:58: Execute Cells request 1 0
+Info 2022-01-09 05:05:58: Execute Cell 0 file:///root/AI/1_math/ch02/1_Gradient_Based_Learning.ipynb
+Info 2022-01-09 05:06:16: Execute Cells request 1 0
+Info 2022-01-09 05:06:16: Execute Cell 0 file:///root/AI/1_math/ch02/1_Gradient_Based_Learning.ipynb
+Info 2022-01-09 05:06:40: Execute Cells request 1 0
+Info 2022-01-09 05:06:40: Execute Cell 0 file:///root/AI/1_math/ch02/1_Gradient_Based_Learning.ipynb
+Info 2022-01-09 05:07:00: Execute Cells request 1 0
+Info 2022-01-09 05:07:00: Execute Cell 0 file:///root/AI/1_math/ch02/1_Gradient_Based_Learning.ipynb
+Info 2022-01-09 05:07:47: Execute Cells request 1 0
+Info 2022-01-09 05:07:47: Execute Cell 0 file:///root/AI/1_math/ch02/1_Gradient_Based_Learning.ipynb
+Info 2022-01-09 05:07:52: Execute Cells request 1 0
+Info 2022-01-09 05:07:52: Execute Cell 0 file:///root/AI/1_math/ch02/1_Gradient_Based_Learning.ipynb
+Info 2022-01-09 05:08:16: Execute Cells request 1 0
+Info 2022-01-09 05:08:16: Execute Cell 0 file:///root/AI/1_math/ch02/1_Gradient_Based_Learning.ipynb

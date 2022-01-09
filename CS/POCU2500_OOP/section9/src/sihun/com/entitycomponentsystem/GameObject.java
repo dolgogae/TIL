@@ -1,0 +1,30 @@
+package sihun.com.entitycomponentsystem;
+
+import java.util.ArrayList;
+
+public class GameObject {
+    private String name;
+    private ArrayList<Component> components = new ArrayList<Component>();
+
+    public GameObject(String name) {
+        this.name = name;
+    }
+
+    public void addComponent(Component component) {
+        components.add(component);
+    }
+
+    public void update() {
+        System.out.printf("Update GameObject '%s'%s",
+                this.name,
+                System.lineSeparator());
+
+        for (Component component : this.components) {
+            component.update();
+        }
+
+        System.out.printf("Updating '%s' complete%s",
+                this.name,
+                System.lineSeparator());
+    }
+}

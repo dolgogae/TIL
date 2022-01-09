@@ -1,0 +1,214 @@
+19
+컨테이너 이점
+- 속도, *이식성, 신뢰성, 효율성, 셀프서비스, 격리
+  * 이식성: 같은 프로그램을 실행하는 호스트 위에서 어디든 실행 가능
+
+20  
+MSA 
+기존과 가장 큰 다른점: 서비스별로 DB가 따로 나눠져있다. 
+    -> MSA 전환시 메인 DB를 분리하는게 어렵다.
+
+22
+가상머신: 실행중인 프로세스(애플리케이션), 메모리관리, 디바이스 드라이버, 데몬, 라이브러리
+애플리케이션 하나 동작하기 위해 다양한 디바이스 드라이버 라이브러리가 결합된 형태이다.
+
+컨테이너: 게스트 os를 컨테이너 host os로 만듬
+애플리케이션 종속성과 함께 애플리케이션 프로세스를 캡슐화 한 것이다.
+
+25
+컨테이너 호스트: 컨테이너가 실행되는 운영체제를 실행
+- 유연성, 확장성, 보안
+-> 도커가 사용하는 명령어는 업계표준이다.
+
+27
+1. 개발자: 소스 코드 및 종속성에서 이미지를 작성
+2. 이미지를 이미지 레지스트리로 보낸다
+3. 이미지 레지스트리에서 이미지를 가져옴
+4. 이미지를 컨테이너로 실행
+
+
+35
+직접구축하는 방법: Artifactory, Harbor, Quay
+                            ------
+                            VMWare솔루션
+
+36
+Harbor
+
+쿠버네티스는 상태기반으로 동작을 한다.
+특정한 pod를 몇개 실행시켜라라는 식으로 동작. 선언적으로 이용
+
+control plane 
+etcd: 여러개 클러스터간의 실시간 동기화 데이터베이스
+     클러스터 백업 주요 대상
+     클러스터에 대한 모든 상태 포함 -> 원하는 상태와 현재 상태간의 차이를 찾는다
+     key-value 저장소, 구성 데이터 저장
+     마스터 노드간 클러스터링 기능
+     여러 노드에 분산 가능
+
+api server(kube-apiserver): 요청 정보를 처리하는 역할
+            사용자와 소통하는 1선 
+            RestAPI로 전달, JSON으로 반환
+            사용자 입장에서 kubectl을 통해서 접근 가능      
+
+scheduler: worker 노드중에 어디에 배정하는 것이 적당한지 결정
+           api를 통해 kubelet으로 전달
+           가용성, 성능 및 용량 지원
+           선호도 및 반선호도 인식
+
+controller manager: 다양한 컨트롤러를 구성해서 사용하는데 그 컨트롤러를 관리하는 역할
+                플랫폼에 대한 핵심 제어 루프 제공
+                apiserver를 통해 공유 상태 감시
+
+worker node
+kubelet: api 서버와 worker 노드가 소통
+         scheduler로부터 받은 것을 container runtime을 통해 실행
+         포드사양에 설명된 컨테이너가 실행중이고 정상인지 확인.
+
+kubeproxy: worker노드의 네트워크 (cni-plugin)
+          포드의 로드 밸런싱 인터페이스
+          외부 액세스를 위한 가상ip 주소 생성
+          iptables를 동적 업데이트해 서비스 포트에 대한 참조를 포트 끝점에 매핑
+
+containerd: container runtime
+
+쿠버네티스
+- 수많은 컨테이너를 어느 워커노드에 배분할지 정함
+- **실패한 컨테이너 다시 시작 -> 가장 중요한 역할
+- 사용량에 따라 컨테이너 갯수를 조절 
+- **네트워킹 및 로드 밸런싱(L4 ~ L7 계층까지)
+
+Manifests
+원하는 개체 상태를 선언한다.
+- YAML 형식
+- 선언적 구성
+- 원하는 API 기본 요소
+
+POD: 하나 이상의 단단히 결합된 컨테이너의 집합
+     쿠버네티스에서 가장 작은 작업 단위
+     포드안 컨테이너는 함께 살고 죽는다.
+
+예시)
+```
+apiVersion: v1
+kind: Pod
+metadata:
+    name: my-nginx-6dd86-nlrhx
+    labels:
+      app:nginx           # labels를 통해 식별
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.7.9    # 버전 설정을 안하면 무조건 최신 버전으로 설치
+    ports:
+      - containerPort:80
+```
+
+
+POD: 컨테이너는 포드로 캡슐화 돼있다.
+Node: 컨테이너 호스트, 예를 들어 컨테이너를 실행하는 집합
+Cluster
+
+control plane은 기본적으로 3개의 노드
+1개 장애: 읽기/ 쓰기 가능
+2개 장애: 쓰기 불가능
+
+control plane의 구성요소는 클러스터에 대한 전역 결정 및 이벤트 탐지/응답
+
+
+* 쿠버네티스 plugin architecture
+Container Runtime Interface(CRI)
+Container Networking Interface(CNI)
+Container Storage Interface(CSI)
+위 세개를 어떻게 조합할지 고민하는것도 큰 문제
+
+kubeadm
+최초 사용 가능 클러스터 부트스트랩
+말그대로 가장 core에 해당하는 마스터 노드 생성 및 조인하는 역할만 한다.
+- 컨트롤 플레인 생성과 설정
+- 노드 조인
+- 인증서 생성 및 관리
+- 초기 cluster-admin 계정 설정
+
+비목표
+- 머신 프로비저닝
+- 사용하기 좋은 애드-온 설치
+
+cluster API
+쿠버네티스 스타일의 api와 패턴을 사용하여 플랫폼 운영자의 클러스터 수명 주기 관리를 자동화한다.
+VM, 네트워크, LB 장치 및 VPC(Virtual Private Cloud)와 같은 지원 
+
+관리 클러스터(management cluster)는 Cluster API를 사용할 때 처음 배포하는 요소
+- 워크로드 클러스터의 수명 주기 관리를 위한 primary 관리 및 운영 센터 역할을 수행하는 쿠버네티스 클러스터입니다.
+- 
+
+Cluster API 
+CRDs
+머신 헬스체크: 시스템이 비정상적으로 간주되어야 하는 조건을 정의합니다. 워커노드에만 지원
+
+
+lab1
+# systemctl is-active docker
+
+# cd <Dockerfile directory>  // /home/ubuntu/gowebapp/gowebapp
+# cat -n Dockerfile
+# docker build -t gowebapp:v1 .
+
+# cd <Dockerfile directory>
+# cat -n Dockerfile
+# docker build -t gowebapp-mysql:v1 .
+
+# cd ~
+# docker network create gowebapp
+
+# docker run --net gowebapp \
+              --name gowebapp-mysql \
+              --hostname gowebapp-mysql \
+              -d -e MYSQL_ROOT_PASSWORD=mypassword gowebapp-mysql:v1
+
+# sleep 60
+
+# docker run -p 9000:80 \
+              --net gowebapp \
+              -d --name gowebapp \
+              --hostname gowebapp gowebapp:v1
+
+
+--> 브라우저에서 172.20.10.31:9000
+
+# docker rm -f gowebapp gowebapp-mysql
+
+
+# docker images
+# docker tag gowebapp:v1 sa-master-01.vclass.local:443/gowebapp:v1
+# docker tag gowebapp-mysql:v1 sa-master-01.vclass.local:443/gowebapp-mysql:v1
+
+# docker push sa-master-01.vclass.local:443/gowebapp:v1
+# docker push sa-master-01.vclass.local:443/gowebapp-mysql:v1
+
+=====================================================================
+
+lab2
+
+# sudo kubeadm init --pod-network-cidr=10.10.0.0/16 --apiserver-advertise-address 172.20.10.31 | tee kubeadm.init.out
+
+# mkdir -p $HOME/.kube
+# sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+# sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+# kubectl get nodes
+
+[install the antrea CNI]
+
+# kubectl apply -f https://github.com/antrea-io/antrea/releases/download/v1.1.0/antrea.yml
+# kubectl get all --all-namespaces
+
+--> worker node1
+# sudo kubeadm join 172.20.10.31:6443 --token XYZetc.XYZetc --discovery-token-ca-cert-hash sha256:XYZetc
+
+--> worker node2
+# sudo kubeadm join 172.20.10.31:6443 --token XYZetc.XYZetc --discovery-token-ca-cert-hash sha256:XYZetc
+
+--> master node
+
+# kubectl get nodes

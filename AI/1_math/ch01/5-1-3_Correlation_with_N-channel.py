@@ -23,7 +23,7 @@ y_man = np.zeros(shape=(n_H - f_size + 1, n_W - f_size +1))
 
 for i in range(n_H - f_size + 1):
     for j in range(n_W - f_size + 1):
-        window = image[i : i+f_size, j : j+f_size, : ]
+        window = images[i : i+f_size, j : j+f_size, : ]
         y_man[i, j] = np.sum(window*W) + B
 
 # print("Y(Man): ", y_man)

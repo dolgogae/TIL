@@ -1,0 +1,17 @@
+[Info  - 11:43:06 AM] Pylance language server 2022.1.1 (pyright 4f61d443) starting
+[Info  - 11:43:06 AM] Server root directory: /root/.vscode-server/extensions/ms-python.vscode-pylance-2022.1.1/dist
+[Info  - 11:43:06 AM] No configuration file found.
+[Info  - 11:43:06 AM] No pyproject.toml file found.
+[Info  - 11:43:06 AM] Setting pythonPath for service "AI": "/usr/bin/python3"
+[Warn  - 11:43:06 AM] stubPath /root/AI/typings is not a valid directory.
+[Info  - 11:43:06 AM] Assuming Python version 3.6
+[Info  - 11:43:06 AM] Assuming Python platform Linux
+[Warn  - 11:43:07 AM] Exception received when installing file system watcher: TypeError [ERR_FEATURE_UNAVAILABLE_ON_PLATFORM]: The feature watch recursively is unavailable on the current platform, which is being used to run Node.js
+[Warn  - 11:43:07 AM] Exception received when installing file system watcher: TypeError [ERR_FEATURE_UNAVAILABLE_ON_PLATFORM]: The feature watch recursively is unavailable on the current platform, which is being used to run Node.js
+[Warn  - 11:43:07 AM] Exception received when installing file system watcher: TypeError [ERR_FEATURE_UNAVAILABLE_ON_PLATFORM]: The feature watch recursively is unavailable on the current platform, which is being used to run Node.js
+[Warn  - 11:43:07 AM] Exception received when installing file system watcher: TypeError [ERR_FEATURE_UNAVAILABLE_ON_PLATFORM]: The feature watch recursively is unavailable on the current platform, which is being used to run Node.js
+[Info  - 11:43:07 AM] Searching for source files
+[Info  - 11:43:07 AM] Found 66 source files
+[Info  - 11:43:07 AM] Background analysis(1) root directory: /root/.vscode-server/extensions/ms-python.vscode-pylance-2022.1.1/dist
+[Info  - 11:43:07 AM] Background analysis(1) started
+[Info  - 11:43:10 AM] [BG(1)] Long operation: getSemanticTokens full at /root/AI/1_math/ch01/7-2-3_Forward_Propagation_of_LeNet.py (3718ms)

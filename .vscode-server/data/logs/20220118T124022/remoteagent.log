@@ -1,0 +1,50 @@
+[2022-01-18 12:40:22.386] [remoteagent] [info] 
+
+*
+* Visual Studio Code Server
+*
+* Reminder: You may only use this software with Visual Studio family products,
+* as described in the license https://aka.ms/vscode-remote/license
+*
+
+
+[2022-01-18 12:40:22.386] [remoteagent] [info] Extension host agent started.
+[2022-01-18 12:40:22.513] [remoteagent] [info] [::ffff:127.0.0.1][51237d80][ManagementConnection] New connection established.
+[2022-01-18 12:40:22.681] [remoteagent] [info] [::ffff:127.0.0.1][01e037c9][ExtensionHostConnection] New connection established.
+[2022-01-18 12:40:22.687] [remoteagent] [info] [::ffff:127.0.0.1][01e037c9][ExtensionHostConnection] <234> Launched Extension Host Process.
+[2022-01-18 12:40:23.160] [remoteagent] [info] Installing extension: ms-toolsai.jupyter-renderers
+[2022-01-18 12:40:23.188] [remoteagent] [info] Installing extension: ms-python.vscode-pylance
+[2022-01-18 12:40:23.229] [remoteagent] [info] Installing extension: ms-toolsai.jupyter-keymap
+[2022-01-18 12:40:23.246] [remoteagent] [info] Installing extension: ms-python.python
+[2022-01-18 12:40:23.795] [remoteagent] [info] Installing extension: ms-toolsai.jupyter
+[2022-01-18 12:40:24.173] [remoteagent] [info] Downloaded extension: ms-toolsai.jupyter-renderers /root/.vscode-server/extensionsCache/ms-toolsai.jupyter-renderers-1.0.4
+[2022-01-18 12:40:24.271] [remoteagent] [info] Downloaded extension: ms-toolsai.jupyter-keymap /root/.vscode-server/extensionsCache/ms-toolsai.jupyter-keymap-1.0.0
+[2022-01-18 12:40:24.280] [remoteagent] [info] Extracted extension to /root/.vscode-server/extensions/.a7a35cea-77ba-4f39-a705-51f6753d1ef2: ms-toolsai.jupyter-keymap
+[2022-01-18 12:40:24.284] [remoteagent] [info] Renamed to /root/.vscode-server/extensions/ms-toolsai.jupyter-keymap-1.0.0
+[2022-01-18 12:40:24.285] [remoteagent] [info] Extracting completed. ms-toolsai.jupyter-keymap
+[2022-01-18 12:40:24.285] [remoteagent] [info] Extension installed successfully: ms-toolsai.jupyter-keymap
+[2022-01-18 12:40:24.316] [remoteagent] [info] Extracted extension to /root/.vscode-server/extensions/.4d85873c-04a9-4d6e-84a1-5c55f57b1813: ms-toolsai.jupyter-renderers
+[2022-01-18 12:40:24.320] [remoteagent] [info] Renamed to /root/.vscode-server/extensions/ms-toolsai.jupyter-renderers-1.0.4
+[2022-01-18 12:40:24.320] [remoteagent] [info] Extracting completed. ms-toolsai.jupyter-renderers
+[2022-01-18 12:40:24.320] [remoteagent] [info] Extension installed successfully: ms-toolsai.jupyter-renderers
+[2022-01-18 12:40:24.940] [remoteagent] [info] Extension is already requested to install ms-python.python
+[2022-01-18 12:40:24.940] [remoteagent] [info] Extension is already requested to install ms-toolsai.jupyter
+[2022-01-18 12:40:25.050] [remoteagent] [info] Extension is already requested to install ms-toolsai.jupyter
+[2022-01-18 12:40:25.050] [remoteagent] [info] Extension is already requested to install ms-python.vscode-pylance
+[2022-01-18 12:40:26.590] [remoteagent] [info] Downloaded extension: ms-toolsai.jupyter /root/.vscode-server/extensionsCache/ms-toolsai.jupyter-2021.9.1101343141
+[2022-01-18 12:40:26.868] [remoteagent] [info] Extracted extension to /root/.vscode-server/extensions/.223ce68d-4cc8-41b1-9e4d-ebf9890f8ed3: ms-toolsai.jupyter
+[2022-01-18 12:40:26.880] [remoteagent] [info] Renamed to /root/.vscode-server/extensions/ms-toolsai.jupyter-2021.9.1101343141
+[2022-01-18 12:40:26.882] [remoteagent] [info] Extracting completed. ms-toolsai.jupyter
+[2022-01-18 12:40:26.882] [remoteagent] [info] Extension installed successfully: ms-toolsai.jupyter
+[2022-01-18 12:40:31.608] [remoteagent] [info] Downloaded extension: ms-python.python /root/.vscode-server/extensionsCache/ms-python.python-2021.12.1559732655
+[2022-01-18 12:40:32.547] [remoteagent] [info] Extracted extension to /root/.vscode-server/extensions/.82b4bdc6-5728-42e5-8c61-bb374f81e7e1: ms-python.python
+[2022-01-18 12:40:32.562] [remoteagent] [info] Renamed to /root/.vscode-server/extensions/ms-python.python-2021.12.1559732655
+[2022-01-18 12:40:32.564] [remoteagent] [info] Extracting completed. ms-python.python
+[2022-01-18 12:40:32.565] [remoteagent] [info] Extension installed successfully: ms-python.python
+[2022-01-18 12:40:35.696] [remoteagent] [info] Downloaded extension: ms-python.vscode-pylance /root/.vscode-server/extensionsCache/ms-python.vscode-pylance-2022.1.1
+[2022-01-18 12:40:36.939] [remoteagent] [info] Extracted extension to /root/.vscode-server/extensions/.4a7ed935-6b90-4b34-8eef-7496b2021637: ms-python.vscode-pylance
+[2022-01-18 12:40:36.950] [remoteagent] [info] Renamed to /root/.vscode-server/extensions/ms-python.vscode-pylance-2022.1.1
+[2022-01-18 12:40:36.951] [remoteagent] [info] Extracting completed. ms-python.vscode-pylance
+[2022-01-18 12:40:36.951] [remoteagent] [info] Extension installed successfully: ms-python.vscode-pylance
+[2022-01-18 14:24:49.583] [remoteagent] [info] [::ffff:127.0.0.1][51237d80][ManagementConnection] The client has disconnected gracefully, so the connection will be disposed.
+[2022-01-18 14:24:50.625] [remoteagent] [info] [::ffff:127.0.0.1][01e037c9][ExtensionHostConnection] <234> Extension Host Process exited with code: 0, signal: null.

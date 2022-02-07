@@ -1,4 +1,4 @@
-
+package com.sihun.robot;
 
 public class Program {
     public static void main(String[] args) {
@@ -9,7 +9,6 @@ public class Program {
         
         // 주소를 공유하기 때문에 savePoint도 영향(Clone없을때)
         robot.damage(50);
-
 
     }
 }

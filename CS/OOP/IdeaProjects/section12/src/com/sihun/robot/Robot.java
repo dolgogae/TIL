@@ -1,3 +1,5 @@
+package com.sihun.robot;
+
 public final class Robot implements Cloneable{
     private int hp;
     private Head head;
@@ -24,6 +26,6 @@ public final class Robot implements Cloneable{
         Robot cloned = (Robot) super.clone();
         cloned.head = (Head) head.clone();
 
-        return clone;
+        return cloned;
     }
 }

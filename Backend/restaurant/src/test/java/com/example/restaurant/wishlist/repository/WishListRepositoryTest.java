@@ -1,8 +1,7 @@
-package com.example.restaurant.db.wishlist;
+package com.example.restaurant.wishlist.repository;
 
 import com.example.restaurant.wishlist.entity.WishListEntity;
 import com.example.restaurant.wishlist.repository.WishListRepository;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +63,7 @@ public class WishListRepositoryTest {
         wishListRepository.save(wishList1);
         var wishList2 = create();
         wishListRepository.save(wishList2);
-        
+
         int count = wishListRepository.listAll().size();
 
         Assertions.assertEquals(2, count);

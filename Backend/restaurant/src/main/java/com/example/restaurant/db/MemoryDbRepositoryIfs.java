@@ -7,5 +7,5 @@ public interface MemoryDbRepositoryIfs<T> {
     public Optional<T> findById(int index);
     public T save(T entity);
     public void deleteById(int index);
-    public List<T> listAll();
+    public List<T> findAll();
 }

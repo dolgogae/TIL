@@ -40,7 +40,7 @@ public abstract class MemoryDbRepositoryAbstract<T extends MemoryDbEntity> imple
     }
 
     @Override
-    public List<T> listAll() {
+    public List<T> findAll() {
         return db;
     }
 }

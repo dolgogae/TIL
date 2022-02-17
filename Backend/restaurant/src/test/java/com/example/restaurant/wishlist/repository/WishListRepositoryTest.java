@@ -52,7 +52,7 @@ public class WishListRepositoryTest {
         wishListRepository.save(wishList);
         wishListRepository.deleteById(1);
 
-        int count = wishListRepository.listAll().size();
+        int count = wishListRepository.findAll().size();
 
         Assertions.assertEquals(0, count);
     }
@@ -64,7 +64,7 @@ public class WishListRepositoryTest {
         var wishList2 = create();
         wishListRepository.save(wishList2);
 
-        int count = wishListRepository.listAll().size();
+        int count = wishListRepository.findAll().size();
 
         Assertions.assertEquals(2, count);
     }

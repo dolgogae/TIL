@@ -92,5 +92,13 @@ public class UserRepositoryTest {
         Example<User> example = Example.of(new User("ma", "gmail.com"), matcher); // 가짜 엔티티
         // ignorepath로 인해 "name"은 무시가 됐다.
         userRepository.findAll(example).forEach(System.out::println);
+
+        userRepository.save(new User("tiago", "tiago@gmail.com"));
+
+        // update query
+        User user4 = userRepository.findById(1L).orElseThrow(RuntimeException::new);
+        user4.setEmail("sihun-update@gmail.com");
+
+        userRepository.save(user4);
     }
 }

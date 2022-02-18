@@ -36,13 +36,27 @@ JpaRepository에서 해당 클래스를 상속받고 있다.
 ## resources/data.sql
 jpa가 로딩될때 자동으로 한번 실행해주는 sql 파일이다.
 
-## findById vs getOne
-getOne은 실제 데이터 값을 구할때 세션을 통해 조회한다. - lazy fetch
-findById는 직접 엔티티 객체를 가져온다. - eager fetch
-
-## existById
-count 쿼리를 통해서 비교한다.
-
 ## Query by Example(QBE)
 entity를 example로 만들고 matcher를 추가해서 선언함으로서 필요한 쿼리를 만드는 방법
 
+# SimpleJpaRepository
+- JpaRepositoryImplementation <- JpaRepository를 상속받는다.
+## save()
+@Transactional : 자체적으로 transaction을 한다.  
+분기문을 통해 insert를 실행하고 이외에는 update를 처리한다.
+### isNew
+getId가 null일 경우, new로 보고 있다.  
+save() 메서드의 insert와 update를 구분하는 역할을 한다.
+## saveAndFlush()
+save() + flush()  
+## saveAll()
+save()를 반복문을 통해서 여러번 save()를 한다.  
+## findById vs getOne
+getOne은 실제 데이터 값을 구할때 세션을 통해 조회한다. - lazy fetch. 
+findById는 직접 엔티티 객체를 가져온다. - eager fetch  
+## existById
+count 쿼리를 통해서 비교한다.
+## deleteAll
+findAll()실행 후, 가져온 리스트를 사용해 delete 쿼리를 사용한다. -> 쿼리가 여러번 실행
+## deleteAllInBatch
+쿼리를 실행해 한번의 쿼리로 테이블을 모두 지우는 형식 

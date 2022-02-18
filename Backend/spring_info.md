@@ -33,3 +33,16 @@ repository에 상속해준다.
 JPA에서 사용하는 많은 메서드를 포함한 클래스이다.  
 JpaRepository에서 해당 클래스를 상속받고 있다.
 
+## resources/data.sql
+jpa가 로딩될때 자동으로 한번 실행해주는 sql 파일이다.
+
+## findById vs getOne
+getOne은 실제 데이터 값을 구할때 세션을 통해 조회한다. - lazy fetch
+findById는 직접 엔티티 객체를 가져온다. - eager fetch
+
+## existById
+count 쿼리를 통해서 비교한다.
+
+## Query by Example(QBE)
+entity를 example로 만들고 matcher를 추가해서 선언함으로서 필요한 쿼리를 만드는 방법
+

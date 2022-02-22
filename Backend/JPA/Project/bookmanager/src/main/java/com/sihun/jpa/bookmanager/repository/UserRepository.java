@@ -1,12 +1,13 @@
 package com.sihun.jpa.bookmanager.repository;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 import com.sihun.jpa.bookmanager.domain.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -37,7 +38,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     // first, find 뒤에 숫자만큼의 결과를 반환한다.
     List<User> findFirst1ByName(String name);
-    List<User> findTop1ByName(String name);
+    // List<User> findTop1ByName(String name);
 
     // 해당 쿼리는 만들어지지 않는다 -> findByName의 변형이름으로 인식하게 된다.
 //    List<User> findLast1ByName(String name);
@@ -74,4 +75,20 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findByNameContains(String name);
 
     List<User> findByNameLike(String name);
+
+    List<User> findTop1ByName(String name);
+
+    List<User> findLast1ByName(String name);
+
+    List<User> findTopByNameOrderByIdDesc(String name); // 역순
+    List<User> findTopByNameOrderByIdAsc(String name); // 정순
+
+    // 한눈에 들어오기 힘들고 길어질수록 가독성이 떨어지므로 좋은 방법이 아닐수도 있다.
+    List<User> findFirstByNameOrderByIdDescEmailAsc(String name);
+
+    // 동일메서드에 추가 인자로 내림차순을 넣어주는 방법도 있다.
+    // 자유도가 높아서 좋다.
+    List<User> findFirstByName(String name, Sort sort);
+
+    Page<User> findByName(String name, Pageable pageable);
 }

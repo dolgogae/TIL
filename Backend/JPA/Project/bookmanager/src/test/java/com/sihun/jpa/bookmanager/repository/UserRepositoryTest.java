@@ -1,6 +1,5 @@
 package com.sihun.jpa.bookmanager.repository;
 
-import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.endsWith;
 import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.contains;
 
 import java.time.LocalDateTime;
@@ -9,13 +8,9 @@ import com.sihun.jpa.bookmanager.domain.User;
 
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
-import org.mockito.internal.matchers.Contains;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.*;
 
 @SpringBootTest
 public class UserRepositoryTest {
@@ -149,5 +144,33 @@ public class UserRepositoryTest {
         System.out.println("findByNameContains: "+userRepository.findByNameContains("rog"));
 
         System.out.println("findByNameLike: "+userRepository.findByNameLike("%rog%"));
+    }
+
+    @Test
+    void pagingAndSortingTest(){
+        System.out.println("findTop1ByName: "+userRepository.findTop1ByName("drogba"));
+        System.out.println("findLast1ByName: "+userRepository.findLast1ByName("drogba"));
+        System.out.println("findTopByNameOrderByIdDest: "
+                +userRepository.findTopByNameOrderByIdDesc("drogba"));
+        System.out.println("findFirstByNameOrderByIdDescEmailAsc: "
+                +userRepository.findFirstByNameOrderByIdDescEmailAsc("drogba"));
+
+        System.out.println("findFirstByNameWithSortParams: "
+                +userRepository.findFirstByName("drogba", Sort.by(Sort.Order.desc("id"))));
+
+        // getContent로 페이지 인스턴스의 정보를 확인할 수 있다.
+        // getTotalElements는 count 쿼리도 추가적으로 실행한다.
+        System.out.println("findByNameWithPaging: "
+//                +userRepository.findByName("drogba", PageRequest.of(0, 1, Sort.by(Sort.Order.desc("id")))).getContent());
+                +userRepository.findByName("drogba", PageRequest.of(0, 1, Sort.by(Sort.Order.desc("id")))).getTotalElements());
+    }
+
+    // 참조값을 넘기기 위한 메서드를 만들어도 좋다.
+    private Sort getSort(){
+        return Sort.by(
+                Sort.Order.desc("id"),
+                Sort.Order.asc("email"),
+                Sort.Order.desc("createdAt")
+        );
     }
 }

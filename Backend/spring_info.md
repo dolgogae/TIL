@@ -60,3 +60,5 @@ count 쿼리를 통해서 비교한다.
 findAll()실행 후, 가져온 리스트를 사용해 delete 쿼리를 사용한다. -> 쿼리가 여러번 실행
 ## deleteAllInBatch
 쿼리를 실행해 한번의 쿼리로 테이블을 모두 지우는 형식 
+
+# JPA query method

@@ -3,6 +3,7 @@ package com.sihun.jpa.bookmanager.repository;
 import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.endsWith;
 import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.contains;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import com.sihun.jpa.bookmanager.domain.User;
 
@@ -20,6 +21,14 @@ import org.springframework.data.domain.PageRequest;
 public class UserRepositoryTest {
     @Autowired
     private UserRepository userRepository;
+
+    @Test
+    void _crud(){
+         userRepository.save(new User());
+
+         System.out.println("print db");
+         userRepository.findAll().forEach(System.out::println);
+    }
 
     @Test
     // @Transactional
@@ -100,5 +109,45 @@ public class UserRepositoryTest {
         user4.setEmail("sihun-update@gmail.com");
 
         userRepository.save(user4);
+    }
+
+    @Test
+    void select(){
+//        System.out.println("--- print query ---");
+//        System.out.println(userRepository.findByName("drogba"));
+//
+//        System.out.println("findByEmail: "+userRepository.findByEmail("drogba@gmail.com"));
+//        System.out.println("getByEmail: "+userRepository.getByEmail("drogba@gmail.com"));
+//        System.out.println("readByEmail: "+userRepository.readByEmail("drogba@gmail.com"));
+//        System.out.println("queryByEmail: "+userRepository.queryByEmail("drogba@gmail.com"));
+//        System.out.println("searchByEmail: "+userRepository.searchByEmail("drogba@gmail.com"));
+//        System.out.println("streamByEmail: "+userRepository.streamByEmail("drogba@gmail.com"));
+//        System.out.println("findUserByEmail: "+userRepository.findUserByEmail("drogba@gmail.com"));
+//        System.out.println("findSomethingByEmail: "+userRepository.findSomethingByEmail("drogba@gmail.com"));
+//        System.out.println("findTop1ByName: "+userRepository.findTop1ByName("drogba"));
+//        System.out.println("findFirst1ByName: "+userRepository.findFirst1ByName("drogba"));
+//        System.out.println("findLast1ByName: "+userRepository.findLast1ByName("drogba"));
+
+        System.out.println("findByEmailAndName: "+userRepository.findByEmailAndName("drogba@gmail.com", "drogba"));
+        System.out.println("findByEmailOrName: "+userRepository.findByEmailOrName("drogba@gmail.com", "drogba"));
+        System.out.println("findByCreatedAtAfter: "+userRepository.findByCreatedAtAfter(LocalDateTime.now().minusDays(1L)));
+        System.out.println("findByIdAfter: "+userRepository.findByIdAfter(4L));
+
+        System.out.println("findByCreatedAtGreaterThan: "+userRepository.findByCreatedAtGreaterThan(LocalDateTime.now().minusDays(1L)));
+        System.out.println("findByCreatedAtGreaterThanEqual: "+userRepository.findByCreatedAtGreaterThanEqual(LocalDateTime.now().minusDays(1L)));
+
+        System.out.println("findByCreatedAtBetween: "+userRepository.findByCreatedAtBetween(LocalDateTime.now().minusDays(1L), LocalDateTime.now().plusDays(1L)));
+        System.out.println("findByIdBetween: "+userRepository.findByIdBetween(1L, 3L));
+
+        System.out.println("findByIdIsNotNull: "+userRepository.findByIdIsNotNull());
+//        System.out.println("findByAddressesIsNotEmpty: "+userRepository.findByAddressesIsNotEmpty());
+
+        System.out.println("findByNameIn: "+userRepository.findByNameIn(Lists.newArrayList("drogba","maison")));
+
+        System.out.println("findByNameStartingWith: "+userRepository.findByNameStartingWith("dro"));
+        System.out.println("findByNameEndingWith: "+userRepository.findByNameEndingWith("ba"));
+        System.out.println("findByNameContains: "+userRepository.findByNameContains("rog"));
+
+        System.out.println("findByNameLike: "+userRepository.findByNameLike("%rog%"));
     }
 }

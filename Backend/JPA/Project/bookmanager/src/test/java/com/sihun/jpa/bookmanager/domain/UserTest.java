@@ -14,7 +14,7 @@ class UserTest {
         user.setEmail("sihun@sihun.com");
         user.setName("sihun");
 
-        User user1 = new User(null, "sihun", "sihun@sihun.com", LocalDateTime.now(), LocalDateTime.now());
+        User user1 = new User(null, "sihun", "sihun@sihun.com", LocalDateTime.now(), LocalDateTime.now(), null);
         User user2 = new User("sihun", "sihun@sihun.com");
 
         User user3 = User.builder()

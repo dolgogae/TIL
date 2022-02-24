@@ -1,4 +1,4 @@
-package com.sihun.jpa.bookmanager.domain;
+package com.sihun.jpa.bookmanager.domain.listener;
 
 import java.time.LocalDateTime;
 

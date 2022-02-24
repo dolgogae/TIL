@@ -19,6 +19,9 @@ public class UserRepositoryTest {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserHistoryRepository userHistoryRepository;
+
     @Test
     void _crud(){
          userRepository.save(new User());
@@ -236,5 +239,19 @@ public class UserRepositoryTest {
 
         System.out.println(userRepository.findByEmail("drogba2@gmail.com"));
         System.out.println(userRepository.findAll().get(0));    // 실제 DB에 있는 값을 가져오기
+    }
+
+    @Test
+    void userHistoryTest(){
+        User user = new User();
+        user.setEmail("drogba2@gmail.com");
+        user.setName("drogba2");
+
+        userRepository.save(user);
+
+        user.setName("didier drogba");
+        userRepository.save(user);
+
+        userHistoryRepository.findAll().forEach(System.out::println);
     }
 }

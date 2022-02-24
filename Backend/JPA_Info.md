@@ -63,7 +63,7 @@ findAll()실행 후, 가져온 리스트를 사용해 delete 쿼리를 사용한
 
 # JPA query method
 
-# Page
+## Page
 페이징에 대한 응답값
 
 ## Slice 
@@ -72,3 +72,53 @@ findAll()실행 후, 가져온 리스트를 사용해 delete 쿼리를 사용한
 
 ## Pageable
 페이징에 대한 요청값을 리턴해준다.
+
+# JPA Annotation
+
+## @Entity
+JPA가 관리하는 Entity 객체임을 선언
+
+## @Id
+DB Table의 pk
+
+## @GeneratedValue
+사용자가 생성하지 않고 생성된 값을 쓰겠다는 것.
+- IDENTITY: mysql DB에서 많이 사용한다. DB의 auto increase 기능을 활용, id값을 사전에 받아오게 된다.
+- TABLE: DB에서 id값을 추출해서 사용한다.
+- SEQUENCE: oracle, postgresql에서 제공하는 sequence를 이용할 때 사용. 트랙잭션이 일어나는 구간에서 id를 채워넣게 된다.
+- AUTO: defualt설정값으로 각 DB에 적합한 값을 자동으로 넘겨주게 되고, DB의존성없이 코딩이 가능하다. 일반적으로 DB는 고정이기 때문에 잘 설정하지 않는다.
+
+## @Table
+테이블에서 DB에 들어가는 초기값을 설정
+
+## @Column
+
+### name
+DB의 컬럼명을 통해 변수와 매칭  
+컬럼의 이름을 DB그대로 하는경우 변수 자체가 가독성이 없는 경우가 있어 그럴때 사용된다.
+
+### nullable
+false: not null
+true: null
+
+### unique
+해당 컬럼에 유니크 속성을 추가한다.
+
+### updatable vs insertable
+해당 값을 저장할지 안할지 결정
+
+### Transient
+DB 데이터에 반영되지 않는다.
+
+### Enumerated(value = EnumType.STRING)
+enum은 실제 변수가 의미하는 string값으로 DB에 저장되지 않으므로 해당 어노테이션을 활용해 값을 넣어주어야 한다. enum 사용시 필수적.  
+
+## Listener
+
+@PrePersist // insert method가 실행되기전  
+@PreUpdate // merge method가 실행되기전  
+@PreRemove // delete method가 실행되기전  
+@PostPersist  // insert method가 실행한후  
+@PostUpdate // merge method가 실행된 후  
+@PostRemove // delete method가 실행된 후  
+@PostLoad // select method가 실행된 후  

@@ -4,6 +4,8 @@ import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatc
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import com.sihun.jpa.bookmanager.domain.Gender;
 import com.sihun.jpa.bookmanager.domain.User;
 
 import org.assertj.core.util.Lists;
@@ -165,6 +167,19 @@ public class UserRepositoryTest {
                 +userRepository.findByName("drogba", PageRequest.of(0, 1, Sort.by(Sort.Order.desc("id")))).getTotalElements());
     }
 
+    @Test
+    void insertAndUpdateTest(){
+        User user = new User();
+
+        user.setName("sihun");
+        user.setEmail("sihun@gmail.com");
+        userRepository.save(user);
+
+        User user2 = userRepository.findById(1L).orElseThrow(RuntimeException::new);
+        user2.setName("siiiiihun"); // update 실행
+        userRepository.save(user2);
+    }
+
     // 참조값을 넘기기 위한 메서드를 만들어도 좋다.
     private Sort getSort(){
         return Sort.by(
@@ -172,5 +187,54 @@ public class UserRepositoryTest {
                 Sort.Order.asc("email"),
                 Sort.Order.desc("createdAt")
         );
+    }
+
+    @Test
+    void enumTest(){
+        User user = userRepository.findById(1L).orElseThrow(RuntimeException::new);
+        user.setGender(Gender.MALE);
+
+        userRepository.save(user);
+
+        userRepository.findAll().forEach(System.out::println);
+
+        // enum은 실제 db값에는 enum의 숫자값으로 저장된다. -> 잠재적 버그
+        System.out.println(userRepository.findRawRecord().get("gender"));
+    }
+
+    @Test
+    void listenerTest(){
+        User user = new User();
+        user.setEmail("didier@gmail.com");
+        user.setName("didier");
+
+        userRepository.save(user);
+
+        User user2 = userRepository.findById(1L).orElseThrow(RuntimeException::new);
+        user2.setName("siiiiiihun");
+
+        userRepository.save(user2);
+
+        userRepository.deleteById(4L);
+    }
+
+    @Test
+    void prePersistTest(){
+        User user = new User();
+        user.setEmail("drogba2@gmail.com");
+        user.setName("drogba2");
+
+//        user.setCreatedAt(LocalDateTime.now());
+//        user.setUpdatedAt(LocalDateTime.now());
+
+        userRepository.save(user);
+
+        User user2 = userRepository.findById(1L).orElseThrow(RuntimeException::new);
+        user2.setName("siiiiiihun");
+
+        userRepository.save(user2);
+
+        System.out.println(userRepository.findByEmail("drogba2@gmail.com"));
+        System.out.println(userRepository.findAll().get(0));    // 실제 DB에 있는 값을 가져오기
     }
 }

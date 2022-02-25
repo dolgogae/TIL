@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 //@EntityListeners(value = AuditingEntityListener.class)
+// 관리용 백업 용도 entity
 public class UserHistory extends  BaseEntity implements Auditable {
     @Id
     @GeneratedValue

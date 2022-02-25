@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
+// history에 맵핑 시켜주는 역할
 public class UserEntityListener {
     @PrePersist
     @PreUpdate

@@ -2,6 +2,7 @@ package hello.core.member;
 
 public class MemberServiceImpl implements MemberService{
 
+    // 구현체에 의존적이다.
     private final MemberRepository memberRepository = new MemoryMemberRepository();
 
     @Override

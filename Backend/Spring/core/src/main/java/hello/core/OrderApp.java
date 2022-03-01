@@ -1,5 +1,8 @@
 package hello.core;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
 import hello.core.member.*;
 import hello.core.order.Order;
 import hello.core.order.OrderService;
@@ -7,10 +10,15 @@ import hello.core.order.OrderService;
 public class OrderApp {
     public static void main(String[] args) {
 
-        AppConfig appConfig = new AppConfig();
+        // AppConfig appConfig = new AppConfig();
 
-        MemberService memberService = appConfig.memberService();
-        OrderService orderService = appConfig.orderService();
+        // MemberService memberService = appConfig.memberService();
+        // OrderService orderService = appConfig.orderService();
+
+        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig);
+
+        applicationContext.getBean("memberService", MemberService.class);
+        applicationContext.getBean("orderService", OrderService.class);
 
         Long memberId = 1L;
         Member member = new Member(memberId, "memberA", Grade.VIP);

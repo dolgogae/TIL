@@ -16,6 +16,11 @@ import hello.core.order.OrderServiceImpl;
 // client 코드를 전혀 손댈 곳이 없다.
 @Configuration  //spring에서 구성정보를 담당한다고 등록
 public class AppConfig {
+
+    // @Bean memberService -> new MemoryMemberRepository()
+    // @Bean orderService -> new MemoryMemberRepository()
+    // new가 두번 호출되는데 싱글톤이 깨질까?
+
     
     @Bean // 각 구성정보를 spring컨테이너에 등록한다.
     public MemberRepository memberRepository(){

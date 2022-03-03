@@ -15,10 +15,10 @@ public class OrderApp {
         // MemberService memberService = appConfig.memberService();
         // OrderService orderService = appConfig.orderService();
 
-        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig);
+        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
 
-        applicationContext.getBean("memberService", MemberService.class);
-        applicationContext.getBean("orderService", OrderService.class);
+        MemberService memberService = applicationContext.getBean("memberService", MemberService.class);
+        OrderService orderService = applicationContext.getBean("orderService", OrderService.class);
 
         Long memberId = 1L;
         Member member = new Member(memberId, "memberA", Grade.VIP);

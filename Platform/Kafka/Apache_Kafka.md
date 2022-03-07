@@ -170,4 +170,187 @@ Controller가 새 Leader를 선택하면 Leader Epoch를 업데이트하고 해�
 - Last Committed Offset: Consumer가 마지막으로 Commit한 Offset
 - Current Position: Consumer가 마지막으로 읽어간 위치(처리중)
 - High Water Mark: ISR간에 복제된 Offset
-- Log End Offset: Producer가 메시지를 보내서 저장된, 로그의 맨 끝 Offset
+- Log End Offset: Producer가 메시지를 보내서 저장된, 로그의 맨 끝 Offset"'
+
+---
+
+## Producer는 메시지가 잘 받았는지 아는 방법
+
+ack를 통해서 확인할 수 있다.
+- acks=0: ack가필요하지 않음. 잘 사용하진 않지만 메시지 손실이 다소 있더라도 빠르게 메시지를 보내야 하는 경우
+- acks=1(default): Leader가 메시지를 수신하면 ack를보냄. 최대 한번 전송(at most once)을 보장한다.
+- acks=-1(acks=all): 모든 replica까지 commit되면 ack를 보낸다.
+
+재전송 변수
+- retries: 메시지를 send하기위해 재시도 하는 횟수
+- retry.backoff.ms: 재시도 사이에 추가되는 대기시간
+- request.timeout.ms: producder가 응답을 기느리는 최대시간
+- delivery.timeout.ms: send()후성공 또는 실패를 보고하는 시간의 상한
+---
+
+## Producer Batct 처리
+Batch처리는 RPC(Remote Producer Call) 수를 줄여서 Broker가처리하는 작업이 줄어들기 때문에 더 나은 처리량을 제공한다.
+- linger.ms: 메시지가 함께 Batch 처리될 때까지 대기 시간
+- batch.size: 보내기 전 Batch의 최대 크기
+- max.in.flight.requests.per.connection=5(default): Batch를 동시에 날릴 수 있는 최대 갯수(producer -> broker)
+  - 하나의 배치가 실패하고 다음 배치가 성공하는 경우 순서의 역전이 일어난다. -> enable.idempotence를 사용하면 순서를 맞춰준다.(OutOfOrderSequenceException)
+
+send() -> batch -> await send -> retires -> in flight
+
+메시지는 partition에 기록된다. 
+partition은 Log Segment file로 구성(성능을 위해 Log Segment는 OS Page Cache에 기록됨)
+
+producer -(send)-> broker process -(write)-> OS Page cache -(flush)-> disk
+위 과정에서 Zero-copy가 가능하다.(전송 데이터가 User Space에 복사되지 않고, CPU개입없이 Page Cache와 Network Buffer사이에서 직접 전송되는 것.)  
+쉽게 생각해서 broker에서 따로 메시지를 저장할 필요가 없다. (byte code를 그대로 전달하기 때문에)  
+-> 운영체제의 Backgroud flush기능을 더 효율적으로 허용하는 것을 선호(비활성화 추천)
+
+## Replica Failure
+
+### Follower 장애시
+replica.lag.time.max.max 이내에 Follower가 fetch 하지 않으면 ISR에서 제거함
+
+### Leader 장애시
+zookeeper가 장애 감지후, controller가 새로운 leader선출 후, zookeeper에 기록.  
+Controller가 새로운 ISR을 Leader에 주입
+
+partition에 leader가 없으면 선출될 때까지 partition을 사용할 수 없다.
+
+## Availability vs Durability
+
+### Topic 파라미터 
+
+unclean.leader.election.enable(default:false)
+
+: ISR리스트에 없는 Replica를 leader로 선출할 것인지에 대한 옵션. 
+  ISR리스트에 Replica가 하나도 없으면 leader선출 안함
+  ISR리스트에 없는 Replica를 leader로 선출함 - 데이터 유실됨
+
+
+min.insync.replicas(default:1)
+: 최소 요구되는 ISR의 개수에 대한 옵션
+
+> 데이터 유실이 없게 하려면?  
+> Topic: replication.factor는 2보다 커야함(최소 3 이상).  
+> Producer: acks는 all이어야 함  
+> Topic: min.insync.replicas는 1보다 커야함(최소 2 이상).  
+>   
+> 데이터 유실이 다소 있더라도 가용성을 높게 하려면?  
+> Topic: unclean.leader.election.enable를 true로 설정
+
+## partition 할당 시
+하나의 partition은 지정된 Consumer Group내의 하나의 Consumer만 사용.  
+동일 key는 동일 consumer 사용  
+partition.assignment.strategy로 할당 방식 조정.  
+
+Group Coordinator에서 Consumer group의 group leader에게 파티션을 담당할 Consumer를 배정받는 방식이다.
+
+## Rebalancing Trigger
+- Consumer가 Consumer Group에서 탈퇴
+- 신규 Consumer가 Consumer Group에 합류
+- Consumer가 Topic 구독을 변경
+- Consumer group은 Topic의 메타데이터 변경 사항을 인지
+> Consumer Rebalancing시 Consumer들은 메시지를 Consume하지 못함. 따라서, 불필요한 Rebalancing은 반드시 피해야함
+
+heartbeat.interval.ms: Consumer는 poll()과별도로 백그라운드 Thread에서 Heartbeat를 보냄.
+session.timeout.ms: 아래 시간 동안 Heartbeat가 수신되지 않으면 Consumer는 Consumer group에서 삭제
+max.poll.interval.ms: poll()은 Heartbeat와 상관없이 주기적으로 호출되어야 함.
+
+Rebalancing은 성능 최적화에 필수
+1. consumer group 멤버 고정
+2. session.timeout.ms 튜닝
+3. max.poll.interval.ms 튜닝
+
+
+## Partition Assignment Strategy
+
+**partition.assignment.strategy**로 할당 방식 조정
+
+### org.apache.kafka.client.consumer.RangeAssignor
+Topic별로 작동하는 Default Assignor  
+순서대로 할당하고, Topic이 더 적으면 Consumer가 노는게 생길수도 있다.
+
+### org.apache.kafka.client.consumer.RoundRobinAssignor
+Round Robin 방식으로 Consumer에게 할당.  
+Topic이 달라도 RR이 그대로 배정된다.  
+할당 불균형이 발생할 수도 있다.
+
+### org.apache.kafka.client.consumer.StickyAssignor
+최대한 많은 기존 Partition 할당을 유지하면서 최대 균형을 이루는 할당을 보장
+1. 가능한한 균형적으로 할당을 보장: Consumer들에게 할당된 Topic Partition의 수는 최대 1만큼 다름.
+2. 재할당이 발생했을 때, 기존 할당을 최대한 많이 보존하여 유지
+RR과 비슷하지만, 재할당시 기존의 Partition을 건드리지 않고 나머지만 재할당한다.
+
+### org.apache.kafka.client.consumer.CooperativeStickyAssignor
+
+#### 시간에 따른 Consumer Rebalancing 과정
+1. Consumer들이 JoinGroup 요청을 Group Coordinator에 보내며 리밸런싱이 시작된다.
+2. JoinGroup의 응답이 Consumer들에 전송.
+3. 모든 구성원은 Broker에 SyncGroup 요청을 보내야 함.
+4. Broker는 SyncGroup응답에서 Consumer에 Partition을 할당함.
+
+변하지 않으면 Consume을 계속할 수 있게끔 하는 것. 전체 재 조정중 떼어낸 Partition만 멈추고 나머지는 계속 Consume을 하면 된다.
+> 문제) Consumer는 자신의 Partition중 어느 것이 다른 곳으로 재할당되어야 하는지 알지 못함.  
+> Broker가 SyncGroup의 Response를 줄때, 어느 partition을 떼어낼지 알려준다.  
+
+### org.apache.kafka.client.consumer.ConsumerPartitionAssignor: 사용자 커스텀
+
+
+## Kafka Log File
+각 Partition은 Segment File들로 구성됨.  
+Kafka Log Segment File은 Data File이라고 부르기도 함.
+Segment File이 생성되는 위치는 각 Broker의 ₩server.properites₩파일 안에서 ₩log.dirs₩ 파라미터로 정의함.  
+> 0000000000123453.* 파일과 0000000000777532.* 0000000000123453 offset부터 다음 파일 전까지 메시지 저장/관리를 한다.  
+> .log: 메시지와 metadata 저장  
+> .index: 각 메시지의 Offset을 Log Segment 파일의 Byte위치에 매핑  
+> .timeindex: 각 메시지의 timestamp를 기반으로 메시지를 검색하는 데 사용  
+> leader-epoch-checkpoint: Leader관련 Offset저장  
+> 
+> 특별 파일
+> .snapshot: Idempotent Producer 사용시   
+> .txnindex: Transactional Producer 사용시.  
+
+Partition은 하나 이상의 Segment File로 구성.  
+
+아래의 파리미터 중 하나라도 해당되면 새로운 Segment File로 Rolling
+- log.segment.bytes(default 1GB)
+- log.roll.ms(default 168시간)
+- log.index.size.max.bytes(default 10MB)
+
+__consumer_offset의 Segment File Rolling 파라미터는 별도
+- offsets.topic.segment.bytes(default 100MB)
+
+Broker에는 각 2개의 checkpoint File이 존재함.
+- replication-offset-checkpoint: 마지막으로 Commit된 메시지의 ID인 High Water Mark시작시 Follower가 이를 사용하여 Commit되지 않은 메시지를 Truncate
+- recovery-point-offset-checkpoint: 데이터가 디스크로 Flush된 지점 복구 중 Broker는 이 시점 이후의 메시지가 손실되었는지 여부를 확인.
+
+## Exactly Once Semantics(EOS)
+Java Client에서만 Fully Supported
+- Producer, Consumer
+- Kafka Connect
+- Kafka Streams API
+- Confluent Rest Proxy
+- Confluent ksqlDB
+
+At-Most-Once Semantics(최대 한번)
+At-Least-Once Semantics(최소 한번)
+Exactly-Once Semantics(정확히 한번)
+
+중복 메시지로 인한 중복 처리 방지
+- 클라이언트(Idempotent Producer)에서 생성되는 중복 메시지 방지
+- Transaction 기능을 사용하여, 하나의 트랜잭션 내의 모든 메시지가 모두 write 되었는지 또는 전혀 안됐는지 확인.
+
+Transaction Coordinator사용
+- 특별한 Transaction Log를관리하는 Broker Thread.  
+
+Idempotent Producer
+- producer 파라미터 중 enable.idempotence를 true로 설정
+- 메시지 중복을 방지
+- 성능에 영향이 별로 없음
+
+Transaction
+- 각 producer에 고유한 transactional.id를 설정
+- Producer를 Transaction API를 사용하여 개발
+- Consumer에서 isolation.level을 read_commited로 설정
+
+producer -(send)-> Broker가 Ack를 못받음 -(retry x)-> 중복 메시인 것을 확인 후, duplicate를 보낸다.

@@ -48,11 +48,11 @@ public class ApplicationContextExtendsFindTest {
     }
 
     @Test
-    @DisplayName("부모 타ㅓ입으로 모두 조회하기 - Object")
+    @DisplayName("부모 타입으로 모두 조회하기 - Object")
     void findAllBeanByObjectType(){
         // 스프링 안의 여러가지 빈이 모두 출력된다.
         Map<String, Object> beansOfType = ac.getBeansOfType(Object.class);
-        Assertions.assertThat(beansOfType.size()).isEqualTo(2);    
+        Assertions.assertThat(beansOfType.size()).isEqualTo(16);
     }
 
     @Configuration

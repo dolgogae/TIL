@@ -38,6 +38,7 @@ public class AppConfig {
         return new OrderServiceImpl(
             memberRepository(), 
             discountPolicy());
+        // return null;
     }
 
     // 할인 정책 변경시 해당 코드만 고치면 가능하다.

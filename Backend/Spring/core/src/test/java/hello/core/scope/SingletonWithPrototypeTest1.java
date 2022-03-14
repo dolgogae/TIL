@@ -33,7 +33,7 @@ public class SingletonWithPrototypeTest1{
         ClientBean cb1 = ac.getBean(ClientBean.class);
         Assertions.assertThat(cb1.logic()).isEqualTo(1); 
         
-        ClientBean cb2 = ac.getBean(ClientBean.class);   
+        ClientBean cb2 = ac.getBean(ClientBean.class);
         Assertions.assertThat(cb2.logic()).isEqualTo(1);
 
     }

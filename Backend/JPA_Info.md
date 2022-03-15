@@ -115,13 +115,13 @@ enum은 실제 변수가 의미하는 string값으로 DB에 저장되지 않으�
 
 ## Listener
 
-@PrePersist // insert method가 실행되기전  
-@PreUpdate // merge method가 실행되기전  
-@PreRemove // delete method가 실행되기전  
-@PostPersist  // insert method가 실행한후  
-@PostUpdate // merge method가 실행된 후  
-@PostRemove // delete method가 실행된 후  
-@PostLoad // select method가 실행된 후  
+@PrePersist     // insert method가 실행되기전  
+@PreUpdate      // merge method가 실행되기전  
+@PreRemove      // delete method가 실행되기전  
+@PostPersist    // insert method가 실행한후  
+@PostUpdate     // merge method가 실행된 후  
+@PostRemove     // delete method가 실행된 후  
+@PostLoad       // select method가 실행된 후  
 
 ## AuditingEntityListener(EnableJpaAuditing)
 

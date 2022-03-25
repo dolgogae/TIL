@@ -1,71 +1,70 @@
-#include <string>
-#include <vector>
-#include <algorithm>
-#include <unordered_map>
-#include <iostream>
-
+#include <bits/stdc++.h>
 using namespace std;
 
-int len;
-unordered_map<string, int> h;
-string origin;
+unordered_map<string, int> menus;
+int maxL;
+int visited[12];
+string curStr;
 
-void makeChar(int idx, string cur, int depth){
-    if(idx == origin.size() && cur.size() < depth)return;
-    if(cur.size() == depth){
-        h[cur]++;
+void dfs(int cur, string str){
+    if(str.size() == maxL){
+        menus[str]++;
         return;
     }
+    if(maxL < str.size())return;
 
-    makeChar(idx+1, cur+origin[idx], depth);
-    makeChar(idx+1, cur, depth);
+    for(int i = cur; i < curStr.size(); i++){
+        if(!visited[i]){
+            visited[i] = 1;
+            str += curStr[i];
+            dfs(i+1, str);
+            visited[i] = 0;
+            str.pop_back();
+        }
+    }
 }
 
 vector<string> solution(vector<string> orders, vector<int> course) {
     vector<string> answer;
-    for(auto i : course){
-        h.clear();
 
+    for(auto c: course){
+        maxL = c;
+        menus.clear();
         for(auto order: orders){
-            sort(order.begin(),order.end());
-            origin = order;
-            makeChar(0, "", i);
+            curStr = order;
+            sort(curStr.begin(), curStr.end());
+            memset(visited, 0, sizeof(visited));
+            dfs(0,"");
         }
 
         int Max = 0;
-        for(auto elem: h){
-            Max = max(Max, elem.second);
+        for(auto menu: menus){
+            Max = max(Max, menu.second);
         }
+        
         if(Max < 2)continue;
-        for(auto elem: h){
-            if(elem.second == Max){
-                answer.push_back(elem.first);
+        for(auto menu:menus){
+            if(menu.second == Max) {
+                answer.push_back(menu.first);
             }
         }
     }
 
     sort(answer.begin(), answer.end());
+
     return answer;
 }
 
 int main(){
-    vector<string> orders;
-    vector<int> course;
-    int n; scanf("%d", &n);
-    for(int i=0; i<n; i++){
-        string str; cin >> str;
-        orders.push_back(str);
-    } 
-    scanf("%d", &n);
-    for(int i=0; i<n; i++){
-        int m; scanf("%d", &m);
-        course.push_back(m);
-    }
 
-    vector<string> answer = solution(orders, course);
+    vector<string> orders = {"ABCFG", "AC", "CDE", "ACDE", "BCFG", "ACDEH"};
+    vector<int> course = {2,3,4};
 
-    for(auto str: answer){
-        cout<<str+'\n';
-    }
+    vector<string> ans  = solution(orders, course);
+
+    for(auto a: ans)
+        cout << a << ' ';
+    cout << '\n';
+
     return 0;
 }

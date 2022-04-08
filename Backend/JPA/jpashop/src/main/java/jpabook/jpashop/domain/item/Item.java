@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter
+@Getter @Setter
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)   // 하나의 테이블로 만들겠다.
 @DiscriminatorColumn(name = "dtype")
 public abstract class Item {
@@ -19,11 +19,11 @@ public abstract class Item {
     @Id
     @GeneratedValue
     @Column(name = "item_id")
-    private Long id;
+    protected Long id;
 
-    private String name;
-    private int price;
-    private int stockQuantity;
+    protected String name;
+    protected int price;
+    protected int stockQuantity;
 
     @OneToMany(mappedBy = "item")
     private List<CategoryItem> categories = new ArrayList<>();
@@ -47,4 +47,5 @@ public abstract class Item {
         }
         this.stockQuantity = restStock;
     }
+
 }

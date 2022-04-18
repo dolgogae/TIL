@@ -1,4 +1,4 @@
-package jpabook.jpashop.controllorer;
+package jpabook.jpashop.controllorer.form;
 
 import com.sun.istack.NotNull;
 import lombok.Getter;

@@ -1,5 +1,6 @@
 package jpabook.jpashop.controllorer;
 
+import jpabook.jpashop.controllorer.form.MemberForm;
 import jpabook.jpashop.domain.Address;
 import jpabook.jpashop.domain.Member;
 import jpabook.jpashop.service.MemberService;

@@ -92,3 +92,27 @@ max.poll.interval.ms=5
 
 3. max.poll.interval.ms 튜닝
 - Consumer에게 poll()한 데이터를 처리할 충분한 시간 제공
+
+
+## Partition Assignment Strategy
+
+`partition.assignment.strategy`로 할당 방식 조절(consumer 환경 변수)
+
+- org.apache.kafka.clients.consumer.RangeAssignor: Topic별로 작동하는 Default Assignor
+- org.apache.kafka.clients.consumer.RoundRobinAssignor: RR 방식으로 Consumer에게 Partition 할당 
+- org.apache.kafka.clients.consumer.StickyAssignor: 최대한 많은 기존 partition할당을 유지하며 최대 균형
+- org.apache.kafka.clients.consumer.CooperativeStickyAssignor: RangeAssignor와 비슷하지만 협력적 rebalancing 허용
+- org.apache.kafka.clients.consumer.ConsumerPartitionAssignor: 인터페이스를 구현하면 사용자 지정 할당 전략 사용 가능
+
+1. RangeAssignor
+각 partiton마다 순서대로 할당해준다. parition 번호가 더 작다면 노는 consumer가 생길수 있다.
+
+2. RoundRobinAssignor
+RoundRobin 방식으로 consumer group내에서 순서대로 계속 배정하는 방법이다.  
+재할당후 consumer가 동일한 partition을 가지는지 보장을 못한다.  
+
+3. StickyAssignor
+가능한 균형적 할당 보장  
+**Consumer들에게 할당된 Topic Partiton의 수는 최대 1만큼 다르다.**  
+재할당이 발생할 경우, 기존 할당을 최대한 많이 보존하여 유지  
+RR은 Consumer 하나가 죽을 경우 모두 재할당하지만, StickyAssignor는 기존 할당은 유지하면서 나머지 부분만 재할당 한다.

@@ -27,7 +27,7 @@ broker.rack=ap-northeast-2a
 ```
 
 ## ISR
-- [In-Sync-Replication](#6_ISR)
+- [In-Sync-Replication](#6_ISR.md)
 
 ## Replica Failure
 
@@ -43,3 +43,27 @@ Partition에 Leader가 없을 시 사용할 수 없게 된다.
 retry를 설정해놓으면 다시 요청하게 된다.
 
 ## Replica Recovery
+
+### ack가 all(-1)일 경우
+Leader가 죽고 ack를 못 받았을 경우에 Committed 지점부터 재전송을 시작한다. **데이터 중복이 일어날 수 있다**
+
+이후, 죽었던 Leader가 복구될 경우 Follower가 된다.  
+그리고 기존에 Leadership이 변경된 시점부터 Truncate(삭제)한 후, 다시 없어진 시점부터 복제하게 된다.  
+그 다음 ISR에 복귀하게 된다.
+
+### ack가 1일 경우
+Leader가 죽으면 Leader에 들어간 메시지 이후부터 새로운 Leader에 전송이 시작된다.
+-> 데이터 유실 가능성 있음.
+
+### 가용성 vs 내구성
+```shell
+unclean.leader.election.enable = false
+# ISR 리스트에 없는 Replica를 Leader로 선출할 것 인지?
+# 믿을만한 ISR이 없으면 Leader 선출 x - 서비즈 중단
+# true로 할경우 데이터 유실이 있지만 서비스가 중단되진 않는다.
+
+min.insync.replicas = 1
+# 최소요구 ISR 개수(보통 2로 설정을 많이 한다.)
+# 만족하지 못할경우 producer는 NotEnoughReplicas 예외를 발생 시킨다.
+# 보통 ack=all과 함께 사용한다.
+```

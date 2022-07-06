@@ -116,3 +116,17 @@ RoundRobin 방식으로 consumer group내에서 순서대로 계속 배정하는
 **Consumer들에게 할당된 Topic Partiton의 수는 최대 1만큼 다르다.**  
 재할당이 발생할 경우, 기존 할당을 최대한 많이 보존하여 유지  
 RR은 Consumer 하나가 죽을 경우 모두 재할당하지만, StickyAssignor는 기존 할당은 유지하면서 나머지 부분만 재할당 한다.
+
+4. CooperativeStickyAssignor
+
+> 기존에 사용되던 Rebalancing은 `Eager Rebalancing` 프로토콜  
+> **Eager Rebalancing** : Consumer가 추가되면 단순히 partition의 재배정이 일어난다.  
+> 재조정이 완료되는 기간동안 Consume을 할 수 없는 상황이 나타난다.
+> 변하지 않는 partiton의 경우 중단 시킬 이유가 없다.-> 여기서 나온 개념이 Cooperative Rebalancing Protocol이다.
+
+새로온 Consumer에게 배정될 partition만 revoke(중단)시킨다는 개념이다.  
+하지만, Consumer는 자신의 partition중 어느 것이 재할당 될지 모른다.  
+여기서 CooperationStickyAssignor가 2번 rebalancing을 시키게 된다. 
+1번째 rebalancing때에는 어느것도 revoke 시키지 않고, 어떤 것이 나갈지 정하게 된다.(아무것도 변화가 일어나지 않는다.).  
+2번째 rebalancing때에는 위처럼 revoke 시킬 partition만 떼어내서 할당해준다.  
+

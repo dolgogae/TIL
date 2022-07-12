@@ -21,3 +21,30 @@ $ ulimit -n 100000
 Broker는 JVM Heap을 많이 사용하지 않음. 대부분의 운영환경은 6~12G까지 할당.  
 대부분의 메모리는 OS Page Cache를 많이 사용한다.(많을수록 성능에 유리)
 - 운영환경용 Broker 메모리는 최소 32G 이상을 권장하며, 처리량에 따라 64G이상 권장
+
+## Zookeeper
+```shell
+dataDir=/data/zookeeper
+# 디렉터리가 생성되어 있어야 한다.
+
+clientPort=2181
+# zookeeper가 올라갈 port
+
+server.<myid>=<hostname>:<leaderport>:<electionport>
+# myid: zookeeper 식별 id로 ${dataDir}/myid 파일에 값이 저장되어 있어야 한다.
+# electionport: zookeeper leader를 선출하는데 사용되는 port
+```
+
+
+## Kafka
+```shell
+zookeeper.connect=zookeeper1:2181,zookeeper2:2181,zookeeper3:2181
+broker.id=1
+# broker를 구분하는 id(각각 고유해야 함)
+
+log.dirs=/data/broker
+# 실제 세그먼트 파일이 쓰이는 폴더
+
+listeners=PLANTEXT://broker1:9092
+# Broker가 수신할 URI의 쉼표로 구분된 목록
+```

@@ -19,7 +19,7 @@ import java.util.Date;
 //        pkColumnValue = "MEMBER_SEQ", allocationSize = 50   // 한번의 next call에서 50개씩 받아온다.
 //)
 @Entity
-public class Member {
+public class Member extends BaseEntity {
 
     //    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "member_seq_generator")
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,6 +33,10 @@ public class Member {
     @ManyToOne
     @JoinColumn(name = "TEAM_ID")
     private Team team;
+
+    @OneToOne
+    @JoinColumn(name = "LOCKER_ID")
+    private Locker locker;
 
     public Long getId() {
         return id;

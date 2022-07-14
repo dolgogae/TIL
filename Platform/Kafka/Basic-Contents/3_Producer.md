@@ -81,3 +81,29 @@ OS가 데이터를 디스크로 Flush 하기전에 Broker의 시스템에 장애
 > Replication이 없다면 영구적 손실이 된다.  
 
 Kafka는 운영체제의 background flush 기능을 더 효율적으로 허용하는 것을 선호.  
+
+## Producer 관련 CLI
+
+Producer관련 CLI는 kafka-console-producer.sh 쉘 파일을 사용하면 된다.
+
+```shell
+
+# topic 메시지 생성
+$ kafka-console-producer.sh --bootstrap-server my-kafka1:9092,my-kafka2:9092,my-kafka3:9092 \
+--topic hello.kafka
+>hello
+>kafka
+>0
+>1
+...
+
+# key를 가지는 메시지 생성
+$ kafka-console-producer.sh --bootstrap-server my-kafka1:9092,my-kafka2:9092,my-kafka3:9092 \
+--topic hello.kafka \
+--property "parse.key=true"
+--property "key.separator=:"    # key의 구분자를 :으로 설정
+>key1:no1
+>key2:no2
+>key3:no3
+```
+

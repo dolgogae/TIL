@@ -25,9 +25,46 @@ Partition들은 Broker에 분산되어 Segment 파일로 구성.
 
 Partition에저장된 데이터는 변경 불가능(immutable).  
 
-```shell
+## Topic 관련 CLI
 
+Topic 관련 명령어는 bin/kafka-topics.sh(confluent: kafka-topics) 파일을 기준으로 실행한다.  
+
+CLI에서 --bootstarp-server 옵션에 변수로 broker 서버를 넣게되는데, 하나의 장애로 쉘이 실행되지 않는 것을 방지하기 위해서 모든 broker 노드를 변수로 넣는것을 추천한다.
+
+```shell
+# server dns my-kafka1,2,3
+
+
+# topic 생성 명령 
+$ kafka-topics.sh --create \
+--bootstrap-server my-kafka1:9092,my-kafka2:9092,my-kafka3:9092 \
+--partitions 3 \
+--replication-factor 1 \
+--config retention.ms=172800000 \
+--topic hello.kafka
+# --config 옵션은 명령에 포함하지 않은 추가적인 옵션이 실행가능하다.
+
+# topic 리스트 명령어 
+$ kafka-topics.sh --list \
+--bootstrap-server my-kafka1:9092,my-kafka2:9092,my-kafka3:9092 \
+
+# topic 상세 조회
+$ kafka-topics.sh --describe \
+--bootstrap-server my-kafka1:9092,my-kafka2:9092,my-kafka3:9092 \
+--topic hello.topic
 
 ```
 
+Topic의 config를 변경하기 위해서는 bin/kafka-config.sh를 이용해서 바꾸는 것이 좋다.  
+kafka-topics.sh의 --alter 옵션은 추후 삭제될 예정이라고 한다.
 
+```shell
+
+# topic의 retention.ms 설정 변경 방법
+$ kafka-config.sh --bootstrap-server my-kafka1:9092,my-kafka2:9092,my-kafka3:9092 \
+--entity-type topics \
+--entity-name hello.kafka \
+--alter --add-config retention.ms=8640000
+
+
+```

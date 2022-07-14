@@ -62,3 +62,15 @@ log.cleaner.dedupe.buffer.size=134217728
 
 고유한 ID 부여후 zookeeper ensamble에 연결만 해주면 된다. 하지만 partition까지 넘어가지는 않는다.  
 따라서, **kafka-reassign-partitions** 도구를 사용해야 한다.
+
+## Kafka 운영 관련 CLI
+
+```shell
+
+# producer 관련 코드없는 메시지 전송테스트(네트워크 처리량)
+$ kafka-verifiable-producer --bootstrap-server my-kafka1:9092,my-kafka2:9092,my-kafka3:9092  --max-messages 10 --topic verify-test
+
+# consumer 관련 코드없는 메시지 전송테스트(네트워크 처리량)
+$ kafka-verifiable-consumer --bootstrap-server my-kafka1:9092,my-kafka2:9092,my-kafka3:9092  --group-id test-group --topic verify-test
+
+```

@@ -130,3 +130,27 @@ RR은 Consumer 하나가 죽을 경우 모두 재할당하지만, StickyAssignor
 1번째 rebalancing때에는 어느것도 revoke 시키지 않고, 어떤 것이 나갈지 정하게 된다.(아무것도 변화가 일어나지 않는다.).  
 2번째 rebalancing때에는 위처럼 revoke 시킬 partition만 떼어내서 할당해준다.  
 
+## Consumer 관련 CLI
+
+Consumer 관련 CLI는 kafka-console-consumer.sh 쉘 파일을 이용한다.
+
+```shell
+
+# message consume
+$ kafka-console-consumer.sh --bootstrap-server my-kafka1:9092,my-kafka2:9092,my-kafka3:9092 \
+--topic hello.kafka \
+--property parse.key=true \
+--property key.separator="-" \
+--group hello-group \  
+--from-beginning
+
+# consumer group 조회
+$ kafka-consumer-groups.sh --list \
+--bootstrap-server my-kafka1:9092,my-kafka2:9092,my-kafka3:9092 
+
+# consumer group 상세 조회
+$ kafka-consumer-groups.sh --describe \
+--bootstrap-server my-kafka1:9092,my-kafka2:9092,my-kafka3:9092 \
+--group hello-group
+
+```

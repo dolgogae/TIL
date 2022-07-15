@@ -53,6 +53,10 @@ $ kafka-topics.sh --describe \
 --bootstrap-server my-kafka1:9092,my-kafka2:9092,my-kafka3:9092 \
 --topic hello.topic
 
+# topic제거
+$ kafka-topics.sh --delete
+--bootstrap-server my-kafka1:9092,my-kafka2:9092,my-kafka3:9092 \
+--topic hello.topic
 ```
 
 Topic의 config를 변경하기 위해서는 bin/kafka-config.sh를 이용해서 바꾸는 것이 좋다.  
@@ -65,6 +69,5 @@ $ kafka-config.sh --bootstrap-server my-kafka1:9092,my-kafka2:9092,my-kafka3:909
 --entity-type topics \
 --entity-name hello.kafka \
 --alter --add-config retention.ms=8640000
-
 
 ```

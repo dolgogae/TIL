@@ -67,3 +67,5 @@ min.insync.replicas = 1
 # 만족하지 못할경우 producer는 NotEnoughReplicas 예외를 발생 시킨다.
 # 보통 ack=all과 함께 사용한다.
 ```
+
+

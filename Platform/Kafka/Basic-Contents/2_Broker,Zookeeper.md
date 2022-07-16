@@ -18,6 +18,14 @@ Client는 특정 Broker에 연결하면 전체 클러스터에 연결됨.
 - Partition Leader 장애시 Leader election 수행
 - Controller 장애시 Zookeeper가 재선출
 
+> Kafka는 기본적으로 메모리, CPU cache를 사용하지 않는다. 파일 시스템에 모든 데이터를 저장한다.  
+> 여기서 입출력에 대한 속도에 대한 해결은 `OS Page Cache`를 통해서 해결한다.  
+> 메모리의 일부를 Kafka에서 OS Page Cache영역으로 할당을 한 뒤에 한번 읽은 데이터를 Caching 해놓는다.  
+> 이 때문에 Kafka는 힙 메모리 사이즈를 크게 설정할 필요가 없고, JVM의 GC로 인한 성능 이슈가 일어나지 않는다.  
+
+## Coordinator
+다수의 Broker 중 한 대는 코디네이터 역할을 맡게 된다.  
+역할로는 컨슈머 그룹의 상태를 체크하고 파티션을 컨슈머와 매칭되도록 하는 역할을 한다.
 
 # Zookeeper
 
@@ -33,3 +41,10 @@ Zookeeper는 Broker를 관리하는 소프트웨어
 - 분산 환경에서 예상치 못한 장애 발생시 일관성 유지.
 
 분산형 Config 정보 유지, 분산 동기화 서비스를 제공하고 대용량 분산 시스템을 위한 네이밍 레지스트리 제공 소프트웨어.  
+
+```shell
+
+# Zookeeper 쉘 실행
+$ ./zookeeper-shell.sh localhost:2181
+
+```

@@ -18,12 +18,25 @@ Kafka 안에서 메시지가 저장되는 장소(논리적인 표현)
 Partition : Commit Log, 병렬처리(Throughput 향상)을 위해서 다수의 partition 사용. **서로 독립적인 관계이다.**  
 Segment : 메시지가 저장되는 실제 물리 파일  
 
-
 Topic 생성시 Partiton 개수를 지정(개수 변경이 가능하나 운영시에는 권장하지 않는다.).  
 Partition들은 Broker에 분산되어 Segment 파일로 구성.  
 > Rolling Strategy: log.segment.byte(def 1G), log.roll.hours(def 168h)로 파일의 크기를 정한다.  
 
 Partition에저장된 데이터는 변경 불가능(immutable).  
+
+## Topic 이름 제약 조건
+1. 빈문자열 토픽 제한
+2. ., ..로 생성 안됨
+3. 249자 미만으로 생성해야 함.
+4. 영어, 대소문자, 0-9, ., _, - 조합으로만 생성 가능.
+5. 내부 관리목적 토픽(__consumer_offsets, __transaction_state)과 동일 생성 불가능.
+6. ., _가 동시에 들어가면 안된다.
+7. ., _는 동일한 문자로 봐서 대체하는 토픽명을 만드는 것 불가능.
+
+## Topic 작성 예시
+Topic같은 경우 인프라 운영자가 가이드를 주어 운영의 효율화를 시키는 것이 좋다.
+- <환경>.<팀명>.<애플리케이션명>.<메시지 타입>
+- <프로젝트명>.<서비스 명>.<환경>.<이벤트명>
 
 ## Topic 관련 CLI
 
@@ -36,7 +49,7 @@ CLI에서 --bootstarp-server 옵션에 변수로 broker 서버를 넣게되는�
 
 
 # topic 생성 명령 
-$ kafka-topics.sh --create \
+$ ./kafka-topics.sh --create \
 --bootstrap-server my-kafka1:9092,my-kafka2:9092,my-kafka3:9092 \
 --partitions 3 \
 --replication-factor 1 \
@@ -45,18 +58,28 @@ $ kafka-topics.sh --create \
 # --config 옵션은 명령에 포함하지 않은 추가적인 옵션이 실행가능하다.
 
 # topic 리스트 명령어 
-$ kafka-topics.sh --list \
+$ ./kafka-topics.sh --list \
 --bootstrap-server my-kafka1:9092,my-kafka2:9092,my-kafka3:9092 \
 
 # topic 상세 조회
-$ kafka-topics.sh --describe \
+$ ./kafka-topics.sh --describe \
 --bootstrap-server my-kafka1:9092,my-kafka2:9092,my-kafka3:9092 \
 --topic hello.topic
 
 # topic제거
-$ kafka-topics.sh --delete
+$ ./kafka-topics.sh --delete
 --bootstrap-server my-kafka1:9092,my-kafka2:9092,my-kafka3:9092 \
 --topic hello.topic
+
+# record 삭제
+$ cat > delete-topic.json <EOF
+> {"partitions": [{"topic": "test", "partiton":0, "offset":50}], "verion":1}
+> EOF
+
+$ ./kafka-delete-records.sh \
+--bootstrap-server my-kafka1:9092,my-kafka2:9092,my-kafka3:9092 \
+--offset-json-file delete-topic.json
+
 ```
 
 Topic의 config를 변경하기 위해서는 bin/kafka-config.sh를 이용해서 바꾸는 것이 좋다.  

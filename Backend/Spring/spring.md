@@ -60,7 +60,7 @@ WAS는 멀티 스레드 부분을 처리해준다.
 Http요청 메시지, Http응답 메시지를 편리하게 사용하도록 도와주는 객체이다.  
 HTTP 스펙이 제공하는 요청, 응답 메시지 자체를 이해해야 한다.
 
-## HTTP 요청 데이터
+## HttpServletRequest
 
 ### **GET - 쿼리 파라미터**
 메시지에 바디없이, URL의 쿼리 파라미터에 데이터를 포함해서 전달  
@@ -70,7 +70,31 @@ ex) 검색, 필터, 페이징등에서 많이 사용하는 방식
 메시지 바디에 쿼리 파라미터 형식으로 전달 (username=hell&age=20)  
 ex) 회원 가입, 상품 주문, HTML form 사용  
 
+`application/x-www-form-urlencoded`형식은 GET에서 살펴본 쿼리 파라미터 형식과 같아 조회 메서드를 그대로 사용한다.  
+따라서, `request.getParameter()`로 구분없이 조회가 가능하다.  
+
+> content-type은 HTTP 메시지 바디의 데이터 형식 지정.  
+> GET은 HTTP 메시지 바디를 사용하지 않기 때문에 content-type이 null이다.  
+> 반면, POST는 해당 데이터를 포함해서 response를 해야하기 때문에 content-type이 필수적으로 필요하다.
+
+test는 postman을 활용히면 편하다.  
+
 ### **HTTP message body에 데이터 직접 요청**
 HTTP API에서 주로 사용(json, xml, text)  
 주로 json을 많이 사용  
 POST, PUT, PATCH  
+
+Json 결과를 파싱하려면 Jackson, Gson같은 변환 라이브러리를 사용해야한다.  
+spring boot MVC를 사용하게 되면 기본적으로 Jackson 라이브러리를 사용하게 된다.  
+
+## HttpServletResponse
+
+Http응답 메시지 생성.  
+- 응답 코드 지정
+- 헤더 생성
+- 바디 생성
+- Content-Type, 쿠키, redirect
+
+### 단순 텍스트, HTML
+
+### Json

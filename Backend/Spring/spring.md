@@ -56,3 +56,21 @@ WAS는 멀티 스레드 부분을 처리해준다.
 가장 중요한건 max thread 수를 잘 설정하는 것이다.
 -> 성능테스트 : 실제 서비스와 유사하게 성능 테스트 시도 / 툴: 아파치 ab, nGrinder
 
+## HttpServletRequest, HttpServletResponse
+Http요청 메시지, Http응답 메시지를 편리하게 사용하도록 도와주는 객체이다.  
+HTTP 스펙이 제공하는 요청, 응답 메시지 자체를 이해해야 한다.
+
+## HTTP 요청 데이터
+
+### **GET - 쿼리 파라미터**
+메시지에 바디없이, URL의 쿼리 파라미터에 데이터를 포함해서 전달  
+ex) 검색, 필터, 페이징등에서 많이 사용하는 방식  
+
+### **POST - HTML form**
+메시지 바디에 쿼리 파라미터 형식으로 전달 (username=hell&age=20)  
+ex) 회원 가입, 상품 주문, HTML form 사용  
+
+### **HTTP message body에 데이터 직접 요청**
+HTTP API에서 주로 사용(json, xml, text)  
+주로 json을 많이 사용  
+POST, PUT, PATCH  

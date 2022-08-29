@@ -44,7 +44,7 @@ public class Main {
         }
 
         // getClass(): 실행중에 개체의 클래스 정보를 가져올 수 있다.
-        //
+        
         Person p0 = new PartTimeTeacher("Sad", "Panda", Department.math, 10);
         Person p1 = new Teacher("Pope", "Kim", Department.math);
 

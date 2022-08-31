@@ -1,6 +1,6 @@
-package com.example.client.domain;
+package com.example.client.dto;
 
-public class UserResponse {
+public class UserRequest {
     private String name;
     private int age;
 

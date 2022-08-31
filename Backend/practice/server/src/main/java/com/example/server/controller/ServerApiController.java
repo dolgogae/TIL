@@ -1,7 +1,7 @@
 package com.example.server.controller;
 
-import com.example.server.domain.Req;
-import com.example.server.domain.User;
+import com.example.server.dto.Req;
+import com.example.server.dto.User;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.RequestEntity;
@@ -35,7 +35,7 @@ public class ServerApiController{
         URI uri = UriComponentsBuilder
                 .fromUriString("https://openapi.naver.com")
                 .path("/v1/search/local.json")
-                .queryParam("query", "중국집")
+                .queryParam("query", "갈비집")
                 .queryParam("display", 10)
                 .queryParam("start", 1)
                 .queryParam("sort", "random")
@@ -58,6 +58,12 @@ public class ServerApiController{
         return result.getBody();
     }
 
+    /**
+     *
+     * @param name
+     * @param age
+     * @return
+     */
     @GetMapping("/hello")
     public User hello(@RequestParam String name, @RequestParam int age){
         User user = new User();
@@ -69,7 +75,7 @@ public class ServerApiController{
     @PostMapping("/user/{userId}/name/{userName}")
     public Req<User> post(
                      @RequestBody Req<User> user,
-                     @PathVariable int userId,
+                     @PathVariable int userId,          // 경로상의 변수와 매칭된다.
                      @PathVariable String userName,
                      @RequestHeader("x-authorization") String authorization,
                      @RequestHeader("custom-header") String customHeader){

@@ -1,4 +1,4 @@
-package com.example.client.domain;
+package com.example.client.dto;
 
 public class Req<T> {
     private Header header;

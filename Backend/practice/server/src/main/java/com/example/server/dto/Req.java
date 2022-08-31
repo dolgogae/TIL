@@ -1,4 +1,4 @@
-package com.example.server.domain;
+package com.example.server.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

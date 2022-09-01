@@ -1,8 +1,8 @@
 package com.example.restaurant.wishlist.service;
 
-import com.example.restaurant.naver.NaverClient;
-import com.example.restaurant.naver.dto.SearchImageReq;
-import com.example.restaurant.naver.dto.SearchLocalReq;
+import com.example.restaurant.naver.search.NaverClient;
+import com.example.restaurant.naver.search.dto.SearchImageReq;
+import com.example.restaurant.naver.search.dto.SearchLocalReq;
 import com.example.restaurant.wishlist.dto.WishListDto;
 import com.example.restaurant.wishlist.entity.WishListEntity;
 import com.example.restaurant.wishlist.repository.WishListRepository;

@@ -4,8 +4,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import lombok.var;
-
 import java.net.URI;
 
 import com.example.restaurant.naver.datalab.dto.DatalabTotalSearchRequest;

@@ -1,6 +1,6 @@
 package com.example.restaurant.wishlist.service;
 
-import com.example.restaurant.naver.search.NaverClient;
+import com.example.restaurant.naver.search.NaverSearchClient;
 import com.example.restaurant.naver.search.dto.SearchImageReq;
 import com.example.restaurant.naver.search.dto.SearchLocalReq;
 import com.example.restaurant.wishlist.dto.WishListDto;
@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class WishListService {
 
-    private final NaverClient naverClient;
+    private final NaverSearchClient naverClient;
     private final WishListRepository wishListRepository;
 
     public WishListDto search(String query){

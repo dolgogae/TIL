@@ -51,4 +51,29 @@ public class OrderRepository {
         TypedQuery<Order> query = em.createQuery(cq).setMaxResults(1000); //최대1000건
         return query.getResultList();
     }
+
+    /**
+     * 
+     * @return
+     * 한번의 쿼리로 모두 가져올 수 있다.
+     */
+    public List<Order> findAllWithMemberRepository() {
+        return em.createQuery(
+            "select o from Order o" + 
+            " join fetch o.member m" + 
+            " join fetch o.delivery d", Order.class).getResultList();
+    }
+
+    /**
+     * 
+     * @return
+     * 식별자를 넣기 때문에 order를 그대로 new 객체의 인자로 넣어주면 안된다.
+     * -> 다른 객체로 분리하는 것이 좋다. to OrderSimpleRepository
+     */
+    // public List<SimpleOrderDto> findOrderDtos() {
+    //     return em.createQuery(
+    //         "select new jpabook.jpashop.respoitory.OrderSimpleQeuryDto(o.id, m.name, o.orderDate, o.status, d.address) from Order o" + 
+    //         " join fetch o.member m" + 
+    //         " join fetch o.delivery d", SimpleOrderDto.class).getResultList();
+    // }
 }

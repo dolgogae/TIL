@@ -24,5 +24,4 @@ public class SearchLocalReq{
         map.add("sort", sort);
         return map;
     }
-
 }

@@ -34,7 +34,7 @@ public class RestTemplateService {
                 .encode()
                 .build()
                 .toUri();
-        
+
         System.out.println(uri.toString());
 
         RestTemplate restTemplate = new RestTemplate();
@@ -54,7 +54,6 @@ public class RestTemplateService {
 
         System.out.println(result.getStatusCode());
         System.out.println(result.getBody());
-
         return result.getBody();
     }
 

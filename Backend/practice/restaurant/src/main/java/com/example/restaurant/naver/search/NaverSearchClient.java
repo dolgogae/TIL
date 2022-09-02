@@ -12,7 +12,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 
 @Component
-public class NaverClient {
+public class NaverSearchClient {
 
     @Value("${naver.client.search.id}")
     private String naverClientId;
@@ -50,7 +50,7 @@ public class NaverClient {
         return responseEntity;
     }
 
-    public static HttpHeaders getHttpHeaders(String id, String passwd, MediaType contentType){
+    private static HttpHeaders getHttpHeaders(String id, String passwd, MediaType contentType){
         HttpHeaders header = new HttpHeaders();
         header.set("X-Naver-Client-Id", id);
         header.set("X-Naver-Client-Secret", passwd);

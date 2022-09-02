@@ -3,7 +3,13 @@ naver:
     search:
       local: https://openapi.naver.com/v1/search/local.json
       image: https://openapi.naver.com/v1/search/image
+    datalab:
+      total: https://openapi.naver.com/v1/datalab/search
   client:
-    id: KeckNyddsr18b83mTjJ5
-    secret: fvBoLbUic4
+    search:
+      id: KeckNyddsr18b83mTjJ5
+      secret: fvBoLbUic4
+    datalab:
+      id: 8RNVwosJ038Mk_DChPhC
+      secret: K172n1MSQM
 

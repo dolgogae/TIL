@@ -1,6 +1,7 @@
 package com.example.restaurant.naver;
 
-import com.example.restaurant.naver.dto.SearchLocalReq;
+import com.example.restaurant.naver.search.NaverSearchClient;
+import com.example.restaurant.naver.search.dto.SearchLocalReq;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class NaverClientTest {
 
     @Autowired
-    private NaverClient naverClient;
+    private NaverSearchClient naverClient;
 
     @Test
     public void searchLocalTest(){

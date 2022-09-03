@@ -1,4 +1,6 @@
-public class KrwCalulator implements ICalculator{
+package component;
+
+public class KrwCalulator implements ICalculator {
 
     private int price = 1;
 

@@ -1,3 +1,5 @@
+package component;
+
 public class Calculator {
     private ICalculator iCalculator;
 

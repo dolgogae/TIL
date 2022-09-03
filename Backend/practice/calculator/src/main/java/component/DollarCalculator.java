@@ -1,4 +1,6 @@
-public class DollarCalculator implements ICalculator{
+package component;
+
+public class DollarCalculator implements ICalculator {
 
     private int price = 1;
     private MarketApi marketApi;

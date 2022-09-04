@@ -1,19 +1,17 @@
 package com.example.springcalculator.controller;
 
 import com.example.springcalculator.component.Calculator;
-import com.example.springcalculator.component.ICalculator;
+import com.example.springcalculator.dto.RequestDto;
+import com.example.springcalculator.dto.ResponseDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class CalculatorApiController {
 
-    private Calculator calculator;
+    private final Calculator calculator;
 
     @GetMapping("/sum")
     public int sum(@RequestParam int x, @RequestParam int y){
@@ -24,4 +22,17 @@ public class CalculatorApiController {
     public int sub(@RequestParam int x, @RequestParam int y){
         return this.calculator.sub(x, y);
     }
+
+    @PostMapping("/sub")
+    public ResponseDto sub2(@RequestBody RequestDto request){
+
+        int x = request.getX();
+        int y = request.getY();
+
+        ResponseDto response = new ResponseDto();
+        response.setResult(this.calculator.sub(x, y));
+
+        return response;
+    }
+
 }

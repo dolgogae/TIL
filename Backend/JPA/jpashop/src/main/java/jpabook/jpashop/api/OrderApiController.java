@@ -6,6 +6,7 @@ import jpabook.jpashop.domain.OrderItem;
 import jpabook.jpashop.domain.OrderStatus;
 import jpabook.jpashop.repository.OrderRepository;
 import jpabook.jpashop.repository.OrderSearch;
+import jpabook.jpashop.repository.order.query.OrderFlatDto;
 import jpabook.jpashop.repository.order.query.OrderQueryDto;
 import jpabook.jpashop.repository.order.query.OrderQueryRepository;
 import lombok.Data;
@@ -24,6 +25,24 @@ public class OrderApiController {
 
     private final OrderRepository orderRepository;
     private final OrderQueryRepository orderQueryRepository;
+
+    /**
+     * 권장 순서
+     * v3과 같이 entity로 우선 접근 하는 것을 권장한다.
+     * 이유로는 fetch join을 사용 가능하고, 
+     * batch size의 경우도 코드를 거의 수정하지 않고 옵션을 변경해 최적화가 가능하다.
+     * 반면 dto의 경우에는 성능 최적화를 할 경우에 굉장히 많은 양의 코드 수정이 들어가게 된다.
+     * 
+     * entity로 안될경우 dto로 하는 것을 권장한다.(v4~)
+     * v4는 코드가 단순하다: roof를 돌려서 OrderItems를 채우면 된다.
+     * v5는 코드가 복잡해진다: orderItems를 하나씩 쿼리를 날릴 필요가 없이 한번에 가져오고 메모리에 올려놓고 재조립한다.
+     *                    v4에 대비해 성능이 훨씬 좋다고 할 수 있다.
+     * v6는 쿼리 자체도 한번에 해결하게 된다. 1:N 관계로 같은 id의 row가 여러개로 조회된다. 페이징도 쉽지 않다.
+     *     데이터가 많으면 중복 전송이 증가해서 v5에 비해서 성능차이도 미비하다고 할 수 있다.
+     * 
+     * 만약, entity 접근의 fetch join 경우로도 해결이 안되면 사실상 dto 접근보다는 다른 방법으로 해결할 것을 찾는 것도 좋다.
+     */
+
 
     /**
      * @return
@@ -57,6 +76,8 @@ public class OrderApiController {
     /**
      * 중복된 데이터가 조회된다. 
      * order-orderItem간의 join에서 중복된 데이터가 생성된다.(1:N 관계이기 때문이대)
+     * 
+     * 페이징을 할 수 없는 문제가 생긴다.
      */
     @GetMapping("/api/v3/orders")
     public List<OrderDto> ordersV3() {
@@ -85,8 +106,8 @@ public class OrderApiController {
         @RequestParam(value = "limit", defaultValue = "100") int limit) {
         List<Order> orders = orderRepository.findAllWithMemberDelivery(offset, limit);
         List<OrderDto> collect = orders.stream()
-        .map(OrderDto::new)
-        .collect(Collectors.toList());
+            .map(OrderDto::new)
+            .collect(Collectors.toList());
 
         return collect;
     }
@@ -104,9 +125,21 @@ public class OrderApiController {
         return orderQueryRepository.findAllByDto_optimization();
     }
 
+    /**
+     * 한번의 쿼리로 완성이 된다.
+     * 페이징도 가능하지만 orderItems가 기준이 된다. 
+     * 따라서 원하는 orderId로 페이징은 안된다고 보면 된다.
+     */
     @GetMapping("/api/v6/orders")
-    public List<OrderQueryDto> ordersV6(){
+    public List<OrderFlatDto> ordersV6(){
         return orderQueryRepository.findAllByDto_flat();
+        // List<OrderFlatDto> flats = orderQueryRepository.findAllByDto_flat();
+
+        // return flats.stream().collect(groupingBy(o -> new OrderQueryDto(o.getOrderId(), o.getName(), o.getOrderDate(), o.getOrderStatus(), o.getAddress()),
+        //                     mapping(o -> new OrderItemDto(o.getOrderId(), o.getItemName(), o.getOrderPrice(), o.getCount()), toList())
+        //             )).entrySet().stream()
+        //             .map(e -> new OrderQueryDto(e.getKey().getOrderId(), e.getKey().getName(), e.getKey().getOrderDate(), e.getKey().getOrderStatus(), e.getKey().getAddress(), e.getValue()))
+        //             .collect(toList());
     }
 
     @Data

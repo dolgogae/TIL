@@ -17,7 +17,6 @@ public class OrderQueryRepository {
     private final EntityManager em;
 
     /**
-     * 
      * orderItems에 대한 쿼리를 따로 날리지 않고 끝낸다.
      * 이후에 따로 쿼리를 만들어서 넣어주어야한다.
      */
@@ -85,8 +84,16 @@ public class OrderQueryRepository {
     }
 
 
-    public List<OrderQueryDto> findAllByDto_flat() {
-        return null;
+    public List<OrderFlatDto> findAllByDto_flat() {
+        return em.createQuery(
+            "select new jpabook.jpashop.repository.order.qeury.OrderFlatDto(o.id, m.name, o.orderDate, o.status, d.address, i.name, oi.orderprice, oi.count)"+
+            " from Order o"+
+            " join o.member m"+
+            " join o.delivery d"+
+            " join o.orderItems oi"+
+            " join oi.item i", OrderFlatDto.class
+        ).getResultList();
+
     }
 
 

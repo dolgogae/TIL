@@ -61,8 +61,31 @@ public class JpaMain {
              */
             b.setUsername("JPAHello");
 
-            tx.commit();
+            /**
+             * flush를 하게 되면, 중간에 원할때 DB에 쿼리를 날릴 수 있다.
+             * 하지만, 1차 캐시는 유지되어 있는다. 쓰기 지연 SQL 저장소가 DB에 반영이 되는 과정이다.
+             *
+             * JPQL 실행시에는 SQL로 변역하는 과정이 있기 때문에
+             * 그 전에 flush를 한번 날리게 된다.
+             */
+            Member member2 = new Member(200L, "member2");
+            em.persist(member2);
+            em.flush();
 
+            /**
+             * detach를 하게 되면 영속성 컨텍스트에서 더이상 관리하지 않는다. -> 준영속 상태가 된다.
+             */
+            Member member3 = em.find(Member.class, 100L);
+            member3.setUsername("member3");
+            em.detach(member3);
+
+            /**
+             * 영속성 컨텍스트에서 아예 지운다.
+             * 다시 찾을 경우에는 다시 select문이 날아가서 찾아오게 된다.
+             */
+            em.clear();
+
+            tx.commit();
         } catch (Exception e){
             e.printStackTrace();
             tx.rollback();

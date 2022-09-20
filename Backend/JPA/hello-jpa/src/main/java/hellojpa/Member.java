@@ -21,6 +21,14 @@ import java.util.Date;
 @Entity
 public class Member extends BaseEntity {
 
+    public Member() {
+    }
+
+    public Member(Long id, String username) {
+        this.id = id;
+        this.username = username;
+    }
+
     //    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "member_seq_generator")
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id @GeneratedValue

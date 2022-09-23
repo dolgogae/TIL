@@ -116,8 +116,8 @@ public class OrderRepository {
     public List<Order> findAllWithItem() {
         return em.createQuery("select distinct o from Order o"+
                                 " join fetch o.member m"+
-                                " join fecch o.delivery d"+
-                                " join fetch o.orderItem oi"+
+                                " join fetch o.delivery d"+
+                                " join fetch o.orderItems oi"+
                                 " join fetch oi.item i", Order.class)
                 // .setFirstResult(1)
                 // .setMaxResults(100)     // 다음과 같이 페이징을 할 수 있지만 문제점이 있다.

@@ -28,6 +28,7 @@ public class Order {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL) // orderItem을 persist 하게되면 자동으로 persist 해준다.
     private List<OrderItem> orderItems = new ArrayList<>();
 

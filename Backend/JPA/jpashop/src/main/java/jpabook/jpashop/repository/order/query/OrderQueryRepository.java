@@ -93,8 +93,5 @@ public class OrderQueryRepository {
             " join o.orderItems oi"+
             " join oi.item i", OrderFlatDto.class
         ).getResultList();
-
     }
-
-
 }

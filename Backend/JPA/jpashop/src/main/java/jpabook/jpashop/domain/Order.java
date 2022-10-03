@@ -14,13 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "oreders")
+@Table(name = "orders")
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Order {
 
     @Id @GeneratedValue
-    @Column(name = "oreder_id")
+    @Column(name = "order_id")
     private Long id;
 
     @JsonIgnore

@@ -1,6 +1,5 @@
-package jpabook.jpashop.controllorer.form;
+package jpabook.jpashop.controller.form;
 
-import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 

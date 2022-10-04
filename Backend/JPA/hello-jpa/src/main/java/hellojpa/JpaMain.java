@@ -7,6 +7,8 @@ import javax.persistence.Persistence;
 
 import org.hibernate.Hibernate;
 
+import java.util.List;
+
 public class JpaMain {
     public static void main(String[] args) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
@@ -83,6 +85,73 @@ public class JpaMain {
              * 영속성 컨텍스트에서 아예 지운다.
              * 다시 찾을 경우에는 다시 select문이 날아가서 찾아오게 된다.
              */
+            em.clear();
+
+            Team team = new Team();
+            team.setName("TeamA");
+            em.persist(team);
+
+            Member member4 = new Member();
+            // member4.setTeamId(team.getId());
+            member4.setUsername("member1");
+            member4.setTeam(team);
+            em.persist(member4);
+
+            // 연관관계를 맺어준다면 바로바로 찾아올 수 있다.
+            Member findMember = em.find(Member.class, member4.getId());
+            Team findTeam = findMember.getTeam();
+
+            Team newTeam = em.find(Team.class, 100L);
+            findMember.setTeam(newTeam);
+            em.flush();
+            em.clear();
+
+            // DB 테이블은 join으로 양방향으로 기본적으로 조회가 가능하다.
+            // 이 기능을 JPA에서 해주고 싶으면 양뱡향 연관관계를 맺어주어야 한다.
+            // 객체는 일반적으로 단방향으로 하면 단순하고 좋은 경우가 많다.(웬만하면 단방향 매핑으로 설계를 마치는 것이 좋다.)
+            Member findMember2 = em.find(Member.class, member4.getId());
+            List<Member> members = findMember2.getTeam().getMembers();
+
+            for(Member mem: members){
+                System.out.println("member: " + mem.getUsername());
+            }
+
+            em.flush();
+            em.clear();
+            ///////////////////////////////
+            Member member5 = new Member();
+            member5.setUsername("member5");
+            em.persist(member5);
+
+            Team team2 = new Team();
+            team2.setName("TeamA");
+            // 연관 관계의 주인이 아닌 곳에 member를 넣어도 실질적으로 DB에 반영되지 않는다.
+            team2.getMembers().add(member5);
+            // 연관 관계의 주인인 곳에 넣으면 DB에 반영이 된다.
+            member5.setTeam(team2);
+
+            em.flush();
+            em.clear();
+
+            // 하지만 양쪽에 모두 넣는 것을 권장한다.
+            // 실제 team에서 member를 사용하는 시점에 쿼리를 날리게 된다.(따라서 값이 조회가 되긴 한다.)
+            // 하지만 flush(), clear() 하기전에 값을 조회한다면 members는 아무것도 조회되지 않을 것이다.
+            // 테스트케이스를 작성할때도 오류가 날 수도 있기 때문에
+            // 양방향 모두에 값을 세팅해주는 것이 좋다.
+            Member findMember3 = em.find(Member.class, member5.getId());
+            List<Member> members2 = findMember3.getTeam().getMembers();
+
+            for(Member mem: members2){
+                System.out.println("member: " + mem.getUsername());
+            }
+
+            // 두개 모두 넣어주는 것에 실수를 대비하는 것이 좋다.
+            // 반대로 team에서 member를 만들어줘도 둘다 넣어지는 것이라 편한대로 하면 된다.
+            member5.changeTeam(team2);
+
+            em.persist(team2);
+
+            em.flush();
             em.clear();
 
             tx.commit();

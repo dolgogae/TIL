@@ -72,6 +72,11 @@ public class Member extends BaseEntity {
     @JoinColumn(name = "TEAM_ID")
     private Team team;
 
+    /**
+     * 1:1 연관관계는 DB상 주 테이블에 주인을 주는 것이 좋다.
+     * 예시에서는 member가 locker를 가지므로 member를 주인으로 하는 것이 좋다.
+     * 반대 방향으로 한다면 양방향을 설정해주어야 한다.
+     */
     @OneToOne
     @JoinColumn(name = "LOCKER_ID")
     private Locker locker;

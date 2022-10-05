@@ -25,9 +25,15 @@ public class Team {
      * 테이블에서 외래키가 있는 곳을 주인으로 정하는 것이 좋다.
      * team을 바꾸게 되면 member에도 update 쿼리가 날아가고 복잡해지게 된다.
      * N쪽이 연관관계의 주인이 된다.
+     *
+     * 만약 team이 연관관계의 주인이 된다면 1:N 연관관계가 된다.
+     * 하지만 update 쿼리가 많이 날아가게 된다는 점이 있다.
+     * 실무에선 테이블이 한두개가 아닌데 team이 아닌 member에도 update 쿼리가 날아간다는 점에서 관리 추적이 힘들 수 있다.
      */
     @OneToMany(mappedBy = "team")
     private List<Member> members = new ArrayList<>();
+    // @JoinColumn(name = "team_id")
+    // private List<Member> members = new ArrayList<>();
 
     public void addMember(Member member){
         member.setTeam(this);

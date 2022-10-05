@@ -22,6 +22,9 @@ public class Member {
     @Embedded
     private Address address;
 
+    /**
+     * 회원 입장에서 주문을 굳이 알 필요가 없을 수도 있다.
+     */
     @JsonIgnore // 주문정보가 빠지게 된다. api 호출시에
     @OneToMany(mappedBy = "member") // 읽기전용이 된다.
     private List<Order> orders = new ArrayList<>();

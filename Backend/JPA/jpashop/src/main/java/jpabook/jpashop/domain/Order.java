@@ -23,6 +23,9 @@ public class Order {
     @Column(name = "order_id")
     private Long id;
 
+    /**
+     * 가급적이면 단방향이 좋다.
+     */
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")

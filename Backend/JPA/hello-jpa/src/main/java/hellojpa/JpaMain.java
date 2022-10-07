@@ -154,6 +154,27 @@ public class JpaMain {
             em.flush();
             em.clear();
 
+            /**
+             * 상속관계 매핑
+             * 객체의 상속 구조와 DB의 슈퍼타입 서브타입 관계를 매핑하는 것.
+             * 1. Join 전략: DB를 공통 컬럼 테이블에 나머지 정보를 join하는 것.(구분하는 컬럼도 보통 넣어준다.)
+             * 2. 단일 테이블 전략: 한개의 테이블로 모두 묶어서 만드는 것
+             * 3. 각각 테이블을 만들어서 각각 정보를 다 가지고 있는 것.
+             */
+            Movie movie = new Movie();
+            movie.setDirector("aaaa");
+            movie.setActor("bbb");
+            movie.setName("바람과 함께 사라지다.");
+            movie.setPrice(10000);
+
+            em.persist(movie);
+            
+            em.flush();
+            em.clear();
+
+            // 필요시에 join도 JPA가 알아서 해준다.
+            Movie findMovie = em.find(Movie.class, movie.getId());
+
             tx.commit();
         } catch (Exception e){
             e.printStackTrace();

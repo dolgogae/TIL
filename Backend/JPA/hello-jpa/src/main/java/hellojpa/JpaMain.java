@@ -7,6 +7,7 @@ import javax.persistence.Persistence;
 
 import org.hibernate.Hibernate;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class JpaMain {
@@ -160,6 +161,8 @@ public class JpaMain {
              * 1. Join 전략: DB를 공통 컬럼 테이블에 나머지 정보를 join하는 것.(구분하는 컬럼도 보통 넣어준다.)
              * 2. 단일 테이블 전략: 한개의 테이블로 모두 묶어서 만드는 것
              * 3. 각각 테이블을 만들어서 각각 정보를 다 가지고 있는 것.
+             *
+             * 비즈니스적으로 복잡하고 중요하면 join으로 하고, 단순한 경우에는 단일 테이블이 좋다.
              */
             Movie movie = new Movie();
             movie.setDirector("aaaa");
@@ -174,6 +177,21 @@ public class JpaMain {
 
             // 필요시에 join도 JPA가 알아서 해준다.
             Movie findMovie = em.find(Movie.class, movie.getId());
+
+            // 테이블을 각각 분리했을 시에 다음에서는 모든 테이블(movie, book 등)을 조회해야 가능하다
+            Item item = em.find(Item.class, movie.getId());
+
+            /**
+             * @MappedSuperclass
+             * 공통매핑 정보가 필요할때(데이터가 컬럼이 곂치는게 많다.)
+             * 직접 생성할일이 없으니 추상 클래스로 만드는 것이 좋다.
+             */
+            Member member6 = new Member();
+            member6.setUsername("kim");
+            member6.setCreatedBy("user1");
+            member6.setCreateDate(LocalDateTime.now());
+
+            em.persist(member6);
 
             tx.commit();
         } catch (Exception e){

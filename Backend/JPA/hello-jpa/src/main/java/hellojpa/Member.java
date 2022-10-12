@@ -6,7 +6,9 @@ import org.hibernate.internal.build.AllowPrintStacktrace;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /*
  * @SequenceGenerator: sequence와 매핑하는 annotation
@@ -80,6 +82,17 @@ public class Member extends BaseEntity {
     @OneToOne
     @JoinColumn(name = "LOCKER_ID")
     private Locker locker;
+
+    @OneToMany(mappedBy = "member")
+    private List<MemberProduct> memberProducts = new ArrayList<>();
+
+    /**
+     * 다음 변수는 공통되게 모든 엔티티에 들어간다.
+     */
+//        private String createdBy;
+//        private LocalDateTime createdDate;
+//        private String lastModifiedBy;
+//        private LocalDateTime lastModifiedDate;
 
     public Long getId() {
         return id;

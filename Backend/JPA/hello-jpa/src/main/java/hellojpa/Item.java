@@ -11,7 +11,20 @@ import javax.persistence.InheritanceType;
 /**
  * 아무것도 달아주지 않고 상속만 할 경우에는 단일 테이블 전략으로 DB에 매핑된다.
  * 
- * Inheritance: JOINED - 조인 전략으로 매핑된다.
+ * Inheritance: JOINED - 조인 전략
+ *              SINGLE_TABLE - 단일 테이블 전략
+ *              TABLE_PER_CLASS - 각각의 테이블로 분리
+ *
+ * 조인 전략
+ * 장점: 정규화가 되어 있고, 저장공간이 효율적이다.
+ * 단점: 조회시 조인을 많이 사용하고, 조회쿼리가 복잡하다. 저장시에는 쿼리가 2번 나가게 된다.
+ *
+ * 단일 테이블 전략
+ * 장점: 조회성능과 단순함
+ * 단점: 쓸데없는 데이터까지 많이 들어간다. 테이블이 필요보다 커진다.
+ *
+ * 각각 테이블 분리
+ * [추천하지 않는다.] 여러 테이블 함께 조
  */
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)

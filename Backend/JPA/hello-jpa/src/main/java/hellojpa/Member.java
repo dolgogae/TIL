@@ -68,7 +68,9 @@ public class Member extends BaseEntity {
      * 따라서 member 입장에서는 ManyToOne으로 해주어야 한다.
      * JoinColumn은 테이블에서 매칭되는 컬러값이다.
      *
-     * 지연 로딩(lazy loading): 한번에 모든 정보를 긁어오는것이 아닌 호출 시에 해당 값을 채워 넣는 개념.
+     * 즉시 로딩: 한번에 모든 정보를 가져오는 것.
+     * 지연 로딩(lazy loading): 한번에 모든 정보를 긁어오는것이 아닌 호출 시에 해당 값을 채워 넣는 개념. - 프록시로 가져온다.
+     * 실무에서는 가급적 지연로딩을 쓰는게 좋다.(예상치 못한 SQL이 날아가거나 JPQL에서 N+1문제를 일으킨다.)
      */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TEAM_ID")

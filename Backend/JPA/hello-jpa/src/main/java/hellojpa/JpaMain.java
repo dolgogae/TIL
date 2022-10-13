@@ -193,6 +193,52 @@ public class JpaMain {
 
             em.persist(member6);
 
+            /**
+             * 프록시
+             * 한개의 엔티티에서 다른 엔티티를 참조하고 있을때, 참조하는 엔티티를 사용하지 않을때는 다 가져오는 것이 비효율
+             * 따라서 프록시 객체를 통해서 임시의 객체만 받아온다.
+             *
+             * 프록시의 특징
+             * 실제 클래스를 상속 받아서 만들어 겉모양이 같다.
+             * 사용하는 입장에서는 진짜인지 프록시인지 구분하지 않아도 된다.
+             * 프록시 객체를 호출하면 프록시 객체는 실제 객체의 메소드를 호출해서 값을 가져오게 된다.
+             * 프록시 객체는 실제 객체의 참조(target)를 보관
+             * 초기화시에 프록시가 엔티티로 대체되는 것이 아니다. 프록시는 프록시값을 채워 넣는다.
+             * => ==으로 비교 대신 instance of로 비교해야 한다.
+             *
+             * 예: getName() 호출
+             * 프록시 객체 초기화 요청 -> 영속성 컨텍스트 DB 조회 및 엔티티에 실제 객체 생성
+             * -> 프록시에서 생성된 실제 엔티티에 getName 호출
+             * 하지만 영속성 컨텍스트에 이미 엔티티가 있다면 getReference를 호출해도 실제 엔티티를 반환한다.
+             * 반대 상황에서 프록시가 먼저 있다면 find를 호출해도 프록시가 호출된다.
+             */
+            Member findMember4 = em.find(Member.class, 1L);
+            // 만약 비즈니스 로직상 team 정보가 필요없다면..
+            System.out.println("username = " + findMember4.getUsername());
+            // team을 출력해야 할때
+            System.out.println("team = " + findMember4.getTeam().getName());
+
+            Member member7 = new Member();
+            member7.setUsername("hello");
+
+            em.persist(member7);
+            em.flush();
+            em.clear();
+
+//            Member findMember5 = em.find(Member.class, member7.getId());
+            // 호출시점상에서는 쿼리가 나가지 않는다.
+            // 하지만 밑의 사용 시점에서 쿼리가 날아간다.
+            Member findMember5_1 = em.getReference(Member.class, member7.getId());
+            System.out.println("findMember = " + findMember5_1.getId());
+            System.out.println("findMember = " + findMember5_1.getUsername());
+
+            Member m1 = em.find(Member.class, member7.getId());
+            Member m2 = em.getReference(Member.class, member7.getId());
+            System.out.println("m1 == m2: " + (m1.getClass() == m2.getClass())); // false
+            System.out.println("m1 == m2: " + (m1 instanceof Member));
+
+
+
             tx.commit();
         } catch (Exception e){
             e.printStackTrace();

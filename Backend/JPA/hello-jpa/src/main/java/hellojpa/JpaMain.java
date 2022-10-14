@@ -237,7 +237,34 @@ public class JpaMain {
             System.out.println("m1 == m2: " + (m1.getClass() == m2.getClass())); // false
             System.out.println("m1 == m2: " + (m1 instanceof Member));
 
+            /**
+             * 영속성 전이
+             * 
+             * parent만 persist할 때 child도 자동으로 persist되게 해주는 것이 영속성 전이이다.
+             * 연관관계 매핑하는 것과는 관련이 없다. 엔티티 영속화할때 편의성을 제공해주는 것이다.
+             */
+            Parent parent = new Parent();
+            Child child1 = new Child();
+            Child child2 = new Child();
 
+            parent.addChild(child1);
+            parent.addChild(child2);
+
+            em.persist(parent);
+            // em.persist(child1);
+            // em.persist(child2);
+
+            em.flush();
+            em.clear();
+
+            /** 
+             * 고아 객체
+             * 부모 엔티티와 연관관계가 끊어진 자식 엔티티를 자동으로 삭제하는 기능
+             * childList에서 child를 없애면 delete쿼리가 날아가게 된다.
+             * 
+             */
+            Parent findParent = em.find(Parent.class, parent.getId());
+            findParent.getChildList().remove(0);
 
             tx.commit();
         } catch (Exception e){

@@ -7,6 +7,7 @@ import javax.persistence.Persistence;
 
 import org.hibernate.Hibernate;
 
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -265,6 +266,83 @@ public class JpaMain {
              */
             Parent findParent = em.find(Parent.class, parent.getId());
             findParent.getChildList().remove(0);
+
+            /**
+             * 임베디드 타입
+             * 공통되는 것을 하나의 클래스로 분리한 것.
+             * 재사용이 가능하며, 공통 변수로 응집도가 높아 해당 값만 사용하는 메서드를 만들수 있다.
+             * 엔티티에 대해서 설명하기에도 편하다.
+             * 
+             * 엔티티도 임베디드 타입으로 가질수 있다.
+             * 임베디드 타입이 두개있다면 @AttributeOverride를 사용하면 된다.
+             * 
+             * 임베디드 타입 같은 값 다입을 여러 엔티티에서 공유하면 위험하다.
+             * 주소를 참조하기 때문에, 예상치 않은 값도 같이 변경될 수 있다.
+             */
+
+            Address address = new Address();
+            Member member8 = new Member();
+            member8.setUsername("hello8");
+            member8.setHomeAddress(address);
+            member8.setWorkPeriod(new Period());
+            em.persist(member8);
+
+            Member member9 = new Member();
+            member9.setUsername("hello9");
+            // 다음처럼 같은 것을 넣으면 둘중 하나만 바껴도 같이 바뀐다.
+            // 만약 같이 바뀌게 하고 싶으면 임베디드 타입이 아닌 엔티티로 해결해야 한다.
+            // 따라서 임베디드를 같은 값을 하고싶으면 복사해서 새로 만들어서 넣어주어야한다.
+            // 이 실수를 피하기 위해서는 가능하다면 불변객체로 만들어주면 된다.(생성자로 값을 주입하고 setter를 만들지 않는다.)
+            // 만약 바꾸려면 새로 객체를 만들어서 넣어주면 된다.
+            member9.setHomeAddress(address);
+            member9.setWorkPeriod(new Period());
+            em.persist(member9);
+
+            em.flush();
+            em.clear();
+
+            /**
+             * 값 타입 컬렉션: 값타입을 하나이상 저장할 때
+             * 값 타입 컬렉션의 경우에는 DB는 여러개의 값을 가질수 없는 구조이기 때문에 별도의 테이블로 분리해줘야한다.
+             * JPA는 @ElementColection을 사용한다.
+             * 값 타입 컬렉션은 영속성 전이(cascade) + 고아 객체 제거 기능을 필수로 가진다.
+             */
+            Member member10 = new Member();
+            member10.setUsername("member10");
+            member10.setHomeAddress(new Address());
+
+            member10.getFavorateFoods().add("치킨");
+            member10.getFavorateFoods().add("피자");
+            member10.getFavorateFoods().add("족발");
+
+            member10.getAddressHistory().add(new Address("old1", "street", "1000"));
+            member10.getAddressHistory().add(new Address("old2", "street", "1000"));
+
+            em.persist(member10);
+
+            em.flush();
+            em.clear();
+
+            // 기본적으로 lazy loading으로 되어 있다.
+            Member findMember6 = em.find(Member.class, member10.getId());
+
+            // 변경시에는 다음처럼 완전 교체를 해주어야 한다.
+            // findMember6.getHomeAddress().setCity(city);
+            Address add = findMember6.getHomeAddress();
+            findMember6.setHomeAddress(new Address("newCity", add.getStreet(), add.getZipcode()));
+
+            // 개인생각 : 메서드로 만들어주는 것이 좋을 것 같다.
+            findMember6.getFavorateFoods().remove("치킨");
+            findMember6.getFavorateFoods().add("비빔밥");
+
+            // equals를 꼭 만들어주어야 한다.
+            // 하지만 해당 방법으로 데이터를 지울경우에 테이블에 있는 데이터를 모두 날리고 컬렉션에 남아있는 데이터를 insert쿼리를 날리게 된다.
+            // 매우 비효율 적인 소스코드로 값타입 컬렉션은 사용하지 않는 것이 좋다.
+            // 그냥 Address를 entity로 분리하는 것이 좋다.
+            findMember6.getAddressHistory().remove(new Address("old1", "street", "1000"));
+            findMember6.getAddressHistory().add(new Address("newCity1", "street", "1000"));
+            // 다음처럼 연관관계 매핑을 통한 것으로 분리하는 것이 좋다.
+            findMember6.getAddressHist().add(new AddressEntity());
 
             tx.commit();
         } catch (Exception e){

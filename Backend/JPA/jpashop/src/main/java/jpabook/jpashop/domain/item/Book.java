@@ -16,7 +16,6 @@ public class Book extends Item{
     private String author;
     private String isbn;
 
-
     public void createBook(Long id, String name, int price, int stockQuantity, String author, String isbn){
         this.id = id;
         this.name = name;

@@ -4,6 +4,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import org.hibernate.Hibernate;
 
@@ -343,6 +346,34 @@ public class JpaMain {
             findMember6.getAddressHistory().add(new Address("newCity1", "street", "1000"));
             // 다음처럼 연관관계 매핑을 통한 것으로 분리하는 것이 좋다.
             findMember6.getAddressHist().add(new AddressEntity());
+
+            /**
+             * JPQL
+             * JPA에서 제공하는 SQL을 추상화한 언어 제공
+             * 엔티티 객체를 대상으로 쿼리한다.
+             */
+            // 쿼리문 중 Member는 엔티티이다.
+            // 동적 쿼리를 만들기가 까다롭다.
+            List<Member> result = em.createQuery(
+                    "select m from Member m where m.username like '%kim%'",
+                    Member.class
+            ).getResultList();
+
+            /**
+             * Criteria
+             * jpa의 동적쿼리를 사용하기 편리하다.
+             * 실무에서 쓰지않는다. 유지보수가 힘들기 때문이다.
+             */
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<Member> query = cb.createQuery(Member.class);
+
+            Root<Member> m = query.from(Member.class);
+            CriteriaQuery<Member> cq = query.select(m).where(cb.equal(m.get("username"), "kim"));
+            List<Member> resultList = em.createQuery(cq).getResultList();
+
+            /**
+             * QueryDSL
+             */
 
             tx.commit();
         } catch (Exception e){

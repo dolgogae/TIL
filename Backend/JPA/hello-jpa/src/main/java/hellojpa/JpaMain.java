@@ -371,10 +371,6 @@ public class JpaMain {
             CriteriaQuery<Member> cq = query.select(m).where(cb.equal(m.get("username"), "kim"));
             List<Member> resultList = em.createQuery(cq).getResultList();
 
-            /**
-             * QueryDSL
-             */
-
             tx.commit();
         } catch (Exception e){
             e.printStackTrace();
@@ -388,7 +384,8 @@ public class JpaMain {
 
     private static void printMemberAndTeam(Member member){
         String username = member.getUsername();
-
         Team team = member.getTeam();
+
+        System.out.println("username: " + username + "Team: " + team);
     }
 }

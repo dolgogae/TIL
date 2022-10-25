@@ -2,6 +2,7 @@ package study.datajpa.repository;
 
 import java.util.List;
 
+import org.assertj.core.api.Assert;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,30 @@ public class MemberJpaRepsitoryTest {
         memberJpaRepository.delete(member2);
         long deletedCount = memberJpaRepository.count();
         Assertions.assertThat(deletedCount).isEqualTo(0);
+    }
 
+    @Test
+    void findByUsernameAndAgeGreaterThan(){
+        Member m1 = new Member("AAA", 10);
+        Member m2 = new Member("AAA", 20);
+        memberJpaRepository.save(m1);
+        memberJpaRepository.save(m2);
+
+        List<Member> result = memberJpaRepository.findByUsernameAndAgeGreaterThan("AAA", 15);
+
+        Assertions.assertThat(result.get(0).getUsername()).isEqualTo(m1.getUsername());
+        Assertions.assertThat(result.get(0).getAge()).isEqualTo(m1.getAge());
+    }
+
+    @Test
+    void findByUsername(){
+        Member m1 = new Member("AAA", 10);
+        Member m2 = new Member("AAA", 20);
+        memberJpaRepository.save(m1);
+        memberJpaRepository.save(m2);
+
+        List<Member> result = memberJpaRepository.findByUsername("AAA");
+        
+        Assertions.assertThat(result.get(0)).isEqualTo(m1);
     }
 }

@@ -1,7 +1,11 @@
 package study.datajpa.repository;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -54,4 +58,20 @@ public interface MemberRepository extends JpaRepository<Member, Long>{
     // 컬렉션 바인딩은 다음과 같이 할 수 있다.
     @Query("select m from Member m where m.username in :names")
     List<Member> findByNames(@Param("names") List<String> names);
+
+    // 단건 조회의 경우에는 null로 반환해버린다.
+    // Optional로 해결해주는 것이 좋다.
+    Member findMemberByUsername(String username);
+    
+    // 리스트가 만약 결과가 없다면 null이 아닌 비어있는 컬렉션을 반환해준다.
+    List<Member> findListByUsername(String username);
+
+    // 2건 이상이 반환될때 예외를 터트려준다.
+    Optional<Member> findOptionalByUsername(String username);
+
+    // 다음처럼 count 쿼리를 별도로 분리해서 성능상의 이점을 볼 수 있다.
+    // 보통 pageing에서는 totalCount가 성능에 영향을 많이 미치는데 여기서 join 이후에 count할 필요까진 없기 때문에 분리하는 게 좋다.
+    @Query(value = "selet m from Member m left join m.team t", countQuery = "select count(m.username) from Member m")
+    Page<Member> findByAge(int age, Pageable pageable);
+    Slice<Member> findMemberByAge(int age, Pageable pageable);
 }

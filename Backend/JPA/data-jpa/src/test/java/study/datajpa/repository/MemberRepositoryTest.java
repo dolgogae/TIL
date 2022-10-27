@@ -3,6 +3,9 @@ package study.datajpa.repository;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +26,8 @@ import study.datajpa.entity.Member;
 public class MemberRepositoryTest {
     
     @Autowired MemberRepository memberRepository;
+    @PersistenceContext
+    EntityManager em;
 
     @Test
     public void testMember(){
@@ -171,5 +176,27 @@ public class MemberRepositoryTest {
         Assertions.assertThat(slice.getNumber()).isEqualTo(0);
         Assertions.assertThat(slice.isFirst()).isTrue();
         Assertions.assertThat(slice.hasNext()).isTrue();
+    }
+
+
+    @Test
+    void bulkUpdate(){
+        memberRepository.save(new Member("member1", 10));
+        memberRepository.save(new Member("member2", 15));
+        memberRepository.save(new Member("member3", 20));
+        memberRepository.save(new Member("member4", 25));
+        memberRepository.save(new Member("member5", 30));
+
+        int resultCount = memberRepository.bulkAgePlus(20);
+        // em.flush();
+        // em.clear();
+
+        List<Member> result = memberRepository.findByUsername("member5");
+        // 40살이 출력된다. => bulk연산을 하면 영속성 컨텍스트를 거치지 않고 바로 DB에 적용해버려 영속성 컨텍스트에서는 알지 못한다.
+        // 그래서 bulk연산 이후에는 반드시 clear를 해주어야 한다.
+        // 이것은 Modifying의 clearAutomatically 옵션을 켜주면 된다.
+        Member member5 = result.get(0);
+
+        Assertions.assertThat(resultCount).isEqualTo(3);
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -74,4 +75,10 @@ public interface MemberRepository extends JpaRepository<Member, Long>{
     @Query(value = "selet m from Member m left join m.team t", countQuery = "select count(m.username) from Member m")
     Page<Member> findByAge(int age, Pageable pageable);
     Slice<Member> findMemberByAge(int age, Pageable pageable);
+
+    // excuteResult와 같은 기능을 한다. 업데이트 갯수를 반환하도록 하는 역할(변경한다는 것을 알려주는 것)
+    // clearAutomatically => test에 설명
+    @Modifying(clearAutomatically = true) 
+    @Query("update Member m set m.age = m.age + 1 where m.age >= :age")
+    int bulkAgePlus(@Param("age") int age);
 }

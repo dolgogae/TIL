@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import study.datajpa.dto.MemberDto;
 import study.datajpa.entity.Member;
+import study.datajpa.entity.Team;
 
 @SpringBootTest
 @Transactional
@@ -26,6 +27,7 @@ import study.datajpa.entity.Member;
 public class MemberRepositoryTest {
     
     @Autowired MemberRepository memberRepository;
+    @Autowired TeamRepository teamRepository;
     @PersistenceContext
     EntityManager em;
 
@@ -198,5 +200,31 @@ public class MemberRepositoryTest {
         Member member5 = result.get(0);
 
         Assertions.assertThat(resultCount).isEqualTo(3);
+    }
+
+    @Test
+    public void findMemberLazy(){
+
+        Team teamA = new Team("teamA");
+        Team teamB = new Team("teamB");
+        teamRepository.save(teamA);
+        teamRepository.save(teamB);
+
+        Member member1 = new Member("member1", 10, teamA);
+        Member member2 = new Member("member2", 10, teamB);
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+
+        em.flush();
+        em.clear();
+
+        List<Member> members = memberRepository.findAll();
+
+        for(Member member: members){
+            System.out.println("member = " + member.getUsername());
+            // lazy loading이라서 team은 아직 없다. 우선은 프록시 객체를 가지고 있다.
+            // 다음처럼 호출해줄때 쿼리가 날아간다. 하지만 쿼리가 너무 많이 날아가는 문제점이 생긴다(N+1)
+            System.out.println("member.team = " + member.getTeam().getName());
+        }
     }
 }

@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -81,4 +82,19 @@ public interface MemberRepository extends JpaRepository<Member, Long>{
     @Modifying(clearAutomatically = true) 
     @Query("update Member m set m.age = m.age + 1 where m.age >= :age")
     int bulkAgePlus(@Param("age") int age);
+
+    // 다음처럼 fetch join을 해주어야 N+1 문제를 해결할 수 있다.
+    @Query("select m from Member m left join fetch m.team")
+    List<Member> findMemberFetchJoin();
+
+    @Override
+    // 다음 어노테이션을 붙히게 되면 lazy loading 대신 fetch join을 하게 된다.
+    // 오버라이드 말고 모든 쿼리에 적용이 가능하다.
+    @EntityGraph(attributePaths = {"team"})
+    List<Member> findAll();
+
+    // @EntityGraph(attributePaths = {"team"})
+    // JPA 표준 스펙으로 해결할 수 있다 -> Member.java에 어노테이션을 붙히면 된다. 
+    @EntityGraph("Member.all")
+    List<Member> findEntityGraphByUsername(@Param("username") String username);
 }

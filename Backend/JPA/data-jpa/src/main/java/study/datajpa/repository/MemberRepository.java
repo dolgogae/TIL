@@ -3,13 +3,18 @@ package study.datajpa.repository;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.LockModeType;
+import javax.persistence.QueryHint;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.query.Param;
 
 import study.datajpa.dto.MemberDto;
@@ -29,9 +34,13 @@ import study.datajpa.entity.Member;
  * 이름을 통해서 쿼리를 만들어 주는 기능이 있다.
  * 
  * 추가적인 장점으로는 컴파일 타임에서 오타를 잡아줄 수 있다.
+ * 
+ * !!사용자 정의 레포지토리 구현
+ * MemerRepositoryCustom을 상속받게 되면 안에 있는 메서드는 MemberRepositoryImpl에 구현된 것이 실행된다.
+ * 이처럼 커스텀된 메서드를 만들어서 넣을 수 있다.
  */
 // @Repository --> 생략 가능
-public interface MemberRepository extends JpaRepository<Member, Long>{
+public interface MemberRepository extends JpaRepository<Member, Long>, MemberRepositoryCustom{
  
     /**
      * @param username
@@ -97,4 +106,12 @@ public interface MemberRepository extends JpaRepository<Member, Long>{
     // JPA 표준 스펙으로 해결할 수 있다 -> Member.java에 어노테이션을 붙히면 된다. 
     @EntityGraph("Member.all")
     List<Member> findEntityGraphByUsername(@Param("username") String username);
+
+    // 다음처럼 힌트를 통해서 읽기 전용인 객체를 만들어 변경감지 때문에 필요한 메모리 점유를 피할 수 있다.
+    @QueryHints(value = @QueryHint(name = "org.hibernate.readOnly", value="true"))
+    Member findReadOnlyById(Long id);
+
+    // 실시간 트래픽이 많은 곳이라면 lock을 안거는 것을 권장한다.
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    List<Member> findLockByUsername(String username);
 }

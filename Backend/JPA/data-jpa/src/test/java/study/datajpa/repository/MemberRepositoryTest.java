@@ -227,4 +227,32 @@ public class MemberRepositoryTest {
             System.out.println("member.team = " + member.getTeam().getName());
         }
     }
+
+    @Test
+    void queryHint(){
+        Member member1 = new Member("member1", 10);
+        memberRepository.save(member1);
+        em.flush();
+        em.clear();
+
+        // 기본적으로 찾아오게 된 객체는 변경감지를 하기 위해 원본과 변경본 2개를 메모리가 점유하게 된다.
+        // 하지만 생각보다 성능상에 큰 이슈는 없다.
+        Member findMember = memberRepository.findById(member1.getId()).get();
+        Member readOnlyMember = memberRepository.findReadOnlyById(member1.getId());
+        // 변경감지를 하려면 원본을 가지고 있기 때문에 메모리를 점유하게 된다.
+        // 100퍼센트 조회용으로 가지고 있고 싶으며 힌트를 이용하면 된다.
+        findMember.setUsername("member2"); 
+        em.flush();
+    }
+
+
+    @Test
+    void lock(){
+        Member member1 = new Member("member1", 10);
+        memberRepository.save(member1);
+        em.flush();
+        em.clear();
+
+        List<Member> result = memberRepository.findLockByUsername(member1.getUsername());
+    }
 }

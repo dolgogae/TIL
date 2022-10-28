@@ -29,6 +29,7 @@ import lombok.ToString;
     query = "select m from Member m where m.username = :username"
 )
 @NamedEntityGraph(name = "Member.all", attributeNodes = @NamedAttributeNode("team"))
+@M
 public class Member {
 
     @Id @GeneratedValue
@@ -61,4 +62,6 @@ public class Member {
         this.team = team;
         team.getMembers().add(this);
     }
+
+
 }

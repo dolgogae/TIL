@@ -38,6 +38,9 @@ import study.datajpa.entity.Member;
  * !!사용자 정의 레포지토리 구현
  * MemerRepositoryCustom을 상속받게 되면 안에 있는 메서드는 MemberRepositoryImpl에 구현된 것이 실행된다.
  * 이처럼 커스텀된 메서드를 만들어서 넣을 수 있다.
+ * 
+ * Spring Data JPA의 구현체 : SimpleJpaRepository
+ * spring bean에 등록되어 있다. / 트랙잭션을 걸어놓는다.
  */
 // @Repository --> 생략 가능
 public interface MemberRepository extends JpaRepository<Member, Long>, MemberRepositoryCustom{

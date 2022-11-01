@@ -117,4 +117,16 @@ public interface MemberRepository extends JpaRepository<Member, Long>, MemberRep
     // 실시간 트래픽이 많은 곳이라면 lock을 안거는 것을 권장한다.
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     List<Member> findLockByUsername(String username);
+
+    // 네이티브 쿼리
+    // 한계가 많다. 반환타입이 많이 지원이 안된다.
+    // sort파라미터가 정상작동하지 않을 수도 있다.
+    @Query(value = "select * from member where username = ?", nativeQuery = true)
+    Member findByNativeQuery(String username);
+
+    @Query(value = "select m.member_id as id, m.username, t.name as teamName" + 
+            "from member m left join team t",
+            countQuery = "select count(*) from member", 
+            nativeQuery = true)
+    Page<MemberProjection> findByNativeProjection(Pageable pageable);
 }

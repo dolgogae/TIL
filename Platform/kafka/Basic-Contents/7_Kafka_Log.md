@@ -40,3 +40,18 @@ offsets.topic.segment.bytes # default 100M
 - replication-offset-checkpoint : 마지막으로 저장된 메시지의 id(High Water Mark) 
 
 - recovery-point-offset-checkpoint : 데이터가 디스크로 flush된 지점 -> 메시지 손실 파악하기 위해
+
+## cleanup.policy
+### delete
+`retention.ms`: 세그먼트를 보유할 최대 기간  
+`retention.bytes`: 파티션당 로그 적재 바이트 값  
+`log.retention.check.interval.ms`: 세그먼트가 삭제 영역에 들어왔는지 확인하는 간격
+###compact
+메시지 키 별로 해당 메시지 키의 레코드 중 오래된 데이터를 삭제하는 정책이다.  
+compact를 사용하게 되면 key에 해당하는 필요없는 데이터를 지울수 있다.
+> 테일영역: 압축 정책에 의해 압축이 완료된 레크드들. 클린로그라고도 불린다.  
+> 헤드영역: 압축이 되기전 레코드들. 더티 로그라고도 부른다.
+
+`min.cleanable.dirty.ratio`
+데이터 압축 시작 시점의 옵션  
+헤드영역의 레코드 개수와 테일영역의 레코드 개수의 비율을 뜻한다.

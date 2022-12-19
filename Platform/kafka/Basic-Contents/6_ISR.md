@@ -1,10 +1,17 @@
 # In-Sync-Replication(ISR)
 
 High Water Mark라고 하는 지점까지 동일한 Replicas의 목록.  
+리더 파티션과 팔로워 파티션이 모두 싱크가 된 상태를 뜻한다.  
+
 ```shell
 replica.lag.max.messages=4
 # 최대 4개 정도의 차이만 나는 Replica들의 모임.
 # 그 이상 차이가 나면 OSR이 된다.
+
+unclean.leader.election.enable=true
+# 유실을 감수함. 복제가 안된 팔로워 파티션을 리더로 승급.
+unclean.leader.election.enable=true
+# 유실을 감수하지 않음. 해당 브로커가 복구될 때까지 중단.
 ```
 * OSR(Out-of-Sync): 잘따라잡고 있지 못한 replicas.  
 

@@ -9,6 +9,9 @@
 Kafka는 Record를 **Byte Array**로 저장.  
 Serialize --> Byte Array(Broker) --> Deserialize.  
 
+record가 파티션에 들어갈때 validation을 하는 로직을 넣어주는 것이 좋다.  
+중간에 record는 수정과 삭제가 불가능하기 때문이다.  
+
 ## High-level arch.
 
 Producer Record -> send() -> Serializer -> partitioner(어느 파티션) -> Comperss(optional) -> RecordAccumulator 

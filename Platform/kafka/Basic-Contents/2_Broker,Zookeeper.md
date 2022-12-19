@@ -10,6 +10,9 @@ Client는 특정 Broker에 연결하면 전체 클러스터에 연결됨.
 - 하지만 특정 broker의 장애를 대비해 전체 Broker list를 파라미터로 입력 권장
 - 각각의 Broker는 모든 Broker, Topic, Partition에 대해 알고 있음(Metadata)
 
+데이터 저장
+- config/server.properties의 `log.dir` 옵션에 정의한 디렉토리에 데이터를 저장한다.
+
 ## Controller Broker
 - Cluster에서 하나의 브로커가 Controller가 된다. 
 - Zookeeper를 통해 Broker Liveness 모니터링
@@ -25,13 +28,19 @@ Client는 특정 Broker에 연결하면 전체 클러스터에 연결됨.
 
 ## Coordinator
 다수의 Broker 중 한 대는 코디네이터 역할을 맡게 된다.  
-역할로는 컨슈머 그룹의 상태를 체크하고 파티션을 컨슈머와 매칭되도록 하는 역할을 한다.
+역할로는 컨슈머 그룹의 상태를 체크하고 파티션을 컨슈머와 매칭되도록 하는 역할을 한다.  
+이렇게 파티션을 컨슈머로 재할당하는 과정을 `리밸런스`라고 부른다.  
+
+> 특정 브로커에 파티션이 쏠릴때
+> kafka-reassign-partitions.sh 명령으로 파티션을 재분배가 가능하다.
 
 # Zookeeper
 
 Zookeeper는 Broker를 관리하는 소프트웨어  
-변경사항에 대해 Kafka에 알림. -> Topic생성/제거, Broker 추가/제거
-- 멀티 kafka broker들 간의 정보 공유, 동기화
+변경사항에 대해 Kafka에 알림. -> Topic생성/제거, Broker 추가/제거  
+- 멀티 kafka broker들 간의 정보 공유, 동기화  
+하나의 주키퍼에 여러개의 클러스터를 연결이 가능하다.  
+
 
 홀수의 서버로 작동하게 설계.  
 - 1개의 Leader, 나머지 Follower

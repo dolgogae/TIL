@@ -11,6 +11,7 @@ Partition이 2개 이상인 경우 모든 메시지에 대한 **전체 순서 �
 - partition을 하나로 하면 정렬이 되지만 처리 순서는 떨어진다.(병렬처리가 안되기 때문)
 - 동일한 key를 가진 메시지는 동일한 partition에만 전달되어 key레벨의 순서 보장 가능.(운영중 partition 개수 변경시 순서 보장 불가능)
 
+
 ## Consumer group
 
 4개의 파티션이 있는 Topic을 conusme하는 4개의 Consumer가 하나의 Consumer group에 있다면 각 consumer는 정확히 하나의 partition에서 record를 consume.(같은 group내의 consumer는 partition을 분배받음)  
@@ -133,6 +134,9 @@ RR은 Consumer 하나가 죽을 경우 모두 재할당하지만, StickyAssignor
 ## Consumer 관련 CLI
 
 Consumer 관련 CLI는 kafka-console-consumer.sh 쉘 파일을 이용한다.
+
+`--max-message`: 최대 컨슘 메시지 개수를 설정할 수 있다. 수없는 메시지를 보내기 되면 원하는 데이터만큼을 한번에 받기가 어렵다.(테스트용
+`--partition`: 특정 파티션만 컨슘이 가능하다.
 
 ```shell
 

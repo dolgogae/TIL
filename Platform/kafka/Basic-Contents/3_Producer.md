@@ -1,6 +1,8 @@
 # Producer
 
 메시지, 레코드, 이벤트, 데이터
+동일한 메시지 키는 동일한 파티션에 들어감을 보장한다. -> 동일한 메시지 키일때 데이터의 순서를 보장할 수 있다.  
+> 메시지 키가 없을 땐 라운드 로빈으로 넘어간다.
 
 ## Record
 - Header: Topic, Partition, Timestamp, etc... (Metadata)

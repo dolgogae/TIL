@@ -46,3 +46,5 @@ ISR 목록의 모든 Replicas가 메시지를 성공적으로 가져오면 `Comm
 ## Leader Epoch
 새 Leader가 선출된 시점을 Offset으로 표시  
 > leader-epoch-checkpoint 파일에 체크포인트를 기록.  
+
+## ISR 주요 옵션(자바 라이브러리)

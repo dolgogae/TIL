@@ -18,11 +18,16 @@ Producer ID, Sequence Number, Transaction ID를 할당하고 클라이언트가 
 ### Idempotent Producer 
 - Producer 파라미터중 `enable.idempotence=true` 설정  
 - 성능에 영향이 없다(헤더에 데이터만 추가하는 정도라서).  
+- 데이터를 브로커로 전달할 때 producer unique id(PID)와 sequence number를 함께 전달한다.
+- 
 
 ### Transaction
 - 각 Producer에 `transaction.id`를 설정
 - Transaction API를 사용
 - Consumer에서 `isolation.level=read_committed`로 설정(필요시에만 수정)
+
+트랜잭션 컨슈머가 각각의 파티션에 commit이 완료되었다는 레코드가 있어야만 가져온다.  
+그 전까지는 파티션에 데이터가 쌓이더라도 대기한다.
 
 ## Consumer Config
 ```shell

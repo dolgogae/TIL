@@ -2,7 +2,9 @@
 
 메시지, 레코드, 이벤트, 데이터
 동일한 메시지 키는 동일한 파티션에 들어감을 보장한다. -> 동일한 메시지 키일때 데이터의 순서를 보장할 수 있다.  
-> 메시지 키가 없을 땐 라운드 로빈으로 넘어간다.
+> 메시지 키가 없을 땐 라운드 로빈으로 넘어간다.  
+> 하지만, 파티션의 개수가 늘어날 경우에는 순서를 보장해주지 못한다.(리밸런싱이 일어나기 때문이다.)
+> 그래서 파티션 개수는 처음에 충분히 크게 설정해두는 것이 운영 측면에서 이점을 볼 수 있다.
 
 ## Record
 - Header: Topic, Partition, Timestamp, etc... (Metadata)
@@ -17,16 +19,20 @@ record가 파티션에 들어갈때 validation을 하는 로직을 넣어주는 
 ## High-level arch.
 
 Producer Record -> send() -> Serializer -> partitioner(어느 파티션) -> Comperss(optional) -> RecordAccumulator 
--> kafka -> 성공 -> metadata return 
-    \
-     `-> 실패 -> 재시도
-
+-> Sender -> kafka -> 성공 -> metadata return 
+                \
+                 `-> 실패 -> 재시도
 
 ### Partitioner
 Partition = Hash(Key) % # of Partitions  
 key가 null일 경우 : RR 형태(2.4이전), Sticky(2.4 이후)
-> sticky: 하나의 Batch(Partition을 나눈 단위)가 닫힐때 까지 보내고 랜덤으로 Partition선택.  
+> sticky: 하나의 Batch(Partition을 나눈 단위)가 닫힐때 까지 보내고 랜덤으로 Partition선택.
 
+메시지키가 없을 경우에는 파티션에 최대한 동일하게 분배하는 로직이 들어있다.
+
+`RoundRobinPartitioner`: ProducerRecord가 들어오는 대로 파티션을 순회하면서 전송.  
+`UniformStickyPartitioner`: Accumulator에서 레코드들이 배치로 묶일 때까지 기다렸다가 전송.  
+`커스텀 파티셔너`: Partition 인터페이스를 상속해서 직접 구현이 가능하다.
 
 ## Ack
 요청이 성공할때를 정의하는 데 사용되는 Producer에 설정하는 변수
@@ -85,7 +91,7 @@ Producer --(send)-> Broker Process --(write)-> OS Page Cache --(flush)-> Disk.
 OS가 데이터를 디스크로 Flush 하기전에 Broker의 시스템에 장애 발생시 손실이 일어난다.  
 > Replication이 없다면 영구적 손실이 된다.  
 
-Kafka는 운영체제의 background flush 기능을 더 효율적으로 허용하는 것을 선호.  
+Kafka는 운영체제의 background flush 기능을 더 효율적으로 허용하는 것을 선호.  s
 
 ## Producer 관련 CLI
 
@@ -112,3 +118,19 @@ $ kafka-console-producer.sh --bootstrap-server my-kafka1:9092,my-kafka2:9092,my-
 >key3:no3
 ```
 
+## 프로듀셔 주요 옵션(자바 라이브러리)
+### 필수 옵션
+`bootstrap.servers`: 프로듀서 데이터를 전송할 카프카 클러스터의 브로커 이름
+`key.serializer`: 레코드의 메시지키를 직렬화하는 클래스 지정
+`key.serializer`: 레코드의 메시지값을 직렬화하는 클래스 지정
+> 직렬화를 통해서 파일로 저장한다.  
+> 직렬화를 하게 되면 다양한 타입을 파일로 저장이 가능하게 된다.  
+
+### 선택 옵션
+`ack`: 프로듀서가 전송한 데이터가 정상적으로 저장되었는지 여부 확인(0,-1,1), default - 1
+`linger.ms`: 배치를 전송하기 전까지 기다리는 최소 시간, default - 0
+`retries`: 브로커로부터 에러를 받고 난 뒤 재전송을 시도하는 횟수, default - 2147483647
+`max.in.flight.requests.per.connection`: 한번에 요청하는 최대 커넥션 개수, default - 5
+`partitioner.class`: 레코드를 파티션에 전송할 때 적용하는 파티셔너 클래스를 지정한다.
+`enable.idempotence`: 멱등성 프로듀서로 동작할지 여부 설정, default - false
+`transactional.id`: 프로듀서가 레코드를 전송할 때 레코드를 트랜잭션 단위로 묶을지 여부를 설정한다., default - null

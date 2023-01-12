@@ -8,5 +8,6 @@ public class Main {
         // 정적 클래스는 바로 생성 가능
         OuterClass.InStaticClass sInClass = new OuterClass.InStaticClass();
         sInClass.inTest();
+
     }
 }

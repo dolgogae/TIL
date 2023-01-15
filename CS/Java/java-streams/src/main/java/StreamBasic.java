@@ -1,7 +1,8 @@
+import utils.Adder;
+import utils.TriFunction;
+
 import java.util.function.BiFunction;
 import java.util.function.Function;
-
-import utils.*;
 
 public class StreamBasic{
     public static void main(String[] args){

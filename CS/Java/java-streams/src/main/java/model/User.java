@@ -1,5 +1,6 @@
 package model;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 public class User {
@@ -8,12 +9,22 @@ public class User {
     private String name;
     private String email;
     private boolean verified;
+    private LocalDateTime createdAt;
 
     public User(){}
 
     public User(int id, String name){
         this.id = id;
         this.name = name;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public User setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+        return this;
     }
 
     public Optional<String> getEmail() {
@@ -52,5 +63,13 @@ public class User {
         return this;
     }
 
-
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", verified=" + verified +
+                '}';
+    }
 }

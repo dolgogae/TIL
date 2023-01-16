@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Optional;
+
 public class User {
     
     private int id;
@@ -14,8 +16,8 @@ public class User {
         this.name = name;
     }
 
-    public String getEmail() {
-        return this.email;
+    public Optional<String> getEmail() {
+        return Optional.ofNullable(email);
     }
 
     public User setEmail(String email) {
@@ -49,5 +51,6 @@ public class User {
         this.name = name;
         return this;
     }
+
 
 }

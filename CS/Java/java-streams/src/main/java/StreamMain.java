@@ -26,7 +26,8 @@ public class StreamMain {
         // map: 기존의 값을 간단한 수식으로 변경
         // filter: 조건에 맞는 값을 추출
         // sorted: 정렬
-        numberStream.filter(x->x>0).map(x->x*2).collect(Collectors.toList());
+        Stream<Integer> numberStream2 = Stream.of(1, 2, 4, -2, -5);
+        numberStream2.filter(x->x>0).map(x->x*2).collect(Collectors.toList());
 
         User user1 = new User(1, "Alice");
         User user2 = new User(2, "Bob");

@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 public class User {
@@ -10,12 +11,22 @@ public class User {
     private String email;
     private boolean verified;
     private LocalDateTime createdAt;
+    private List<Integer> friendsIds;
 
     public User(){}
 
     public User(int id, String name){
         this.id = id;
         this.name = name;
+    }
+
+    public List<Integer> getFriendsIds() {
+        return friendsIds;
+    }
+
+    public User setFriendsIds(List<Integer> friendsIds) {
+        this.friendsIds = friendsIds;
+        return this;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -72,4 +83,5 @@ public class User {
                 ", verified=" + verified +
                 '}';
     }
+
 }

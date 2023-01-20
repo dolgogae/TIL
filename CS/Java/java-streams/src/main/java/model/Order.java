@@ -1,15 +1,25 @@
 package model;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class Order {
 
     private long id;
     private BigDecimal amount;
     private OrderStatus status;
+    private List<OrderLine> orderLines;
 
     public enum OrderStatus {
         CREATED, ERROR, PROCESSED
+    }
+
+    public List<OrderLine> getOrderLines() {
+        return orderLines;
+    }
+    public Order setOrderLines(List<OrderLine> orderLines) {
+        this.orderLines = orderLines;
+        return this;
     }
 
     public long getId() {

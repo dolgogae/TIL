@@ -1,13 +1,18 @@
 import model.Order;
 import model.OrderLine;
 import model.User;
+import service.EmailService;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static model.Order.*;
@@ -173,5 +178,81 @@ public class AdvancedStream {
                 .flatMap(List::stream)
                 .map(OrderLine::getAmount)
                 .reduce(BigDecimal.ZERO, (x,y)->x.add(y));
+        
+        List<Integer> numberList = Stream.of(3,4,5,7,-3,-2)
+                .collect(Collectors.toList());
+        Set<Integer> numberSet = Stream.of(3,4,5,7,-3,-2)
+                .collect(Collectors.toSet());
+        List<Integer> numberList2 = Stream.of(3,4,5,7,-3,-2)
+                .collect(Collectors.mapping(x -> Math.abs(x), Collectors.toList()));
+        
+        int reducingSum = Stream.of(3,4,5,7,-3,-2)
+                .collect(Collectors.reducing(0, (x, y) -> x+y));
+        
+        /**
+         * toMap
+         * keyMapper: 데이터를 map의 key로 변환
+         * valueMapper: 데이터를 map의 value로 변환
+         * id - object로 맵핑할 때 유용하다.
+         */
+
+         // TODO: stream의 integer가 key가 되고, "number of integer : {}"가 value가 되도록
+        Map<Integer, String> numberMap = Stream.of(3,4,5,7,-3,-2)
+                .collect(Collectors.toMap(Function.identity(), x -> "Number of Integer: " + x));
+        // System.out.println(numberMap.get(3));
+
+        Map<Integer, User> userIdToUserMap = users.stream()
+                .collect(Collectors.toMap(User::getId, Function.identity()));
+        // System.out.println(userIdToUserMap);
+
+        // TODO: create a map from order id to order status
+        Map<Long, OrderStatus> orderIdToOrderStatusMap = orders.stream()
+                .collect(Collectors.toMap(Order::getId, Order::getStatus));
+        
+        /**
+         * groupingBy
+         * Stream안의 데이터에 classifier를 적용했을 때 결과값이 같은 값끼리 List로 모아서 Map의 형태로 반환
+         * 이때 key는 classifier의 결과갑스. value는 해당되는 값들
+         */
+        numbers = Arrays.asList(12,3,101,203,402,342,346,677,677);
+        Map<Integer, List<Integer>> unitDigitMap = numbers.stream()
+                .collect(Collectors.groupingBy(number -> number%10));
+        
+        Map<Integer, Set<Integer>> unitedSet = numbers.stream()
+                .collect(Collectors.groupingBy(number->number%10, Collectors.toSet()));
+        
+        Map<Integer, List<String>> unitDigitString = numbers.stream()
+                .collect(Collectors.groupingBy(number->number%10, 
+                        Collectors.mapping(number -> "unit digit is " + number, Collectors.toList())));
+        
+        // TODO: create a map form order status to the list of corresponding orders
+        Map<OrderStatus, List<Order>> orderStatusMap = orders.stream()
+                .collect(Collectors.groupingBy(Order::getStatus));
+        
+        Map<OrderStatus, BigDecimal> orderStatusToSumOfAmountMap = orders.stream()
+                .collect(Collectors.groupingBy(Order::getStatus, 
+                        Collectors.mapping(Order::getAmount, 
+                                Collectors.reducing(BigDecimal.ZERO, BigDecimal::add))));
+
+        /**
+         * partitioning
+         * true인 그룹과 false인 그룹으로 나뉜다.
+         */
+        Map<Boolean, List<Integer>> numberPartitions = numbers.stream()
+                .collect(Collectors.partitioningBy(x->x%2==0));
+        // System.out.println("Even numbers: "+ numberPartitions.get(true));
+        // System.out.println("Even numbers: "+ numberPartitions.get(false));
+
+        Map<Boolean, List<User>> userPartitions = users.stream()
+                .collect(Collectors.partitioningBy(user -> user.getFriendsIds().size() > 5));
+        // System.out.println(userPartitions);
+
+        EmailService emailService = new EmailService();
+        for(User user: userPartitions.get(true)){
+            emailService.sendPlayWithFriendsEmail(user);
+        }
+        for(User user: userPartitions.get(false)){
+            emailService.sendMakeWithFriendsEmail(user);
+        }
     }
 }

@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static model.Order.*;
@@ -254,5 +255,58 @@ public class AdvancedStream {
         for(User user: userPartitions.get(false)){
             emailService.sendMakeWithFriendsEmail(user);
         }
+
+        /**
+         * forEach
+         * 제공된 action을 Stream의 각 데이터에 적용해주는 종결처리 메서드
+         */
+        numbers.stream().forEach(number-> System.out.println("The number is "+ number));
+        // iterable에도 forEach가 있어서 생략가능하다.
+        numbers.forEach(number-> System.out.println("The number is "+ number));
+        
+        users.stream()
+                .filter(user -> !user.isVerified())
+                .forEach(emailService::sendVerifyYourEmail);
+        
+        // 인덱스 사용 반복문은 IntStream을 사용할 수 있다.
+        IntStream.range(0, users.size()).forEach(i->{
+            User user = users.get(i);
+            System.out.println("Do an operation user " + user.getName() + "at index " + i);
+        });
+
+        /**
+         * parallelStream
+         * 여러개의 스레드를 이용하여 stream의 처리 과정을 병렬화
+         * 데드락을 조심해야하고 뮤텍스나 세마포어를 사용하면 순차처리보다 느려질 수 있다.
+         */
+        long startTime = System.currentTimeMillis();
+        users.stream()
+                .filter(user -> !user.isVerified())
+                .forEach(emailService::sendVerifyYourEmail);
+        long endTime = System.currentTimeMillis();
+        // System.out.println("Sequential: " + (endTime - startTime) + "ms");
+
+        long startTimeParallel = System.currentTimeMillis();
+        users.stream().parallel()
+                .filter(user -> !user.isVerified())
+                .forEach(emailService::sendVerifyYourEmail);
+        long endTimeParallel = System.currentTimeMillis();
+        // System.out.println("Sequential: " + (endTimeParallel - startTimeParallel) + "ms");
+        
+        // 각 리스트의 인스턴스가 어떤 순서로 처리될지 모른다.
+        // 순서에 민감한 로직이라면 parallel을 사용하면 안된다.
+        List<User> processedUsers = users.parallelStream()
+                .map(user -> {
+                    System.out.println("Capitalize user name for user "+ user.getId());
+                    user.setName(user.getName().toUpperCase());
+                    return user;
+                })
+                .map(user -> {
+                    System.out.println("Set isVerified to true for user "+ user.getId());
+                    user.setVerified(true);
+                    return user;
+                })
+                .collect(Collectors.toList());
+        
     }
 }

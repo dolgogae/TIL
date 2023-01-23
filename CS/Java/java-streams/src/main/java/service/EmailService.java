@@ -12,4 +12,9 @@ public class EmailService {
         user.getEmail().ifPresent(email -> 
             System.out.println("Sending 'Make more friends' email to" + email));
     }
+
+    public void sendVerifyYourEmail(User user){
+        user.getEmail().ifPresent(email ->
+            System.out.println("Sending 'verify your Email' email to " + email));
+    }
 }

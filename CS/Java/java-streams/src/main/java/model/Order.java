@@ -14,7 +14,7 @@ public class Order {
         CREATED, ERROR, PROCESSED
     }
 
-    public List<OrderLine> getOrderLines() {
+    public static List<OrderLine> getOrderLines() {
         return orderLines;
     }
     public Order setOrderLines(List<OrderLine> orderLines) {

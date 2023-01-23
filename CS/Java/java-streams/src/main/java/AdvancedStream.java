@@ -1,6 +1,7 @@
 import model.Order;
 import model.OrderLine;
 import model.User;
+import model.Order.OrderStatus;
 import service.EmailService;
 
 import java.math.BigDecimal;
@@ -16,7 +17,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static model.Order.*;
+// import static model.Order.*;
 
 public class AdvancedStream {
     public static void main(String[] args) {
@@ -175,7 +176,7 @@ public class AdvancedStream {
         // TODO: find the sum of amounts
         List<Order> orderList = Arrays.asList(order1, order2, order3);
         BigDecimal sumOfAmount = orderList.stream()
-                .map(Order::getOrderLines)
+                .map(o -> Order.getOrderLines())
                 .flatMap(List::stream)
                 .map(OrderLine::getAmount)
                 .reduce(BigDecimal.ZERO, (x,y)->x.add(y));

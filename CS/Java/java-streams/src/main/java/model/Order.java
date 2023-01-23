@@ -8,7 +8,7 @@ public class Order {
     private long id;
     private BigDecimal amount;
     private OrderStatus status;
-    private List<OrderLine> orderLines;
+    private static List<OrderLine> orderLines;
 
     public enum OrderStatus {
         CREATED, ERROR, PROCESSED

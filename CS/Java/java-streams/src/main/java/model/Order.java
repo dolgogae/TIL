@@ -8,13 +8,13 @@ public class Order {
     private long id;
     private BigDecimal amount;
     private OrderStatus status;
-    private static List<OrderLine> orderLines;
+    private List<OrderLine> orderLines;
 
     public enum OrderStatus {
-        CREATED, ERROR, PROCESSED
+        CREATED, ERROR, PROCESSED, IN_PROGRESS
     }
 
-    public static List<OrderLine> getOrderLines() {
+    public List<OrderLine> getOrderLines() {
         return orderLines;
     }
     public Order setOrderLines(List<OrderLine> orderLines) {

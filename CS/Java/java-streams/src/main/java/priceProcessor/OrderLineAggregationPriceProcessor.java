@@ -11,7 +11,7 @@ public class OrderLineAggregationPriceProcessor implements Function<Order, Order
     @Override
     public Order apply(Order order) {
         // TODO Auto-generated method stub
-        return order.setAmount(Order.getOrderLines().stream()
+        return order.setAmount(order.getOrderLines().stream()
                 .map(OrderLine::getAmount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add));
     }

@@ -176,7 +176,7 @@ public class AdvancedStream {
         // TODO: find the sum of amounts
         List<Order> orderList = Arrays.asList(order1, order2, order3);
         BigDecimal sumOfAmount = orderList.stream()
-                .map(o -> Order.getOrderLines())
+                .map(o -> o.getOrderLines())
                 .flatMap(List::stream)
                 .map(OrderLine::getAmount)
                 .reduce(BigDecimal.ZERO, (x,y)->x.add(y));

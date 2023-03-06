@@ -88,8 +88,6 @@ public class OrderRepository {
     }
 
     /**
-     * 
-     * @return
      * 한번의 쿼리로 모두 가져올 수 있다.
      */
     public List<Order> findAllWithMemberDelivery() {
@@ -100,8 +98,6 @@ public class OrderRepository {
     }
 
     /**
-     * 
-     * @return
      * order - orderItem과의 join의 경우는 
      * order가 orderItem의 갯수만큼 중복해서 조회하게 된다.
      * 따라서 JPA에서 가져오는 data가 N배가 되어버린다.(1:N 관계이기 때문이다.)
@@ -143,8 +139,6 @@ public class OrderRepository {
 
 
     /**
-     * 
-     * @return
      * 식별자를 넣기 때문에 order를 그대로 new 객체의 인자로 넣어주면 안된다.
      * -> 다른 객체로 분리하는 것이 좋다. to OrderSimpleRepository
      */

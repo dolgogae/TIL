@@ -45,7 +45,6 @@ public class OrderApiController {
 
 
     /**
-     * @return
      * entity를 직접 노출하는 것 -> 권장하지 않음
      */
     @GetMapping("/api/v1/orders")
@@ -71,7 +70,7 @@ public class OrderApiController {
 
     /**
      * 중복된 데이터가 조회된다. 
-     * order-orderItem간의 join에서 중복된 데이터가 생성된다.(1:N 관계이기 때문이대)
+     * order-orderItem간의 join에서 중복된 데이터가 생성된다.(1:N 관계이기 때문이다)
      * 
      * 페이징을 할 수 없는 문제가 생긴다.
      */

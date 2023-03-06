@@ -1,9 +1,6 @@
 package jpabook.jpashop.domain;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.aspectj.weaver.ast.Or;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -15,7 +12,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "orders")
-@Data
+@Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Order {
 
@@ -25,10 +22,12 @@ public class Order {
 
     /**
      * 가급적이면 단방향이 좋다.
+     * 해당 값을 변경했을 때, 다른 값도 변경 되었으면 좋겠는것이 연관관계의 주인이어야 한다.
+     * FK가 있는 곳을 연관관계의 주인으로 한다.
      */
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member_id")     // 매핑을 어느걸로 할지 정한다.
     private Member member;
 
     @JsonIgnore

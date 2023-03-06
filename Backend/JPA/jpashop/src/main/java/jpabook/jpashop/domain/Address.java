@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
 
-@Embeddable
+@Embeddable // 어딘가에 내장될 수 있다는 어노테이션
 @Getter @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor

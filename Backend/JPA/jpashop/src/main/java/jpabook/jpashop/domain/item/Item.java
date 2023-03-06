@@ -3,13 +3,14 @@ package jpabook.jpashop.domain.item;
 import jpabook.jpashop.domain.CategoryItem;
 import jpabook.jpashop.exception.NotEnoughStockException;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity @Getter
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)   // 하나의 테이블로 만들겠다.
+@Entity @Getter @Setter
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)   // 모든 자식 클래스를 합쳐서 하나의 테이블로 만들겠다.
 @DiscriminatorColumn
 public abstract class Item {
 

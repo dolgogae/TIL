@@ -71,8 +71,15 @@ public class OrderApiController {
     /**
      * 중복된 데이터가 조회된다. 
      * order-orderItem간의 join에서 중복된 데이터가 생성된다.(1:N 관계이기 때문이다)
+     * 같은 orderId가 여러 row에 걸쳐서 나온다. 하나의 order에 여러개의 orderItem이 있기 때문이다.
+     * 심지어 orderItem말고는 모두 같은 데이터가 중복되어 있다.
+     * 
+     * distinct를 쓰게되면 위에 적은 문제를 해결할 수 있다.
+     * (쿼리 상으로는 결과값이 같지만 하이버네이트에서는 pk가 같으면 같은 걸로 생각한다.)
      * 
      * 페이징을 할 수 없는 문제가 생긴다.
+     * 왜냐하면 실제쿼리에서는 4개의 결과값이 나오는데 그것은 우리가 의도했던 것이 아니기 때문이다.
+     * 일대다 관계에서는 fetch join을 하면 안된다
      */
     @GetMapping("/api/v3/orders")
     public List<OrderDto> ordersV3() {

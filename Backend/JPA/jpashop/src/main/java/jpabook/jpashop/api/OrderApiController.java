@@ -113,6 +113,8 @@ public class OrderApiController {
 
     /**
      * ToOne관계를 먼저 가져온뒤에 ToMany관계를 쿼리를 따로 만들어서 넣어주어야 한다.
+     * 
+     * DTO를 바로 사용해서 받아오면 select하는 데이터의 양이 확실히 줄어드는 것을 볼 수 있다.
      */
     @GetMapping("/api/v4/orders")
     public List<OrderQueryDto> ordersV4(){

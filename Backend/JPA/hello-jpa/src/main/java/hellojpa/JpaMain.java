@@ -9,6 +9,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 import java.time.LocalDateTime;
+import java.util.EnumSet;
 import java.util.List;
 
 public class JpaMain {
@@ -369,6 +370,7 @@ public class JpaMain {
             List<Member> resultList = em.createQuery(cq).getResultList();
 
             tx.commit();
+
         } catch (Exception e){
             e.printStackTrace();
             tx.rollback();

@@ -50,3 +50,4 @@ $ curl -X GET http://localhost:5000/v2/hello-world/tags/list
   
   
 ## 원격으로 Docker image를 push 하기
+sa

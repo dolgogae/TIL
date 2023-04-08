@@ -46,9 +46,6 @@ import study.datajpa.entity.Member;
 public interface MemberRepository extends JpaRepository<Member, Long>, MemberRepositoryCustom{
  
     /**
-     * @param username
-     * @param age
-     * @return
      * 관례를 통해 이름을 가지고 쿼리를 만들어준다.
      */
     List<Member> findByUsernameAndAgeGreaterThan(String username, int age);
